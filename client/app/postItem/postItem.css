@@ -1,0 +1,21 @@
+.jumbotron {
+	float: center;
+}
+
+
+
+#descriptionField {
+	height: 100px; 
+	border: 1px solid;
+	margin-bottom: 10px;
+/*		margin-top: 10px;
+*/}
+
+#locationField {
+	margin-bottom: 10px;
+}
+
+#dropDownUL {
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
