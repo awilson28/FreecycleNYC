@@ -1,3 +1,17 @@
-<div class="col-md-12">
-{{allPosts}}
+<div class="jumbotron">
+	<div ng-repeat="post in allPosts">
+		{{post.postTitle}}
+		<br>
+		{{post.description}}
+		<br>
+		{{post.postType}}
+		<br>
+		{{post.dimensions}}
+		<br>
+		{{post.crossStreets}}
+		<br>
+		{{post.itemType}}
+		<br>
+		{{post.keyWords}}
+	</div>
 </div>

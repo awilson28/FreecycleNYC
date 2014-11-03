@@ -6,7 +6,6 @@ angular.module('freeNycApp')
 	var vm = this; 
 
 	postService.getData(function(results){
-		
 		$scope.allPosts = results;
 	})   
 

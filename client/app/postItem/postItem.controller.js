@@ -11,11 +11,13 @@ angular.module('freeNycApp')
   		description: "",
   		postType: "", 
   		itemType: "Pick Item Type", 
-  		keywords: "", 
+  		keyWords: [], 
   		dimensions: "" 
   	}
 
   	$scope.posts; 
+
+  	$scope.tempKeyword = "";
 
   	// this.myClick = function(){
   	// 	if ($scope.formData.listType.offerSelected === true){
@@ -25,18 +27,23 @@ angular.module('freeNycApp')
 
   	// $scope.selectedItem = "Items";
 
-  	this.OnItemClick = function(event) {
+  	vm.OnItemClick = function(event) {
     	$scope.formData.itemType = event;
   	}
 
-  	this.submitData = function(formData){
+  	vm.submitData = function(formData){
   		postService.addToDatabase(formData, vm.displayData)
   	}
 
-  	this.displayData = function() {
+  	vm.displayData = function() {
   		// postService.getData(function() {
   			$state.go('allItems')
   		// })
+  	}
+
+  	vm.addKeyWord = function(word){
+  		$scope.formData.keyWords.push(word)
+  		$scope.tempKeyword = ""
   	}
 
   });

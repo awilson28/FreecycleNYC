@@ -6,12 +6,13 @@ var User = require('../user/user.model')
 
 var PostSchema = new Schema({
   postTitle: String,
-  location: String,
+  crossStreets: String,
   description: String,
   postType: String, 
   itemType: String, 
-  keywords: [String], 
+  keyWords: [String], 
   taken: Boolean, 
+  dimensions: String,
   user: {type: Schema.Types.ObjectId, ref: 'User'}
 });
 
