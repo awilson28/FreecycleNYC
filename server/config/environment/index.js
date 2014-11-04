@@ -10,6 +10,9 @@ function requiredProcessEnv(name) {
   return process.env[name];
 }
 
+console.log(process.env.GOOGLE_ID);
+console.log(process.env.GOOGLE_SECRET);
+console.log(process.env.DOMAIN);
 // All configurations will extend these options
 // ============================================
 var all = {

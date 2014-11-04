@@ -6,9 +6,9 @@ angular.module('freeNycApp', [
   'ngSanitize',
   'btford.socket-io',
   'ui.router',
-  'ui.bootstrap', 
-  'lr.upload', 
-  'ui.utils'
+  'ui.bootstrap',  
+  'ui.utils',
+  'angularFileUpload'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider.otherwise('/');

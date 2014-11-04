@@ -24,6 +24,8 @@ angular.module('freeNycApp')
     };
 
     $scope.loginOauth = function(provider) {
+      console.log('TESTINGTESTING');
+      debugger;
       $window.location.href = '/auth/' + provider;
     };
   });

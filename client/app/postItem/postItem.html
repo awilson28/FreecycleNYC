@@ -51,17 +51,14 @@
     <button class="btn btn-primary" ng-click="postItem.addKeyWord(tempKeyword)">Add Key Words</button>
     <br>
 
+<button ng-click="postItem.filepicker(postItem.fpConfig, postItem.onSuccess)"> Save File</button>
+<!-- <button ng-click='add()'>Add</button> -->
 
-    <form>
-      <input type="text">
-      <input type="file" name='file' id='file'>
-      <button ng-click='add()'>Add</button>
-      <!-- <input type="file" ng-file-select="onFileSelect($files)" multiple> -->
-      <img ng-src="{{formData.image.name}}"> 
-    </form>
-   <!--  <div class=" btn-upload" upload-button url='/api/posts' on-upload='doUpload(files)'> -->
-<!--     <input name='myFile' type='file'/>
- -->  </div>
+<div ng-repeat="img in formData.img">
+  <img class="previewImg" ng-src="{{img}}">
+</div>
+
+
 
 
   <button type="submit" class="btn btn-default" ng-click='postItem.submitData(formData, PostForm.$valid)'>Submit</button>
