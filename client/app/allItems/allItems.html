@@ -1,10 +1,13 @@
 <div class="jumbotron">
 	<div ng-repeat="post in allPosts">
+		<button ng-click="items.deleteOption(post._id)">Delete</button>
+		{{post._id}}
+		<br>
 		{{post.postTitle}}
 		<br>
 		{{post.description}}
 		<br>
-		{{post.postType}}
+		POST TYPE: {{post.postType}}
 		<br>
 		{{post.dimensions}}
 		<br>
@@ -13,7 +16,8 @@
 		{{post.itemType}}
 		<br>
 		{{post.keyWords}}
+		<br>
+		USER: {{post.user.name}}
 	</div>
 
-	{{filteredData}}
 </div>
