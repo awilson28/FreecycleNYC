@@ -11,13 +11,14 @@ exports.index = function(req, res) {
   });
 };
 
-//find keyword
-// exports.findKeyword = function(req, res) {
-//   Post.find({'keyWords': {$elemMatch: {'word': {$in: [req.params.keyword]}}}}function (err, posts) {
-//     if(err) { return handleError(res, err); }
-//     return res.json(200, posts);
-//   });
-// };
+// find keyword
+exports.findKeyword = function(req, res) {
+  console.log(req.params.keyword)
+  Post.find({'keyWords': {$in: [req.params.keyword]}}, function (err, posts) {
+    if(err) { return handleError(res, err); }
+    return res.json(200, posts);
+  });
+};
 
 // Get a single post
 exports.show = function(req, res) {
@@ -30,7 +31,6 @@ exports.show = function(req, res) {
 
 // Creates a new post in the DB.
 exports.create = function(req, res) {
-
   Post.create(req.body, function(err, post) {
     if(err) { return handleError(res, err); }
 

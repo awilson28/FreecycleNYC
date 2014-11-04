@@ -14,6 +14,10 @@ angular.module('freeNycApp')
         $http.get('/api/posts').success(callback)
       }
 
+      this.filterData = function(keyword, callback){
+        $http.get('/api/posts/' + keyword).success(callback)   
+      }
+
     }
 
 
