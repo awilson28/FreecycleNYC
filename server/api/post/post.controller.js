@@ -15,11 +15,12 @@ exports.index = function(req, res) {
 
 // find keyword
 exports.findKeyword = function(req, res) {
-  console.log(req.params.keyword)
-  Post.find({'keyWords': {$in: [req.params.keyword]}}, function (err, posts) {
-    if(err) { return handleError(res, err); }
-    return res.json(200, posts);
-  });
+  console.log('keywords', req.params.keyword);
+
+    Post.find( { $text : { $search : req.params.keyword } } ).exec( function (err, data) {
+      console.log('testing', data);
+      res.json(200, data);
+    });
 };
 
 // Get a single post

@@ -1,8 +1,9 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
-var User = require('../user/user.model')
+    Schema = mongoose.Schema,
+    User = require('../user/user.model'),
+    textSearch = require('mongoose-text-search');
 
 var PostSchema = new Schema({
   postTitle: String,
@@ -15,5 +16,8 @@ var PostSchema = new Schema({
   dimensions: String,
   user: {type: Schema.Types.ObjectId, ref: 'User'}
 });
+
+// PostSchema.plugin(textSearch);
+PostSchema.index({ postTitle: 'text', keyWords: 'text', description: 'text'}, {weights: {postTitle: 1, keyWords: 1, description: 1} });
 
 module.exports = mongoose.model('Post', PostSchema);

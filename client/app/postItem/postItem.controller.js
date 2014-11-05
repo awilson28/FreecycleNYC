@@ -16,7 +16,8 @@ angular.module('freeNycApp')
       img: []
   	}
 
-  	$scope.posts; 
+  	$scope.posts;
+    $scope.Blobs = []; 
 
     // console.log('user', $scope.getCurrentUser())
 
@@ -29,15 +30,22 @@ angular.module('freeNycApp')
   	vm.submitData = function(formData, $valid){
       // console.log('form', formData)
   		// console.log($valid);
-  		if ($valid) {
+  		if ($valid && $scope.formData.keyWords.length > 0) {
+
+        formData.crossStreets = formData.crossStreets + " " + formData.zipCode
+        delete formData.zipCode
+
+        console.log('form', formData)
+
   			postService.addToDatabase(formData, vm.displayData);
   		}
+      else {
+        alert('form is invalid')
+      }
   	}
 
   	vm.displayData = function() {
-  		// postService.getData(function() {
   			$state.go('allItems');
-  		// })
   	}
 
   	vm.addKeyWord = function(word){
@@ -57,6 +65,16 @@ angular.module('freeNycApp')
       }
      
     }
+
+    //delete functionality 
+    vm.deleteImage = function(index){
+      filepicker.remove($scope.Blobs[index], function(){
+        console.log('index', $scope.Blobs[index])
+        $scope.formData.img.splice(index, 1);
+        $scope.$apply();
+      })
+    }
+
     // VALIDATION TO BE FIXED
     $scope.$watchCollection('formData.keyWords', function(newVal, oldVal) {
       $scope.PostForm.$setValidity('enoughKeys', newVal.length >= 1);
@@ -68,10 +86,15 @@ angular.module('freeNycApp')
   vm.fpConfig = {
     extensions: ['.jpg', '.jpeg', '.gif', '.png'],
     container: 'modal',
-    service: 'COMPUTER'
+    service: 'COMPUTER', 
+    maxSize: 1024 * 1024 * 3
   };
   vm.onSuccess = function(Blobs){
-    $scope.formData.img.push(Blobs[0].url);
+    for (var i=0, len=Blobs.length; i<len; i++) {
+      $scope.formData.img.push(Blobs[i].url);
+      $scope.Blobs.push(Blobs[i]);
+      $scope.$apply();
+    }
   };
 
   vm.filepicker = filepicker.pickMultiple;

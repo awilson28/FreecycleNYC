@@ -1,23 +1,38 @@
-<div class="jumbotron">
-	<div ng-repeat="post in allPosts">
-		<button ng-click="items.deleteOption(post._id)">Delete</button>
-		{{post._id}}
-		<br>
-		{{post.postTitle}}
-		<br>
-		{{post.description}}
-		<br>
-		POST TYPE: {{post.postType}}
-		<br>
-		{{post.dimensions}}
-		<br>
-		{{post.crossStreets}}
-		<br>
-		{{post.itemType}}
-		<br>
-		{{post.keyWords}}
-		<br>
-		USER: {{post.user.name}}
-	</div>
+<div ng-include="'components/navbar/navbar.html'"></div>
 
+<div class='jumbotron'>
+	<div class="row">
+		<div class='col-sm-12 col-lg-6'>
+			<button class='btn btn-warning' ng-click='items.getPosts()'>All Posts</button>
+			<button class='btn btn-warning' ng-click='items.getWanteds()'>Wanted</button>
+			<button class='btn btn-warning' ng-click='items.getOffereds()'>Offers</button>
+			 <input type="text" ng-model='keywords' ng-enter="items.submitKeywords()"> 
+			<div class='individual-post' ng-repeat="post in allPosts">
+				<button ng-click="items.deleteOption(post._id)">Delete</button>
+				<h4>{{post.postTitle}}</h4>
+				<p>
+					POST TYPE: {{post.postType}}
+					<br>
+					<br>
+					{{post.description}}
+					<br>
+					{{post.dimensions}}
+					<br>
+					{{post.crossStreets}}
+					<br>
+					{{post.itemType}}
+					<br>
+					{{post.keyWords}}
+					<br>
+					USER: {{post.user.email}}
+				</p>
+
+			</div>
+
+		</div>
+
+
+		<div id='map-canvas' style='width: 600px; height:500px' class='col-sm-12 col-lg-6'></div>
+	</div>
 </div>
+		{{filteredData}}

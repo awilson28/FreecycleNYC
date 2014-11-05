@@ -23,6 +23,11 @@ angular.module('freeNycApp', [
         templateUrl: 'app/postItem/postItem.html', 
         controller: 'PostitemCtrl as postItem' 
       })
+      .state('userHome', {
+        url: '/userHome',
+        templateUrl: 'app/userHome/userHome.html',
+        controller: 'UserhomeCtrl as user'
+      });
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');

@@ -2,10 +2,20 @@
 
 angular.module('freeNycApp')
   .controller('NavbarCtrl', function ($scope, $location, Auth) {
-    $scope.menu = [{
+    $scope.menu = [
+    {
       'title': 'Home',
-      'link': '/'
-    }];
+      'link': '/home'
+    },
+    {
+      'title': 'Post',
+      'link': '/post_an_item'
+    },
+    {
+      'title': 'User Home',
+      'link': '/userHome'
+    }
+    ];
 
     $scope.isCollapsed = true;
     $scope.isLoggedIn = Auth.isLoggedIn;

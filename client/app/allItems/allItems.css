@@ -1,0 +1,26 @@
+#map-canvas {
+	margin: auto;
+	width: 700px;
+  margin-top: 20px; }
+
+
+.tooltip { position:absolute;
+	width: 145px;
+	padding: 5px;
+	border: 1px solid gray;
+	font-size: 9pt;
+	font-family: Verdana;
+	background-color: #fff;
+	color: #000;
+}
+
+.individual-post {
+	margin: 1em;
+	padding: 1em;
+	background-color: #a8a8a8;
+	border-radius: .5em;
+}
+
+.individual-post p{
+	font-size: 1em;
+}

@@ -26,3 +26,8 @@
 	background-color: green;
 	border-radius: .4em;
 }
+
+.previewImg {
+	width: 75px;
+	height: 75px;
+}
