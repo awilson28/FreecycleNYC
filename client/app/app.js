@@ -27,7 +27,22 @@ angular.module('freeNycApp', [
         url: '/userHome',
         templateUrl: 'app/userHome/userHome.html',
         controller: 'UserhomeCtrl as user'
-      });
+      })
+      .state('userHome.currentOffers', {
+        url: '/currentOffers',
+        templateUrl: 'app/userHome/userCurrentOffers/userCurrentOffers.html',
+        controller: 'UsercurrentoffersCtrl as userOffers'
+      })
+      .state('userHome.currentWanteds', {
+        url: '/currentWanteds',
+        templateUrl: 'app/userHome/userCurrentWanteds/userCurrentWanteds.html',
+        controller: 'UsercurrentwantedsCtrl as userWanteds'
+      })
+      .state('userHome.pastOffers', {
+        url: '/pastOffers',
+        templateUrl: 'app/userHome/pastOffers.html',
+        controller: 'UsercurrentoffersCtrl as userOffers'
+      })
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');

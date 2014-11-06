@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('PostitemCtrl', function ($scope, $http, $upload, $location, postService, $state) {
-
+  .controller('PostitemCtrl', function ($scope, $http, $upload, $location, postService, $state, userIdentity) {
+    console.log('TWO', userIdentity);
   	var vm = this; 
 
   	$scope.formData = {
@@ -13,7 +13,8 @@ angular.module('freeNycApp')
   		itemType: "Pick Item Type", 
   		keyWords: [], 
   		dimensions: "",
-      img: []
+      img: [], 
+      taken: false
   	}
 
   	$scope.posts;

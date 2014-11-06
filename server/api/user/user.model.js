@@ -15,6 +15,7 @@ var UserSchema = new Schema({
   location: String,
   bookmarkedItems: Array,
   wishList: Array,
+  rating: Number,
   hashedPassword: String,
   provider: String,
   salt: String,

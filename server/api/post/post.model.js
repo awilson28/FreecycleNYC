@@ -12,8 +12,10 @@ var PostSchema = new Schema({
   postType: String, 
   itemType: String, 
   keyWords: [String], 
-  taken: Boolean, 
+  taken: Boolean,
   dimensions: String,
+  bids: [{type: Schema.Types.ObjectId, ref: 'User'}], 
+  date: {type: Date, default: Date.now},
   user: {type: Schema.Types.ObjectId, ref: 'User'}
 });
 

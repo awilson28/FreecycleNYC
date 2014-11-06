@@ -1,5 +1,42 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class="col-md-12">
-This is the userHome view.
+<div class='row'>
+	
+	<div class='col-sm-12 col-lg-3'>
+		<ul>
+			<li><a ui-sref=".currentOffers" ng-click='user.getCurrentOffers()'>Current Offers</a></li>
+			<li><a ui-sref=".currentWanteds" ng-click='user.getCurrentWanteds()'>Current Wanteds</a></li>
+			<li><a ui-sref=".pastOffers" ng-click='user.getPastOffers'>Past Offers</a></li>
+			<li><a href="">Past Wanteds</a></li>
+			<li><a href="">Location</a></li>
+			<li><a href="">Wishlist</a></li>
+		</ul>
+	</div>
+	<div class='col-sm-12 col-lg-9'>
+		<div ui-view>
+			Hello {{user.name}}
+			<br>
+	<div class='individual-post' ng-repeat="post in bids">
+			<h4>{{post.postTitle}}</h4>
+			<p>
+		POST TYPE: {{post.postType}}
+		<br>
+		<br>
+		{{post.description}}
+		<br>
+		{{post.dimensions}}
+		<br>
+		{{post.crossStreets}}
+		<br>
+		{{post.itemType}}
+		<br>
+		{{post.keyWords}}
+		<br>
+		{{post.taken}}
+		<br>
+		USER: {{user.name}}
+		</p>
+	</div>
+</div>
+
 </div>

@@ -11,10 +11,12 @@ router.use(auth.isAuthenticated(), function(req, res, next) {
 });
 
 router.get('/', controller.index);
+router.get('/getBids/', controller.getUserBids);
 router.get('/:keyword', controller.findKeyword);
 router.get('/:id', controller.show);
 router.post('/', controller.create);
 router.put('/:id', controller.update);
+router.put('/populateBid/:id', controller.populateBid);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
 

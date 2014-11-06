@@ -13,7 +13,7 @@ angular.module('freeNycApp')
 
 	vm.submitKeywords = function(){
 		postService.filterData($scope.keywords, function(results){
-			$scope.allPosts = results
+			$scope.allPosts = results;
 		})
 	}
 
@@ -48,10 +48,9 @@ angular.module('freeNycApp')
 		}); 
 	}
 
-
-	vm.deleteOption = function(id){
-		postService.deletePost(id, function(){
-			vm.getPosts()
+	vm.bidOnItem = function(id, userId){
+		postService.populatePost(id, function(result){
+			console.log(result)
 		})
 	}
 
@@ -122,7 +121,6 @@ angular.module('freeNycApp')
   		var filtered = [];
   		for (var i = 0; i < items.length; i++){
   			if (items[i].postType === 'offered') {
-  				console.log('item', items)
   				filtered.push(items[i])
   			}
   		}
@@ -134,7 +132,6 @@ angular.module('freeNycApp')
   		var filtered = [];
   		for (var i = 0; i < items.length; i++){
   			if (items[i].postType === 'wanted') {
-  				console.log('item', items)
   				filtered.push(items[i])
   			}
   		}
