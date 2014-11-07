@@ -8,5 +8,5 @@ module.exports = {
     uri: 'mongodb://localhost/freenyc-dev'
   },
 
-  seedDB: true
+  seedDB: false
 };

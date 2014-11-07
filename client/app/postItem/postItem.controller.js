@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('PostitemCtrl', function ($scope, $http, $upload, $location, postService, $state, userIdentity) {
-    console.log('TWO', userIdentity);
+  .controller('PostitemCtrl', function ($scope, $http, $upload, Auth, $location, postService, $state) {
   	var vm = this; 
 
   	$scope.formData = {
@@ -14,7 +13,8 @@ angular.module('freeNycApp')
   		keyWords: [], 
   		dimensions: "",
       img: [], 
-      taken: false
+      taken: false,
+      fulfilled: true
   	}
 
   	$scope.posts;
@@ -29,8 +29,7 @@ angular.module('freeNycApp')
   	}
 
   	vm.submitData = function(formData, $valid){
-      // console.log('form', formData)
-  		// console.log($valid);
+   
   		if ($valid && $scope.formData.keyWords.length > 0) {
 
         formData.crossStreets = formData.crossStreets + " " + formData.zipCode

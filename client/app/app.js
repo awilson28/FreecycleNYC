@@ -8,7 +8,8 @@ angular.module('freeNycApp', [
   'ui.router',
   'ui.bootstrap',  
   'ui.utils',
-  'angularFileUpload'
+  'angularFileUpload', 
+  'xeditable'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider.otherwise('/');
@@ -43,6 +44,27 @@ angular.module('freeNycApp', [
         templateUrl: 'app/userHome/pastOffers.html',
         controller: 'UsercurrentoffersCtrl as userOffers'
       })
+      .state('userHome.pastWanteds', {
+        url: '/pastWanteds',
+        templateUrl: 'app/userHome/pastWanteds.html',
+        controller: 'UsercurrentwantedsCtrl as userWanteds'
+      })
+      .state('userHome.wishList', {
+        url: '/wishList',
+        templateUrl: 'app/userHome/wishList/wishList.html',
+        controller: 'WishlistCtrl as wish'
+      })
+      .state('userHome.messages', {
+        url: '/messages',
+        templateUrl: 'app/userHome/messages/messages.html',
+        controller: 'MessagesCtrl as messages'
+      })
+      .state('userHome.singleConversationView', {
+        url: '/messages/conversation',
+        templateUrl: 'app/userHome/messages/singleConversationView.html',
+        controller: 'MessagesCtrl as messages'
+      });
+
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
@@ -83,4 +105,7 @@ angular.module('freeNycApp', [
         }
       });
     });
+  })
+  .run(function(editableOptions){
+    editableOptions.theme ='bs3';
   });

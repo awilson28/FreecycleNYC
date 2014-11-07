@@ -10,7 +10,7 @@ exports.index = function(req, res) {
   console.log('user', req.user)
   var user = req.user.name;
   //{taken: false} add this later
-  Post.find(function (err, posts) {
+  Post.find({taken: false, bids: {$nin: [req.user._id]}}, function (err, posts) {
     if(err) { return handleError(res, err); }
     return res.json(200, posts);
   }).populate('user');
@@ -61,8 +61,6 @@ exports.getUserBids = function(req, res){
 
 // populates bid field in the post model
 exports.populateBid = function(req, res) {
-  console.log('REQ.BODY', req.body);
-  console.log('userId', req.user._id)
   if(req.body._id) { delete req.body._id; }
   Post.findByIdAndUpdate(req.params.id, {$push: {bids: req.user._id}}, function (err, post) {
     if (err) { return handleError(res, err); }
@@ -79,7 +77,6 @@ exports.populateBid = function(req, res) {
 
 // Updates an existing post in the DB.
 exports.update = function(req, res) {
-  console.log('REQ.BODY', req.body);
   if(req.body._id) { delete req.body._id; }
   Post.findById(req.params.id, function (err, post) {
     if (err) { return handleError(res, err); }

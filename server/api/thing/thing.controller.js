@@ -29,9 +29,47 @@ exports.show = function(req, res) {
   });
 };
 
+// Gets a user's received messages
+exports.getMessages = function(req, res) {
+  Thing.find({conversants : {$in: [req.user._id]}}, function (err, things) {
+    console.log('THINKS', things);
+    if(err) { return handleError(res, err); }
+    if(!things) { return res.send(404); }
+    return res.json(things);
+  }).populate('conversants', 'name');
+};
+
+// reply to a message
+exports.communicate = function(req, res) {
+  console.log('in route', req.body)
+  console.log('message', req.body.body)
+  console.log('28', req.params.id);
+  //req.params.id indicates the id of the person receiving the message
+  Thing.findByIdAndUpdate(req.params.id, {$push: {messages: req.body}}, function (err, things) {
+    console.log('updated thing', things);
+    if(err) { return handleError(res, err); }
+    if(!things) { return res.send(404); }
+    return res.json(things);
+  });
+};
+
+// .findOne({ "messages[0].recipient": })
+
+
+// Gets a user's sent messages
+// exports.getSentMessages = function(req, res) {
+//   req.body.sender = req.user._id;
+//   Thing.find({sender: req.user._id}, function (err, things) {
+//     if(err) { return handleError(res, err); }
+//     if(!things) { return res.send(404); }
+//     return res.json(things);
+//   });
+// };
+
 // Creates a new thing in the DB.
 exports.create = function(req, res) {
-  Thing.create(req.body, function(err, thing) {
+  req.body.sender = req.user._id;
+  Thing.create({messages: [req.body], conversants: [req.body.recipient, req.user._id]}, function(err, thing) {
     if(err) { return handleError(res, err); }
     return res.json(201, thing);
   });

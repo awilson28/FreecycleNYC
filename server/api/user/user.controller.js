@@ -24,7 +24,6 @@ exports.index = function(req, res) {
  * Creates a new user
  */
 exports.create = function (req, res, next) {
-  console.log('user', req.user)
   var newUser = new User(req.body);
   newUser.provider = 'local';
   newUser.role = 'user';
@@ -35,6 +34,30 @@ exports.create = function (req, res, next) {
     var token = jwt.sign({_id: user._id }, config.secrets.session, { expiresInMinutes: 60*5 });
     res.json({ token: token });
   });
+};
+
+/**
+ * adds an item to a user's wish list
+ */
+exports.addWish = function (req, res, next) {
+  User.findByIdAndUpdate(req.user._id, {$push: {wishList: req.body}}, function(err, user){
+    if (err) { return handleError(res, err); }
+    if(!user) { return res.send(404); }
+    console.log('updated user', user)
+    return res.json(200, user)
+  })
+};
+
+/**
+ * retrieves a user's wish list
+ */
+exports.getWishes = function (req, res, next) {
+  User.findByIdAndUpdate(req.user._id, {$push: {wishList: req.body}}, function(err, user){
+    if (err) { return handleError(res, err); }
+    if(!user) { return res.send(404); }
+    console.log('updated user', user)
+    return res.json(200, user)
+  })
 };
 
 /**
@@ -55,9 +78,23 @@ exports.show = function (req, res, next) {
  * restriction: 'admin'
  */
 exports.destroy = function(req, res) {
+  console.log('id', req.params.id)
   User.findByIdAndRemove(req.params.id, function(err, user) {
     if(err) return res.send(500, err);
     return res.send(204);
+  });
+};
+
+/**
+ * Deletes an item from the user's wishList array
+ */
+exports.wishList = function(req, res) {
+  console.log('id', req.params.id)
+  console.log('body', req.body)
+  User.findByIdAndUpdate(req.params.id, {$pull: {wishList: req.body}}, function(err, user) {
+    console.log('new user wishlist', user)
+    if(err) return res.send(500, err);
+    return res.json(204, user);
   });
 };
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('AllitemsCtrl', function ($scope, offersOnlyFilter, wantedOnlyFilter, postService) {
+  .controller('AllitemsCtrl', function ($scope, offersOnlyFilter, wantedOnlyFilter, postService, messageService) {
 	
 	var vm = this; 
 	$scope.keywords = ""; 
@@ -9,15 +9,19 @@ angular.module('freeNycApp')
 
 	initialize()
 
-	$scope.address = []; 
+	$scope.address = [];
+	$scope.newMessage = {};
+	$scope.biddedOn = {};
+	$scope.messageForm = {};
 
+	//activates keywords search 
 	vm.submitKeywords = function(){
 		postService.filterData($scope.keywords, function(results){
 			$scope.allPosts = results;
 		})
 	}
 
-
+	//retrieves all posts and passes posts through the wantedOnlyFilter
 	vm.getWanteds = function(){
 		postService.getData(function(results){
 			$scope.address = [];
@@ -28,6 +32,7 @@ angular.module('freeNycApp')
 		})
 	}
 
+	//retrieves all posts and passes posts through the offersOnlyFilter
 	vm.getOffereds = function(){
 		postService.getData(function(results){
 			$scope.address = [];
@@ -48,11 +53,25 @@ angular.module('freeNycApp')
 		}); 
 	}
 
-	vm.bidOnItem = function(id, userId){
+	vm.bidOnItem = function(id, userId, index){
+		$scope.biddedOn[index] = true;
 		postService.populatePost(id, function(result){
-			console.log(result)
+			console.log(result);
 		})
 	}
+
+	vm.showMessageForm = function(index) {
+		$scope.messageForm[index] = true;
+	}
+
+	vm.sendMessage = function(recipient) {
+		$scope.newMessage.recipient = recipient;
+		messageService.sendMessage($scope.newMessage, function(data) {
+			console.log(data);
+		})
+	}
+
+	// GOOGLE MAPS FUNCTIONALITY
 
 	var geocoder;
 	var map;
@@ -102,7 +121,7 @@ angular.module('freeNycApp')
 
 
 	
-	function setMap(){
+	var setMap = function(){
 		for (var i = 0; i < $scope.allPosts.length; i++){
 			codeAddress($scope.address[i], $scope.allPosts[i])
 		}

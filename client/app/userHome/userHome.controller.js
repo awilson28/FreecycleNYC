@@ -1,9 +1,11 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('UserhomeCtrl', function ($scope, $state, userInfoService, postService, userIdentity, Auth) {
+  .controller('UserhomeCtrl', function ($scope, $state, userInfoService, postService, Auth) {
   		var vm = this;
 
+
+        //state.go's are rendundant, see userHome.html
   	 	vm.getCurrentOffers = function(){
   	 		$state.go('userHome.currentOffers')
   	 	};
@@ -16,39 +18,35 @@ angular.module('freeNycApp')
   	 		$state.go('userHome.pastOffers')
   	 	};
 
-  	 	vm.retrieveUser = function(){
-  		userInfoService.retrieveUser(function(data) {
-  			userIdentity.name = data.name;
-  			userIdentity._id = data._id;
-  			userIdentity.location = data.location; 
-  			userIdentity.wishList = data.wishList; 
-  			userIdentity.bookmarkedItems = data.bookmarkedItems; 
-  			userIdentity.rating = data.rating; 
-  			userIdentity.email = data.email;
-  			console.log('NEW', userIdentity);
-  			$scope.user = userIdentity; 
-  		});
-  		console.log('AUTH', Auth.getCurrentUser());
-  	};
+  	 	vm.getPastWanteds = function(){
+  	 		$state.go('userHome.pastWanteds')
+  	 	};
+
+  	 	// vm.retrieveUser = function(){
+    			$scope.user = Auth.getCurrentUser(); 
+          console.log('user', $scope.user)
+          console.log('user', $scope.user.name)
+      // }
+
+  		vm.getWishList = function(){
+  			$state.go('userHome.wishList')
+  		};
+
+  		// $scope.user = Auth.getCurrentUser();
 
   	vm.getUserBids = function(){
   		postService.getUserBids(function(results){
   			$scope.bids = results
-  			console.log('results', results)
   		})
   	}
+      // vm.retrieveUser()
 
-  	vm.retrieveUser()
-  	vm.getUserBids()
+    // setTimeout(function(){
+    // }, 2000)
 
-  })
-  .value('userIdentity', {
-  	name: "",
-	_id: "",
-	location: "", 
-	wishList: [], 
-	bookmarkedItems: [],
-	rating: 0, 
-	email: ""
-  			
-  })
+    if ($state.is('userHome')){
+  	 vm.getUserBids()
+    }
+
+  });
+  

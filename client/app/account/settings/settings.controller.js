@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('SettingsCtrl', function ($scope, User, Auth) {
+  .controller('SettingsCtrl', function ($scope, User, Auth, $http) {
     $scope.errors = {};
+
+    // var vm = this; 
 
     $scope.changePassword = function(form) {
       $scope.submitted = true;
@@ -18,4 +20,12 @@ angular.module('freeNycApp')
         });
       }
 		};
+
+    $scope.destroyAccount = function(){
+      var id = Auth.getCurrentUser()._id; 
+      $http.delete('api/userInfos/' + id).success(function(result){
+        console.log('deleted user', result)
+      })
+    }
+    
   });

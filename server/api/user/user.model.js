@@ -16,6 +16,7 @@ var UserSchema = new Schema({
   bookmarkedItems: Array,
   wishList: Array,
   rating: Number,
+  messsages: [{type: Schema.Types.ObjectId, ref: 'Thing'}],
   hashedPassword: String,
   provider: String,
   salt: String,

@@ -30,7 +30,6 @@ function isAuthenticated() {
         if (!user) return res.send(401);
 
         req.user = user;
-        console.log('user', req.user)
         next();
       });
     });

@@ -15,6 +15,7 @@
       <!-- bower:css -->
       <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
       <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
+      <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css" />
       <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
@@ -26,9 +27,11 @@
       <link rel="stylesheet" href="app/app.css">
       <link rel="stylesheet" href="app/main/main.css">
       <link rel="stylesheet" href="app/postItem/postItem.css">
+      <link rel="stylesheet" href="app/userHome/messages/messages.css">
       <link rel="stylesheet" href="app/userHome/userCurrentOffers/userCurrentOffers.css">
       <link rel="stylesheet" href="app/userHome/userCurrentWanteds/userCurrentWanteds.css">
       <link rel="stylesheet" href="app/userHome/userHome.css">
+      <link rel="stylesheet" href="app/userHome/wishList/wishList.css">
       <link rel="stylesheet" href="components/modal/modal.css">
       <!-- endinjector -->
     <!-- endbuild -->
@@ -74,6 +77,7 @@
       <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
       <script src="bower_components/angular-ui-utils/ui-utils.js"></script>
       <script src="bower_components/ng-file-upload/angular-file-upload.js"></script>
+      <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
     <!-- endbuild -->
@@ -95,6 +99,9 @@
           <script src="app/postItem/postItem.controller.js"></script>
           <script src="app/postItem/postItem.js"></script>
           <script src="app/postItem/postService/postService.service.js"></script>
+          <script src="app/userHome/messages/messageService/messageService.service.js"></script>
+          <script src="app/userHome/messages/messages.controller.js"></script>
+          <script src="app/userHome/messages/messages.js"></script>
           <script src="app/userHome/userCurrentOffers/userCurrentOffers.controller.js"></script>
           <script src="app/userHome/userCurrentOffers/userCurrentOffers.js"></script>
           <script src="app/userHome/userCurrentWanteds/userCurrentWanteds.controller.js"></script>
@@ -102,6 +109,9 @@
           <script src="app/userHome/userHome.controller.js"></script>
           <script src="app/userHome/userHome.js"></script>
           <script src="app/userHome/userInfoService/userInfoService.service.js"></script>
+          <script src="app/userHome/wishList/wishList.controller.js"></script>
+          <script src="app/userHome/wishList/wishList.js"></script>
+          <script src="app/userHome/wishList/wishList/wishList.service.js"></script>
           <script src="components/auth/auth.service.js"></script>
           <script src="components/auth/user.service.js"></script>
           <script src="components/modal/modal.service.js"></script>
