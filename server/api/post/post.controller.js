@@ -44,6 +44,15 @@ exports.create = function(req, res) {
   // }
 };
 
+//enables ratings on transactions via posts field
+exports.enableRatings = function(req, res){
+  Post.findByIdAndUpdate(req.params.id, {ratingsEnabled: true}, function (err, post) {
+    if(err) { return handleError(res, err); }
+    if(!post) { return res.send(404); }
+    return res.json(post);
+  });
+}
+
 exports.getUserBids = function(req, res){
   // console.log('userId', req.user._id)
   // if(req.body._id) { delete req.body._id; }
@@ -71,7 +80,7 @@ exports.populateBid = function(req, res) {
     //   if (err) { return handleError(res, err); }
     //   return res.json(200, post);
     // });
-  });
+  }).populate('bids');
 };
 
 // Updates an existing post in the DB.

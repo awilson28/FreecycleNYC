@@ -15,6 +15,7 @@ router.get('/', controller.index);
 router.get('/getUser/', controller.show);
 router.post('/', controller.create);
 router.put('/:id', controller.update);
+router.put('/initiateTransaction/:id/', controller.initiateTransaction)
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
 

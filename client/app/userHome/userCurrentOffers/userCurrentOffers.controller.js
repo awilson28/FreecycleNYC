@@ -37,6 +37,36 @@ angular.module('freeNycApp')
     	});
   	};
 
+    vm.gifting = function(id, index){
+      postService.populatePost(id, function(result){
+        $scope.bids = result.bids;
+        $scope.userId = result.bids[0]._id 
+        console.log('bids', $scope.userId)
+      })
+      $scope.obj = {}; 
+      $scope.obj[index] = true; 
+
+
+    }
+
+    vm.notifyRecipient = function(postId, bidId){
+      console.log('in event', postId)
+      console.log('bidId', bidId)
+      postService.enableRatings(postId, function(rating){
+        console.log('rating', rating)
+        $scope.rating = rating.ratingsEnabled; 
+          userInfoService.initiateTransaction(bidId, postId, function(userResult){
+            console.log('userTransactionArray', userResult)
+          })
+      })
+
+    }
+
+    vm.OnItemClick = function(event) {
+      $scope.formData.itemType = event;
+    }
+
+
     //loads current offers if the currentOffers state is operative
   	if ($state.is('userHome.currentOffers')){
   		vm.getCurrentOffers();

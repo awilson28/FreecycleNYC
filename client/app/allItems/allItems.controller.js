@@ -61,7 +61,7 @@ angular.module('freeNycApp')
 		$scope.biddedOn[index] = true;
 		$scope.messageForm[index] = true;
 		postService.populatePost(id, function(result){
-			console.log(result);
+			console.log('bid', result);
 		})
 	}
 

@@ -10,7 +10,11 @@ angular.module('freeNycApp')
       }
 
       this.retrieveUser = function(callback){
-        $http.get('api/userInfos/getUser/').success(callback);
+        $http.get('/api/userInfos/getUser/').success(callback);
+      }
+
+      this.initiateTransaction = function(id, postId, callback){
+        $http.put('/api/userInfos/initiateTransaction/' + id + "/", postId).success(callback)
       }
 
     }

@@ -17,6 +17,7 @@ var PostSchema = new Schema({
   fulfilled: Boolean,
   dimensions: String,
   numBids: Number,
+  ratingsEnabled: Boolean,
   bids: [{type: Schema.Types.ObjectId, ref: 'User'}], 
   date: {type: Date, default: Date.now},
   user: {type: Schema.Types.ObjectId, ref: 'User'}
@@ -38,7 +39,6 @@ PostSchema.methods = {
   findRelevantUsers: function(callback){
     var self = this; 
     User.find({'wishList.itemName': {$in: self.keyWords}}, function(err, users){
-      console.log('users', users)
       callback(users, self)
     })
   }
@@ -46,9 +46,7 @@ PostSchema.methods = {
 
 PostSchema.post('save', function(users){
   this.findRelevantUsers(function(users, self){
-    console.log('users1', users)
     for (var i = 0; i < users.length; i++){
-      console.log('id', self)
       users[i].alerts.push(self._id)
       users[i].save()
     }

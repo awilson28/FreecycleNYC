@@ -32,7 +32,6 @@ exports.show = function(req, res) {
 // Gets a user's received messages
 exports.getMessages = function(req, res) {
   Thing.find({conversants : {$in: [req.user._id]}}, function (err, things) {
-    console.log('THINKS', things);
     if(err) { return handleError(res, err); }
     if(!things) { return res.send(404); }
     return res.json(things);
@@ -41,12 +40,8 @@ exports.getMessages = function(req, res) {
 
 // reply to a message
 exports.communicate = function(req, res) {
-  console.log('in route', req.body)
-  console.log('message', req.body.body)
-  console.log('28', req.params.id);
   //req.params.id indicates the id of the person receiving the message
   Thing.findByIdAndUpdate(req.params.id, {$push: {messages: req.body}}, function (err, things) {
-    console.log('updated thing', things);
     if(err) { return handleError(res, err); }
     if(!things) { return res.send(404); }
     return res.json(things);

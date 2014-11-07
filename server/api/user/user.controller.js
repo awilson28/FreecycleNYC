@@ -94,7 +94,6 @@ exports.show = function (req, res, next) {
  * restriction: 'admin'
  */
 exports.destroy = function(req, res) {
-  console.log('id', req.params.id)
   User.findByIdAndRemove(req.params.id, function(err, user) {
     if(err) return res.send(500, err);
     return res.send(204);
@@ -105,8 +104,6 @@ exports.destroy = function(req, res) {
  * Deletes an item from the user's wishList array
  */
 exports.wishList = function(req, res) {
-  console.log('id', req.params.id)
-  console.log('body', req.body)
   User.findByIdAndUpdate(req.params.id, {$pull: {wishList: req.body}}, function(err, user) {
     console.log('new user wishlist', user)
     if(err) return res.send(500, err);

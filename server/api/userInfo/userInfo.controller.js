@@ -47,6 +47,18 @@ exports.update = function(req, res) {
   });
 };
 
+
+exports.initiateTransaction = function(req, res){
+  console.log('req', req.body)
+  console.log('id', req.params.id)
+  User.findByIdAndUpdate(req.params.id, {$push: {currentTransactions: req.body}}, function(err, user){
+    if (err) { return handleError(res, err); }
+    if(!user) { return res.send(404); }
+    console.log('updated user', user)
+    return res.json(200, user)
+  }) 
+}
+
 // Deletes a userInfo from the DB.
 exports.destroy = function(req, res) {
   User.findById(req.params.id, function (err, user) {

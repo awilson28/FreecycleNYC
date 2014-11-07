@@ -16,33 +16,32 @@
 		<div ui-view>
 			<h2>Hello {{userInfo.name}}</h2>
 			<h1>Alerts:</h2>
-			<div ng-repeat='alert in userInfo.alerts'>
-				<label>{{$index + 1}}: </label>
+<!-- 			<div ng-repeat='alert in userInfo.alerts'>
+ -->				<label>{{$index + 1}}: </label>
 				<a ng-click="user.goToAlert(alert)">{{alert}}</a>
-			</div>
 			<br>
-	<div class='individual-post' ng-repeat="post in bids">
-			<h4>{{post.postTitle}}</h4> 
-			<p> Bids: {{post.numBids}}</p>
-			<p>
-		POST TYPE: {{post.postType}}
-		<br>
-		<br>
-		{{post.description}}
-		<br>
-		{{post.dimensions}}
-		<br>
-		{{post.crossStreets}}
-		<br>
-		{{post.itemType}}
-		<br>
-		{{post.keyWords}}
-		<br>
-		{{post.taken}}
-		<br>
-		USER: {{userInfo.name}}
-		</p>
-	</div>
-</div>
-
+			<div class='individual-post' ng-repeat="post in bids">
+				<h4>{{post.postTitle}}</h4> 
+				<p> Bids: {{post.numBids}}</p>
+				<p>
+				POST TYPE: {{post.postType}}
+				<br>
+				<br>
+				{{post.description}}
+				<br>
+				{{post.dimensions}}
+				<br>
+				{{post.crossStreets}}
+				<br>
+				{{post.itemType}}
+				<br>
+				{{post.keyWords}}
+				<br>
+				{{post.taken}}
+				<br>
+				USER: {{userInfo.name}}
+				</p>
+			</div>
+<!-- 		</div>
+ -->	</div>
 </div>
