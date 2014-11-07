@@ -1,0 +1,16 @@
+{{singleConversation.messages}}	
+<div ng-repeat="m in singleConversation.messages">
+HELLO!
+
+	<h4> Body: {{m.body}}</h4>
+	<h4> ID: {{singleConversation._id}}</h4>
+	<button class='btn btn-primary' ng-click='messages.replyButton($index)'>Reply</button>
+	<br>
+	<br>
+		<form ng-if='correspondence[$index]'>
+			<input type="text" ng-model='newMessage.body'>
+			<button ng-click='messages.reply(talk._id)'>Submit</button>
+		</form>
+	<br>
+	<br>
+</div>

@@ -22,31 +22,25 @@ angular.module('freeNycApp')
   	 		$state.go('userHome.pastWanteds')
   	 	};
 
-  	 	// vm.retrieveUser = function(){
-    			$scope.user = Auth.getCurrentUser(); 
-          console.log('user', $scope.user)
-          console.log('user', $scope.user.name)
-      // }
+      //'user' is the alias for this controller, so angular gets confused when we 
+      //define user as obj on scope
+			$scope.userInfo = Auth.getCurrentUser(); 
+
 
   		vm.getWishList = function(){
   			$state.go('userHome.wishList')
   		};
 
-  		// $scope.user = Auth.getCurrentUser();
+    	vm.getUserBids = function(){
+    		postService.getUserBids(function(results){
+    			$scope.bids = results
+    		})
+    	};
 
-  	vm.getUserBids = function(){
-  		postService.getUserBids(function(results){
-  			$scope.bids = results
-  		})
-  	}
-      // vm.retrieveUser()
 
-    // setTimeout(function(){
-    // }, 2000)
-
-    if ($state.is('userHome')){
-  	 vm.getUserBids()
-    }
+      if ($state.is('userHome')){
+    	 vm.getUserBids()
+      }
 
   });
   

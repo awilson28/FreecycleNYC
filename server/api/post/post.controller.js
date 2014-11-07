@@ -9,8 +9,8 @@ var User = require('../user/user.model');
 exports.index = function(req, res) {
   console.log('user', req.user)
   var user = req.user.name;
-  //{taken: false} add this later
-  Post.find({taken: false, bids: {$nin: [req.user._id]}}, function (err, posts) {
+  //bids: {$nin: [req.user._id]}
+  Post.find({taken: false}, function (err, posts) {
     if(err) { return handleError(res, err); }
     return res.json(200, posts);
   }).populate('user');
@@ -61,16 +61,21 @@ exports.getUserBids = function(req, res){
 
 // populates bid field in the post model
 exports.populateBid = function(req, res) {
+  // console.log('id', req.user._id)
   if(req.body._id) { delete req.body._id; }
-  Post.findByIdAndUpdate(req.params.id, {$push: {bids: req.user._id}}, function (err, post) {
+  Post.findById(req.params.id, function (err, post) {
     if (err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
-    console.log('new post', post)
+    post.setBids(req.user._id, function(newPost){
+      console.log('newpost', newPost)
+      return res.json(newPost)
+    })
+   
     // var updated = _.merge(post, req.body);
     // console.log('UPDATED', updated);
     // post.save(function (err) {
     //   if (err) { return handleError(res, err); }
-      return res.json(200, post);
+    //   return res.json(200, post);
     // });
   });
 };

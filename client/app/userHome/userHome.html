@@ -1,8 +1,8 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-
 <div class='row'>
 	<div class='col-sm-12 col-lg-3'>
 		<ul>
+		
 			<li><a ui-sref=".currentOffers" ng-click='user.getCurrentOffers()'>Current Offers</a></li>
 			<li><a ui-sref=".currentWanteds" ng-click='user.getCurrentWanteds()'>Current Wanteds</a></li>
 			<li><a ui-sref=".pastOffers" ng-click='user.getPastOffers'>Past Offers</a></li>
@@ -14,10 +14,11 @@
 	</div>
 	<div class='col-sm-12 col-lg-9'>
 		<div ui-view>
-			Hello {{user.name}}
+			<h2>Hello {{userInfo.name}}</h2>
 			<br>
 	<div class='individual-post' ng-repeat="post in bids">
-			<h4>{{post.postTitle}}</h4>
+			<h4>{{post.postTitle}}</h4> 
+			<p> Bids: {{post.numBids}}</p>
 			<p>
 		POST TYPE: {{post.postType}}
 		<br>
@@ -34,7 +35,7 @@
 		<br>
 		{{post.taken}}
 		<br>
-		USER: {{user.name}}
+		USER: {{userInfo.name}}
 		</p>
 	</div>
 </div>

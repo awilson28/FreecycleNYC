@@ -1,0 +1,24 @@
+<h1>Your Past Offers</h1>
+<div class='individual-post' ng-repeat="post in pastOffers">
+	<h4>{{post.postTitle}}</h4>
+	<p>
+		POST TYPE: {{post.postType}}
+		<br>
+		<br>
+		{{post.description}}
+		<br>
+		{{post.dimensions}}
+		<br>
+		{{post.crossStreets}}
+		<br>
+		{{post.itemType}}
+		<br>
+		{{post.keyWords}}
+		<br>
+		{{post.taken}}
+		<br>
+		USER: {{post.user.name}}
+	</p>
+	<button class="btn btn-primary" ng-click="userOffers.setTaken(post._id)">Taken</button>
+	<button class="btn btn-danger" ng-click="userOffers.deleteOption(post._id)">Delete</button>
+</div>

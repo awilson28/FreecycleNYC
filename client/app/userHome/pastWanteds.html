@@ -1,0 +1,23 @@
+<h1>Your Past Wanteds</h1>
+<div class='individual-post' ng-repeat="post in pastWanteds">
+	<h4>{{post.postTitle}}</h4>
+	<p>
+		POST TYPE: {{post.postType}}
+		<br>
+		<br>
+		{{post.description}}
+		<br>
+		{{post.dimensions}}
+		<br>
+		{{post.crossStreets}}
+		<br>
+		{{post.itemType}}
+		<br>
+		{{post.keyWords}}
+		<br>
+		{{post.taken}}
+		<br>
+		USER: {{post.user.name}}
+	</p>
+	<button class="btn btn-danger" ng-click="userOffers.deleteOption(post._id)">Delete</button>
+</div>

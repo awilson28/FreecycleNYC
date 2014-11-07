@@ -1,0 +1,22 @@
+
+<div ng-repeat= 'talk in communication'>
+	<h4> From: {{talk.conversants[0].name}}</h4>
+	<a ng-click="messages.showMessages($index)">Show Conversation {{$index+1}}</a>
+	<div ng-if="showMe[$index]">
+		<div ng-repeat="m in talk.messages">
+			{{$parent.$index+1}}
+			<h4> Body: {{m.body}}</h4>
+			<h4> ID: {{talk._id}}</h4>
+			<button class='btn btn-primary' ng-click='messages.replyButton($index, $parent.$index)'>Reply</button>
+			<br>
+			<br>
+				<form ng-if='showMe[$parent.$index][$index]'>
+					<input type="text" ng-model='newMessage.body'>
+					<button ng-click='messages.reply(talk._id)'>Submit</button>
+				</form>
+			<br>
+			<br>
+		</div>
+	</div>
+</div>
+	

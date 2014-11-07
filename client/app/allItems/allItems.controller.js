@@ -43,6 +43,7 @@ angular.module('freeNycApp')
 		})
 	}
 
+	//general retrieval of posts 
 	vm.getPosts = function(){
 		postService.getData(function(results){
 			$scope.address = [];
@@ -53,6 +54,7 @@ angular.module('freeNycApp')
 		}); 
 	}
 
+	//click event that triggers a put request to add the user to the bids array
 	vm.bidOnItem = function(id, userId, index){
 		$scope.biddedOn[index] = true;
 		postService.populatePost(id, function(result){
@@ -60,10 +62,13 @@ angular.module('freeNycApp')
 		})
 	}
 
+	//click event that displays the message form for items on the home page - message sent
+	//with bid request
 	vm.showMessageForm = function(index) {
 		$scope.messageForm[index] = true;
 	}
 
+	//click event that sends a message to the owner of the item 
 	vm.sendMessage = function(recipient) {
 		$scope.newMessage.recipient = recipient;
 		messageService.sendMessage($scope.newMessage, function(data) {
@@ -71,7 +76,8 @@ angular.module('freeNycApp')
 		})
 	}
 
-	// GOOGLE MAPS FUNCTIONALITY
+	
+	/////////////////////// GOOGLE MAPS FUNCTIONALITY ///////////////////////////
 
 	var geocoder;
 	var map;
@@ -90,6 +96,8 @@ angular.module('freeNycApp')
 	function codeAddress(address, postObj) {
 	  // var address = document.getElementById('address').value;
 	  //extends bounds 
+
+	  // console.log('addresses', address)
 	  var bounds = new google.maps.LatLngBounds();
 	  geocoder.geocode( { 'address': address}, function(results, status) {
 	    if (status == google.maps.GeocoderStatus.OK) {
@@ -120,15 +128,19 @@ angular.module('freeNycApp')
 	google.maps.event.addDomListener(window, 'load', initialize);
 
 
-	
+	//sends item locations to codeAddress to be plotted on map
 	var setMap = function(){
 		for (var i = 0; i < $scope.allPosts.length; i++){
-			codeAddress($scope.address[i], $scope.allPosts[i])
+			if (typeof $scope.address[i] !== 'undefined'){
+				console.log('addresses', $scope.address[i])
+				codeAddress($scope.address[i], $scope.allPosts[i])
+			}
 		}
 	}
 
 	vm.getPosts();
 
+	//async fix
 	setTimeout(function(){
 		setMap()
 	}, 100)	

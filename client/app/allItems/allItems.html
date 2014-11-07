@@ -2,6 +2,7 @@
 
 <div class='jumbotron'>
 	<div class="row">
+
 		<div class='col-sm-12 col-lg-6'>
 			<button class='btn btn-warning' ng-click='items.getPosts()'>All Posts</button>
 			<button class='btn btn-warning' ng-click='items.getWanteds()'>Wanted</button>
@@ -27,7 +28,7 @@
 					USER: {{post.user.email}}
 				</p>
 
-				<button class='btn btn-primary' ng-click='items.bidOnItem(post._id, post.user._id, $index)'>Bid</button>
+				<button class='btn btn-primary' ng-if = "post.postType === 'offered'" ng-click='items.bidOnItem(post._id, post.user._id, $index)'>Bid</button>
 				<button class='btn btn-warning' ng-if='biddedOn[$index]' ng-click='items.showMessageForm($index)'>Send a Message</button>
 				<form ng-if='messageForm[$index]'>
 					<input type="text" ng-model='newMessage.body'>
