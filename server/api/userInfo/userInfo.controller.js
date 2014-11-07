@@ -9,11 +9,13 @@ var User = require('../user/user.model');
 // Get list of userInfos
 exports.index = function(req, res) {
   console.log('FLAG', req.user._id);
-  Postinfo.find({user: req.user._id}, function (err, PostInfos) {
-    // MAKE SURE TO MAKE THE QUERY CHECK FOR TAKEN VALUE
-    if(err) { return handleError(res, err); }
-    return res.json(200, PostInfos);
-  }).populate('user');
+  Postinfo.find({user: req.user._id})
+          .populate('user')
+          .exec(function (err, PostInfos) {
+            // MAKE SURE TO MAKE THE QUERY CHECK FOR TAKEN VALUE
+            if(err) { return handleError(res, err); }
+            return res.json(200, PostInfos);
+          });
 };
 
 // Get a single userInfo
@@ -51,12 +53,34 @@ exports.update = function(req, res) {
 exports.initiateTransaction = function(req, res){
   console.log('req', req.body)
   console.log('id', req.params.id)
-  User.findByIdAndUpdate(req.params.id, {$push: {currentTransactions: req.body}}, function(err, user){
-    if (err) { return handleError(res, err); }
-    if(!user) { return res.send(404); }
-    console.log('updated user', user)
-    return res.json(200, user)
-  }) 
+  User.findByIdAndUpdate(req.params.id, {$push: {currentTransactions: req.body.id}})
+      .populate('currentTransactions')
+      .exec(function(err, user){
+        if (err) { return handleError(res, err); }
+        if(!user) { return res.send(404); }
+        console.log('updated user', user)
+        return res.json(200, user)
+      });
+}
+
+exports.getTransactions = function(req, res) {
+  console.log(req.user._id);
+  // User.findById(req.user._id, {currentTransactions: 1})
+  User.findById(req.user._id, {currentTransactions: 1})
+      .populate('currentTransactions')
+      .exec(function(err, results) {
+        console.log('transactionsResults', results);
+        return res.json(200, results);
+      });
+}
+
+exports.rateUser = function(req, res) {
+  User.findByIdAndUpdate(req.params.id, {$push : {ratingArray: req.body.rating}}, function(err, user) {
+    user.computeRating(function(rating){
+      console.log('RATING IN OTHER PLACE', rating);
+      res.json(200, rating);
+    })
+  });
 }
 
 // Deletes a userInfo from the DB.

@@ -22,14 +22,13 @@
 		USER: {{post.user.name}}
 		ID: {{post._id}}
 	</p>
-	<form>
 		<label for="rating">Rating</label>
-		<input type="radio" name='rating' value='1'>1
-		<input type="radio" name='rating' value='2'>2
-		<input type="radio" name='rating' value='3'>3
-		<input type="radio" name='rating' value='4'>4
-		<input type="radio" name='rating' value='5'>5
-	</form>
+		<input type="radio" name='rating' value='1' ng-model='tempRating'>1
+		<input type="radio" name='rating' value='2' ng-model='tempRating'>2
+		<input type="radio" name='rating' value='3' ng-model='tempRating'>3
+		<input type="radio" name='rating' value='4' ng-model='tempRating'>4
+		<input type="radio" name='rating' value='5' ng-model='tempRating'>5
+		<button class='btn btn-warning' ng-click='userOffers.submitRating(userBeingRatedId, tempRating)'>Rate</button>
 	<br>
 	<button class="btn btn-primary" ng-click="userOffers.setTaken(post._id)">Taken</button>
 	<button class="btn btn-primray" ng-click="userOffers.gifting(post._id, index)">Gifting</button>
@@ -41,11 +40,6 @@
     </button>
     <ul class="dropdown-menu pull-left" role="menu" aria-labelledby="dLabel">
     	<li ng-repeat="bid in bids" ><a ng-click='userOffers.notifyRecipient(post._id, bid._id)'> {{bid.name}}</a></li>
-<!--       <li ng-click="postItem.OnItemClick('Furniture')">Furniture</li>
-      <li ng-click="postItem.OnItemClick('Electronics')">Electronics</li>
-      <li ng-click="postItem.OnItemClick('Household')">Household</li>
-      <li ng-click="postItem.OnItemClick('Transport')">Transport</li>
-      <li ng-click="postItem.OnItemClick('Miscellaneous')">Miscellaneous</li> -->
     </ul>
   </div>
 </div>

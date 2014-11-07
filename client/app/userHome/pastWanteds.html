@@ -1,5 +1,5 @@
-<h1>Your Past Wanteds</h1>
-<div class='individual-post' ng-repeat="post in pastWanteds">
+<h1>Your Current Transactions</h1>
+<div class='individual-post' ng-repeat="post in myTransactions.currentTransactions">
 	<h4>{{post.postTitle}}</h4>
 	<p>
 		POST TYPE: {{post.postType}}
@@ -19,5 +19,14 @@
 		<br>
 		USER: {{post.user.name}}
 	</p>
-	<button class="btn btn-danger" ng-click="userOffers.deleteOption(post._id)">Delete</button>
+		<label for="rating">Rating</label>
+		<input type="radio" name='rating' value='1' ng-model='tempRating'>1
+		<input type="radio" name='rating' value='2' ng-model='tempRating'>2
+		<input type="radio" name='rating' value='3' ng-model='tempRating'>3
+		<input type="radio" name='rating' value='4' ng-model='tempRating'>4
+		<input type="radio" name='rating' value='5' ng-model='tempRating'>5
+		<br>
+		{{tempRating}}
+		<button class='btn btn-warning' ng-click='userWanteds.submitRating(post.user, tempRating)'>Rate</button>
+	<button class="btn btn-danger" ng-click="userWanteds.deleteOption(post._id)">Delete</button>
 </div>

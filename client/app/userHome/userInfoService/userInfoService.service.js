@@ -14,7 +14,15 @@ angular.module('freeNycApp')
       }
 
       this.initiateTransaction = function(id, postId, callback){
-        $http.put('/api/userInfos/initiateTransaction/' + id + "/", postId).success(callback)
+        $http.put('/api/userInfos/initiateTransaction/' + id, {id: postId}).success(callback)
+      }
+
+      this.getMyTransactions = function(callback){
+        $http.get('/api/userInfos/getTransactions').success(callback);
+      }
+
+      this.rateTransaction = function(id, rating, callback) {
+        $http.put('/api/userInfos/rateUser/'+id, {'rating': rating}).success(callback);
       }
 
     }

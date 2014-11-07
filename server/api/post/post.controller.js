@@ -9,10 +9,12 @@ var User = require('../user/user.model');
 exports.index = function(req, res) {
   var user = req.user.name;
   //bids: {$nin: [req.user._id]}
-  Post.find({taken: false}, function (err, posts) {
-    if(err) { return handleError(res, err); }
-    return res.json(200, posts);
-  }).populate('user');
+  Post.find({taken: false})
+      .populate('user')
+      .exec(function (err, posts) {
+        if(err) { return handleError(res, err); }
+        return res.json(200, posts);
+      });
 };
 
 // find keyword
@@ -67,20 +69,15 @@ exports.getUserBids = function(req, res){
 exports.populateBid = function(req, res) {
   // console.log('id', req.user._id)
   if(req.body._id) { delete req.body._id; }
-  Post.findById(req.params.id, function (err, post) {
-    if (err) { return handleError(res, err); }
-    if(!post) { return res.send(404); }
-    post.setBids(req.user._id, function(newPost){
-      return res.json(newPost)
-    })
-   
-    // var updated = _.merge(post, req.body);
-    // console.log('UPDATED', updated);
-    // post.save(function (err) {
-    //   if (err) { return handleError(res, err); }
-    //   return res.json(200, post);
-    // });
-  }).populate('bids');
+  Post.findById(req.params.id)
+      .populate('bids')
+      .exec(function (err, post) {
+        if (err) { return handleError(res, err); }
+        if(!post) { return res.send(404); }
+        post.setBids(req.user._id, function(newPost){
+          return res.json(newPost)
+        });
+      });
 };
 
 // Updates an existing post in the DB.

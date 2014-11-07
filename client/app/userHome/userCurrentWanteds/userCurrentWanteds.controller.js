@@ -42,6 +42,19 @@ angular.module('freeNycApp')
     	$scope.formData.itemType = event;
   	}
 
+  	vm.getMyTransactions = function() {
+  		userInfoService.getMyTransactions(function(transactions) {
+  			$scope.myTransactions = transactions;
+  			console.log('FLAG', $scope.myTransactions);
+  		});
+  	}
+
+  	vm.submitRating = function(id, rating) {
+  		userInfoService.rateTransaction(id, Number(rating), function(result) {
+  			console.log('CLIENT SIDE', result);
+  		});
+  	}
+
 	//if on .currentWanteds view, execute function
 	if ($state.is('userHome.currentWanteds')){
 		vm.getCurrentWanteds();		
@@ -49,7 +62,8 @@ angular.module('freeNycApp')
 	
 	//if on .pastWanteds view, execute function
 	else if ($state.is('userHome.pastWanteds')){
-		vm.getPastWanteds(); 		
+		// vm.getPastWanteds(); 
+		vm.getMyTransactions();		
 	}
 
   })
@@ -63,5 +77,8 @@ angular.module('freeNycApp')
   		}
   		return filtered;
   	}
+  })
+  .controller('UserRatingCtrl', function($scope) {
+
   })
 

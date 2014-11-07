@@ -15,7 +15,8 @@ var UserSchema = new Schema({
   location: String,
   bookmarkedItems: Array,
   wishList: Array,
-  rating: Array,
+  ratingArray: Array,
+  rating: Number,
   currentTransactions: [{type: Schema.Types.ObjectId, ref: 'Post'}],
   messsages: [{type: Schema.Types.ObjectId, ref: 'Thing'}],
   alerts: [{type: Schema.Types.ObjectId, ref: 'Post'}],
@@ -160,6 +161,17 @@ UserSchema.methods = {
         // console.log("this is newly updated", newlyUpdated);
         callback(newlyUpdated)
       })
+  },
+
+  computeRating: function(callback) {
+    var sum = 0;
+    for (var i=0; i<this.ratingArray.length; i++){
+      sum+=this.ratingArray[i];
+    }
+    this.rating = sum/this.ratingArray.length;
+    this.save();
+    console.log('RATING', this.rating);
+    callback(this);
   }
 
 

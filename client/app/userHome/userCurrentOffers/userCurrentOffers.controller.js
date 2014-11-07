@@ -50,20 +50,24 @@ angular.module('freeNycApp')
     }
 
     vm.notifyRecipient = function(postId, bidId){
-      console.log('in event', postId)
-      console.log('bidId', bidId)
+      $scope.userBeingRatedId = bidId;
       postService.enableRatings(postId, function(rating){
-        console.log('rating', rating)
         $scope.rating = rating.ratingsEnabled; 
-          userInfoService.initiateTransaction(bidId, postId, function(userResult){
-            console.log('userTransactionArray', userResult)
-          })
-      })
+        userInfoService.initiateTransaction(bidId, postId, function(userResult){
+          console.log('userTransactionArray', userResult)
+        })
+      });
 
     }
 
     vm.OnItemClick = function(event) {
       $scope.formData.itemType = event;
+    }
+
+    vm.submitRating = function(id, rating) {
+      userInfoService.rateTransaction(id, Number(rating), function(result) {
+        console.log('CLIENT SIDE', result);
+      });
     }
 
 
