@@ -4,6 +4,8 @@ angular.module('freeNycApp')
   .controller('UsercurrentwantedsCtrl', function ($scope,  $state, unTakenOffersFilter, pastWantedsFilter, Auth, pastOffersFilter, userInfoService, postService, offersOnlyFilter, wantedOnlyFilter) {
 
   	var vm = this;
+
+  	$scope.obj = {};
     
     //retrieves all posts associated with a user and passes them through the currentWanteds filter
   	vm.getCurrentWanteds = function(){
@@ -29,6 +31,16 @@ angular.module('freeNycApp')
 				
 		})
 	}
+
+	vm.editOption = function(index){
+		$scope.obj[index] = true
+
+	}
+
+	//click event that sets the item type listed in the drop down menu as the main menu item
+  	vm.OnItemClick = function(event) {
+    	$scope.formData.itemType = event;
+  	}
 
 	//if on .currentWanteds view, execute function
 	if ($state.is('userHome.currentWanteds')){

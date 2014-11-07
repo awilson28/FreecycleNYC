@@ -17,6 +17,7 @@ var UserSchema = new Schema({
   wishList: Array,
   rating: Number,
   messsages: [{type: Schema.Types.ObjectId, ref: 'Thing'}],
+  alerts: [{type: Schema.Types.ObjectId, ref: 'Post'}],
   hashedPassword: String,
   provider: String,
   salt: String,
@@ -148,7 +149,19 @@ UserSchema.methods = {
     if (!password || !this.salt) return '';
     var salt = new Buffer(this.salt, 'base64');
     return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
+  }, 
+
+  changeWishList: function(index, item, callback){
+      // this.wishList[index] = item;
+      this.wishList.set(index, item);
+      this.save(function(err, newlyUpdated, numModified) {
+        // console.log("modified: ", numModified);
+        // console.log("this is newly updated", newlyUpdated);
+        callback(newlyUpdated)
+      })
   }
+
+
 };
 
 module.exports = mongoose.model('User', UserSchema);

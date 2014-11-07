@@ -24,7 +24,8 @@ angular.module('freeNycApp')
 
       //'user' is the alias for this controller, so angular gets confused when we 
       //define user as obj on scope
-			$scope.userInfo = Auth.getCurrentUser(); 
+			$scope.userInfo = Auth.getCurrentUser();
+      console.log($scope.userInfo);
 
 
   		vm.getWishList = function(){
@@ -36,6 +37,11 @@ angular.module('freeNycApp')
     			$scope.bids = results
     		})
     	};
+
+      vm.goToAlert = function(id) {
+
+        $state.go('singlePost', {'id': id});
+      }
 
 
       if ($state.is('userHome')){

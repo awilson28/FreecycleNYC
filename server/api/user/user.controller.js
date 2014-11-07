@@ -49,6 +49,22 @@ exports.addWish = function (req, res, next) {
 };
 
 /**
+ * changes an item to a user's wish list
+ */
+exports.changeWish = function (req, res, next) {
+  User.findById(req.user._id, function(err, user){
+    if (err) { return handleError(res, err); }
+    if(!user) { return res.send(404); }
+    console.log('updated user', user)
+    user.changeWishList(req.params.index, req.body, function(newWish){
+      console.log('newWish', newWish)
+      return res.json(200, newWish)
+      
+    })
+  })
+};
+
+/**
  * retrieves a user's wish list
  */
 exports.getWishes = function (req, res, next) {

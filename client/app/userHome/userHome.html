@@ -15,6 +15,11 @@
 	<div class='col-sm-12 col-lg-9'>
 		<div ui-view>
 			<h2>Hello {{userInfo.name}}</h2>
+			<h1>Alerts:</h2>
+			<div ng-repeat='alert in userInfo.alerts'>
+				<label>{{$index + 1}}: </label>
+				<a ng-click="user.goToAlert(alert)">{{alert}}</a>
+			</div>
 			<br>
 	<div class='individual-post' ng-repeat="post in bids">
 			<h4>{{post.postTitle}}</h4> 

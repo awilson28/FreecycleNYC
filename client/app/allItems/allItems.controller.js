@@ -5,7 +5,7 @@ angular.module('freeNycApp')
 	
 	var vm = this; 
 	$scope.keywords = ""; 
-	$scope.keywordsArray = []; 
+	$scope.keywordsArray = [];
 
 	initialize()
 
@@ -55,18 +55,19 @@ angular.module('freeNycApp')
 	}
 
 	//click event that triggers a put request to add the user to the bids array
+	//click event that displays the message form for items on the home page - message sent
+	//with bid request
 	vm.bidOnItem = function(id, userId, index){
 		$scope.biddedOn[index] = true;
+		$scope.messageForm[index] = true;
 		postService.populatePost(id, function(result){
 			console.log(result);
 		})
 	}
 
-	//click event that displays the message form for items on the home page - message sent
-	//with bid request
-	vm.showMessageForm = function(index) {
-		$scope.messageForm[index] = true;
-	}
+	// vm.showMessageForm = function(index) {
+		
+	// }
 
 	//click event that sends a message to the owner of the item 
 	vm.sendMessage = function(recipient) {
@@ -84,7 +85,7 @@ angular.module('freeNycApp')
 
 	function initialize() {
 	  geocoder = new google.maps.Geocoder();
-	  var latlng = new google.maps.LatLng(-34.397, 150.644);
+	  var latlng = new google.maps.LatLng(-74.0059700, 40.7142700);
 	  var mapOptions = {
 	    zoom: 8,
 	    center: latlng, 
@@ -103,8 +104,9 @@ angular.module('freeNycApp')
 	    if (status == google.maps.GeocoderStatus.OK) {
 	      map.setCenter(results[0].geometry.location);
 	      bounds.extend(results[0].geometry.location)
+	      var postObjInfo = '<p>' + postObj.postTitle + " at " + postObj.crossStreets + '</p>';
 	      var infowindow = new google.maps.InfoWindow({
-	      	content: '<p>' + postObj.postTitle + '</p>'
+	      	content: postObjInfo
 	      })
 	      
 	      var marker = new google.maps.Marker({

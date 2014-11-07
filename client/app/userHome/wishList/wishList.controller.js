@@ -32,31 +32,31 @@ angular.module('freeNycApp')
     	})
     }
 
-     $scope.item = {
-    		itemName: "", 
-    		keywords: ""
-  		}; 
+    $scope.obj = {}
+
+    vm.editOption = function(index){
+        $scope.obj[index] = true;
+    }
+
+    vm.editWish = function(index){
+        var item = $scope.today[index]
+        wishList.editWish(index, item, function(result){
+            console.log('result', result)
+            console.log(Auth.getCurrentUser())
+            // $scope.variable = result.wishList
+        })
+    }
     
-        $scope.$watch('item.itemName', function (val) {
-        	$scope.item.itemName = val; 
-    	});
+    
+     //    $scope.$watch('item.itemName', function (val) {
+     //    	$scope.item.itemName = val; 
+    	// });
 
-    	$scope.$watch('item.keywords', function (val) {
-        	$scope.item.keywords = val; 
-    	});
+    	// $scope.$watch('item.keywords', function (val) {
+     //    	$scope.item.keywords = val; 
+    	// });
 
-  $scope.saveUser = function() {
-    // $scope.user already updated!
-    // return $http.post('/saveUser', $scope.user).error(function(err) {
-    //   if(err.field && err.msg) {
-    //     // err like {field: "name", msg: "Server-side error for this username!"} 
-    //     $scope.editableForm.$setError(err.field, err.msg);
-    //   } else { 
-    //     // unknown error
-    //     $scope.editableForm.$setError('name', 'Unknown error!');
-    //   }
-    // });
-  };
+
 
 
 

@@ -1,22 +1,82 @@
 <h1>Your Current Wanteds</h1>
 <div class='individual-post' ng-repeat="post in currentWanteds">
-	<h4>{{post.postTitle}}</h4>
-	<p>
-		POST TYPE: {{post.postType}}
-		<br>
-		<br>
-		{{post.description}}
-		<br>
-		{{post.dimensions}}
-		<br>
-		{{post.crossStreets}}
-		<br>
-		{{post.itemType}}
-		<br>
-		{{post.keyWords}}
-		<br>
-		USER: {{post.user.name}}
-	</p>
+  <div ng-hide="obj[$index]">
+  	<h4>{{post.postTitle}}</h4>
+  	<p>
+  		POST TYPE: {{post.postType}}
+  		<br>
+  		<br>
+  		{{post.description}}
+  		<br>
+  		{{post.dimensions}}
+  		<br>
+  		{{post.crossStreets}}
+  		<br>
+  		{{post.itemType}}
+  		<br>
+  		{{post.keyWords}}
+  		<br>
+  		USER: {{post.user.name}}
+  	</p>
 
-	<button class="btn btn-danger" ng-click="userWanteds.deleteOption(post._id)">Delete</button>
+  	<button class="btn btn-danger" ng-click="userWanteds.deleteOption(post._id)">Delete</button>
+  	<button class="btn btn-warning" ng-click="userWanteds.editOption($index)">Edit</button>
+  </div>
+
+<form ng-if= 'obj[$index]'> 
+  <div class="dropdown">
+    <button id='dropDownUL' class='btn btn-default dropdown-toggle' type='button' data-toggle='dropdown'>
+      <span>{{ post.itemType }}</span>
+      <b class="caret"></b>
+    </button>
+    <ul class="dropdown-menu pull-left" role="menu" aria-labelledby="dLabel">
+      <li ng-click="postItem.OnItemClick('Furniture')">Furniture</li>
+      <li ng-click="postItem.OnItemClick('Electronics')">Electronics</li>
+      <li ng-click="postItem.OnItemClick('Household')">Household</li>
+      <li ng-click="postItem.OnItemClick('Transport')">Transport</li>
+      <li ng-click="postItem.OnItemClick('Miscellaneous')">Miscellaneous</li>
+    </ul>
+  </div>
+
+
+  <div class="form-group">
+    <label for="moreInfo">Post Title</label>
+    <input ng-model='post.postTitle' class="form-control" id="postTitle" required>
+
+    <label for="location">Cross Streets</label>
+    <input ng-model='post.crossStreets' class="form-control col-md-4" id="locationField" required>
+    <br>
+
+    <label for="zipCode">Zip Code</label>
+    <input ng-model='post.zipCode' class="form-control col-md-4" id="locationField" required>
+    <br>
+
+    <label for="description">Short Description</label>
+    <input ng-model='post.description' class="form-control col-md-6" id="descriptionField" required>
+    <br>
+
+    <label for="dimensions">Dimensions</label>
+    <input ng-model='post.dimensions' class="form-control col-md-4" id="size">
+    <br>
+
+    <label for="keywords">Key words</label>
+    <input name="keyWords" ng-model='tempKeyword' class="form-control" id="keyWords" ui-validate="'validateKeywords()'">
+    <span class="keyWordBubble" ng-repeat="word in post.keyWords">{{word}}</span>
+    <br>
+    <button class="btn btn-primary" ng-click="postItem.addKeyWord(tempKeyword)">Add Key Words</button>
+    <br>
+
+<!-- <button ng-click='add()'>Add</button> -->
+
+<div ng-repeat="img in post.img">
+  <button ng-click="postItem.deleteImage($index)">Delete</button>
+  <img class="previewImg" ng-src="{{img}}">
 </div>
+
+
+
+
+  <button type="submit" class="btn btn-default" ng-click='postItem.submitData(post, PostForm.$valid)'>Submit</button>
+  <!-- FIX FORM VALIDATION -->
+
+</form>

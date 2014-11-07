@@ -19,6 +19,11 @@ angular.module('freeNycApp', [
         templateUrl: 'app/allItems/allItems.html', 
         controller: 'AllitemsCtrl as items'
       })
+      .state('singlePost', {
+        url: '/singlePost/:id',
+        templateUrl: 'app/allItems/singlePostView.html',
+        controller: 'singlePostController as single'
+      })
       .state('postItem', {
         url: '/post_an_item',
         templateUrl: 'app/postItem/postItem.html', 

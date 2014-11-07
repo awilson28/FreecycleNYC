@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
     User = require('../user/user.model'),
     textSearch = require('mongoose-text-search');
 
+
 var PostSchema = new Schema({
   postTitle: String,
   crossStreets: String,
@@ -33,8 +34,26 @@ PostSchema.methods = {
       this.save()
       callback(this); 
     }
+  }, 
+  findRelevantUsers: function(callback){
+    var self = this; 
+    User.find({'wishList.itemName': {$in: self.keyWords}}, function(err, users){
+      console.log('users', users)
+      callback(users, self)
+    })
   }
 }
+
+PostSchema.post('save', function(users){
+  this.findRelevantUsers(function(users, self){
+    console.log('users1', users)
+    for (var i = 0; i < users.length; i++){
+      console.log('id', self)
+      users[i].alerts.push(self._id)
+      users[i].save()
+    }
+  })
+})
 
 PostSchema.index({ postTitle: 'text', keyWords: 'text', description: 'text'}, {weights: {postTitle: 1, keyWords: 1, description: 1} });
 

@@ -12,46 +12,34 @@
 		</div>
 		<br>
 		<br>
+		<button class="btn btn-primary" ng-click="wish.addWish()">Add An Item</button>
+		<div class='individual-post' ng-repeat="item in today">
+			<form ng-hide='obj[$index]'>
+				<div>
+	     		 <span class="title">Item: </span>
+	      			<p>{{ item.itemName }}</p>
+	    		</div> 
 
-	<button class="btn btn-primary" ng-click="wish.addWish()">Add An Item</button>
-	<div class='individual-post' ng-repeat="item in today">
-		<form editable-form name="editableForm" onaftersave="saveUser()">
-			<div>
-      <!-- editable username (text with validation) -->
-     		 <span class="title">Item: </span>
-      		<span editable-text="item.itemName" e-ng-model="itemName.itemName" e-name="itemName" e-required>{{ item.itemName || 'empty' }}</span>
-    		</div> 
+			    <div>
+	     		 <span class="title">Keywords: </span>
+	      		<p>{{ item.keywords}}</p>
+	    		</div> 
 
-		    <div>
+	       
+				<button class="btn btn-warning" ng-click="wish.editOption($index)">Edit</button>
+			    <button class="btn btn-danger" ng-click="wish.deleteOption(item)">Delete</button>
+		 	</form>
+			{{variable}}
 
-		    <div>
-      <!-- editable username (text with validation) -->
-     		 <span class="title">Keywords: </span>
-      		<span editable-text="item.keywords" e-ng-model="item.keywords" e-name="keywords" e-required>{{ item.keywords || 'empty' }}</span>
-    		</div> 
-
-		    <div>
-       
-		      <!-- button to show form -->
-		      <button type="button" class="btn btn-default" ng-click="editableForm.$show()" ng-show="!editableForm.$visible">
-		        Edit
-		      </button>
-
-		       <!-- buttons to submit / cancel form -->
-	      <span ng-show="editableForm.$visible">
-	        <button type="submit" class="btn btn-primary" ng-disabled="editableForm.$waiting">
-	          Save
-	        </button>
-	        <button type="button" class="btn btn-default" ng-disabled="editableForm.$waiting" ng-click="editableForm.$cancel()">
-	          Cancel
-	        </button>
-	      </span>
-
-	      <button class="btn btn-danger" ng-click="wish.deleteOption(item)">Delete</button>
-	              
-	    </div>
-	  </form>  
-	</div>
+		    <form ng-if='obj[$index]'>
+		     	<label>ITEM NAME</label> 
+		     	<input type='text' ng-model='item.itemName'> 
+		     	<label>KEYWORDS</label>
+		     	<input type='text' ng-model='item.keywords'>
+		       <button class="btn btn-primary" ng-click="wish.editWish($index)">Submit</button>
+		    </form>
+		
+		</div>
 
 
 	<!-- 	<a href='#' editable-text='item.itemName'><h4>{{item.itemName || 'empty'}}</h4></a>
@@ -62,4 +50,5 @@
 		</p>
  -->
 	<!-- <button class="btn btn-primary" ng-click="wish.editOption(item)">Submit Edit</button> -->
+	</div>
 </div>

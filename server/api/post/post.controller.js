@@ -7,7 +7,6 @@ var User = require('../user/user.model');
 
 // Get list of posts
 exports.index = function(req, res) {
-  console.log('user', req.user)
   var user = req.user.name;
   //bids: {$nin: [req.user._id]}
   Post.find({taken: false}, function (err, posts) {
@@ -18,8 +17,6 @@ exports.index = function(req, res) {
 
 // find keyword
 exports.findKeyword = function(req, res) {
-  console.log('keywords', req.params.keyword);
-
     Post.find( { $text : { $search : req.params.keyword } } ).exec( function (err, data) {
       res.json(200, data);
     });
@@ -48,11 +45,9 @@ exports.create = function(req, res) {
 };
 
 exports.getUserBids = function(req, res){
-  console.log('hit')
   // console.log('userId', req.user._id)
   // if(req.body._id) { delete req.body._id; }
   Post.find({'bids': { $in : [req.user._id]}}, function (err, posts) {
-    console.log('posts', posts)
     if (err) { return handleError(res, err); }
     if(!posts) { return res.send(404); }
     res.json(200, posts);
@@ -67,7 +62,6 @@ exports.populateBid = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
     post.setBids(req.user._id, function(newPost){
-      console.log('newpost', newPost)
       return res.json(newPost)
     })
    
@@ -87,7 +81,6 @@ exports.update = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
     var updated = _.merge(post, req.body);
-    console.log('UPDATED', updated);
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, post);
@@ -98,7 +91,6 @@ exports.update = function(req, res) {
 // Deletes a post from the DB.
 exports.destroy = function(req, res) {
   Post.findById(req.params.id, function (err, post) {
-    console.log('post', req.params.id)
     if(err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
     post.remove(function(err) {

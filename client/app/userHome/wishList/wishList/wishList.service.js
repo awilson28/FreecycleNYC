@@ -8,7 +8,7 @@ angular.module('freeNycApp')
         var self = this; 
 
         this.postWishToDb = function(data, callback){
-          $http.put('api/users', data).success(callback)
+          $http.post('api/users', data).success(callback)
         }
 
         this.getWishes = function(callback){
@@ -18,6 +18,10 @@ angular.module('freeNycApp')
         this.deleteWish = function(id, item, callback){
           console.log('in here')
           $http.put('api/users/updateWishList/' + id, item).success(callback)
+        }
+
+        this.editWish = function(index, item, callback){
+          $http.put('api/users/changeWish/' + index+"/", item).success(callback)
         }
 
       }
