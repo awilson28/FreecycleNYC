@@ -6,6 +6,9 @@
 		<br>
 		POST TYPE: {{post.postType}}
 		<br>
+		
+		<img class='image' src = "{{post.img[0]}}">
+
 		<br>
 		{{post.description}}
 		<br>
@@ -33,6 +36,7 @@
 	<button class="btn btn-primary" ng-click="userOffers.setTaken(post._id)">Taken</button>
 	<button class="btn btn-primray" ng-click="userOffers.gifting(post._id, index)">Gifting</button>
 	<button class="btn btn-danger" ng-click="userOffers.deleteOption(post._id)">Delete</button>
+  	<a class='abort' ng-click='userOffers.abortTransaction()'>Abort Transaction</a>
   <div ng-if='obj[index]' class="dropdown">
     <button id='dropDownUL' class='btn btn-default dropdown-toggle' type='button' data-toggle='dropdown'>
       <span>Pick A Recipient</span>

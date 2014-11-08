@@ -11,6 +11,7 @@
 			<input type="text" name='keywords' ng-model='keywords' ng-enter="items.submitKeywords()"> 
 			<div class='individual-post' ng-repeat="post in allPosts">
 				<h4>{{post.postTitle}}</h4>
+				<img class='image' src = "{{post.img[0]}}">
 					POST TYPE: {{post.postType}}
 					<br>
 

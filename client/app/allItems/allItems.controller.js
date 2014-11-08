@@ -9,6 +9,7 @@ angular.module('freeNycApp')
 
 	initialize()
 
+
 	$scope.address = [];
 	$scope.newMessage = {};
 	$scope.biddedOn = {};

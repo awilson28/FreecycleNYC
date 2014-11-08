@@ -24,3 +24,8 @@
 .individual-post p{
 	font-size: 1em;
 }
+
+.image{
+	width: 75px;
+	height: 75px;
+}

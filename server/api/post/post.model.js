@@ -17,6 +17,7 @@ var PostSchema = new Schema({
   fulfilled: Boolean,
   dimensions: String,
   numBids: Number,
+  img: Array,
   ratingsEnabled: Boolean,
   bids: [{type: Schema.Types.ObjectId, ref: 'User'}], 
   date: {type: Date, default: Date.now},
