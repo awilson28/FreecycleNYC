@@ -53,14 +53,22 @@ exports.update = function(req, res) {
 exports.initiateTransaction = function(req, res){
   console.log('req', req.body)
   console.log('id', req.params.id)
-  User.findByIdAndUpdate(req.params.id, {$push: {currentTransactions: req.body.id}})
-      .populate('currentTransactions')
-      .exec(function(err, user){
-        if (err) { return handleError(res, err); }
-        if(!user) { return res.send(404); }
-        console.log('updated user', user)
-        return res.json(200, user)
-      });
+  if (req.body.bool) {
+    User.findByIdAndUpdate(req.params.id, {$push: {currentTransactions: req.body.id}})
+        .populate('currentTransactions')
+        .exec(function(err, user){
+          if (err) { return handleError(res, err); }
+          if(!user) { return res.send(404); }
+          console.log('updated user', user)
+          return res.json(200, user)
+        }); 
+  }
+  else if (!req.body.bool){
+    User.findByIdAndUpdate(req.params.id, {$pull: {currentTransactions: req.body.id}}, function(err, user){
+          console.log('updated user', user)
+          return res.json(200, user)
+        });   
+    }
 }
 
 exports.getTransactions = function(req, res) {
@@ -80,6 +88,9 @@ exports.rateUser = function(req, res) {
       console.log('RATING IN OTHER PLACE', rating);
       res.json(200, rating);
     })
+  });
+  Postinfo.findByIdAndUpdate(req.body.postId, {ratingsEnabled: false}, function(err, post){
+    console.log('post with ratings disabled', post)
   });
 }
 

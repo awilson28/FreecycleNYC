@@ -6,8 +6,9 @@
 		<br>
 		POST TYPE: {{post.postType}}
 		<br>
-		
-		<img class='image' src = "{{post.img[0]}}">
+		<div ng-if='post.img.length > 0'>
+			<img class='image' src = "{{post.img[0]}}">
+		</div>
 
 		<br>
 		{{post.description}}
@@ -24,26 +25,29 @@
 		<br>
 		USER: {{post.user.name}}
 		ID: {{post._id}}
+		ID: {{post.inTransactionWith}}
 	</p>
+	<div ng-if="post.ratingsEnabled">
 		<label for="rating">Rating</label>
 		<input type="radio" name='rating' value='1' ng-model='tempRating'>1
 		<input type="radio" name='rating' value='2' ng-model='tempRating'>2
 		<input type="radio" name='rating' value='3' ng-model='tempRating'>3
 		<input type="radio" name='rating' value='4' ng-model='tempRating'>4
 		<input type="radio" name='rating' value='5' ng-model='tempRating'>5
-		<button class='btn btn-warning' ng-click='userOffers.submitRating(userBeingRatedId, tempRating)'>Rate</button>
+		<button class='btn btn-warning' ng-click='userOffers.submitRating(post.inTransactionWith[0], tempRating, post._id, $index)'>Rate</button>
+	</div>
 	<br>
-	<button class="btn btn-primary" ng-click="userOffers.setTaken(post._id)">Taken</button>
-	<button class="btn btn-primray" ng-click="userOffers.gifting(post._id, index)">Gifting</button>
-	<button class="btn btn-danger" ng-click="userOffers.deleteOption(post._id)">Delete</button>
-  	<a class='abort' ng-click='userOffers.abortTransaction()'>Abort Transaction</a>
-  <div ng-if='obj[index]' class="dropdown">
+	<button class="btn btn-primary" ng-click="userOffers.setTaken(post._id, $index)">Taken</button>
+	<button class="btn btn-primray" ng-click="userOffers.gifting(post._id, $index)">Gifting</button>
+	<button class="btn btn-danger" ng-click="userOffers.deleteOption(post._id, $index)">Delete</button>
+  	<a class='abort' ng-click='userOffers.abortTransaction(post._id, post.inTransactionWith[0], $index)'>Abort Transaction</a>
+  <div ng-if='obj[$index]' class="dropdown">
     <button id='dropDownUL' class='btn btn-default dropdown-toggle' type='button' data-toggle='dropdown'>
       <span>Pick A Recipient</span>
       <b class="caret"></b>
     </button>
     <ul class="dropdown-menu pull-left" role="menu" aria-labelledby="dLabel">
-    	<li ng-repeat="bid in bids" ><a ng-click='userOffers.notifyRecipient(post._id, bid._id)'> {{bid.name}}</a></li>
+    	<li ng-repeat="bid in bids" ><a ng-click='userOffers.notifyRecipient(post._id, bid._id, $parent.$index)'> {{bid.name}}</a></li>
     </ul>
   </div>
 </div>

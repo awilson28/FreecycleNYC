@@ -11,8 +11,9 @@ angular.module('freeNycApp')
 
 
 	$scope.address = [];
-	$scope.newMessage = {};
+	$scope.messageArray = [];
 	$scope.biddedOn = {};
+	$scope.bidPressed = {};
 	$scope.messageForm = {};
 
 	//activates keywords search 
@@ -71,9 +72,11 @@ angular.module('freeNycApp')
 	// }
 
 	//click event that sends a message to the owner of the item 
-	vm.sendMessage = function(recipient) {
-		$scope.newMessage.recipient = recipient;
-		messageService.sendMessage($scope.newMessage, function(data) {
+	vm.sendMessage = function(recipient, index) {
+		$scope.messageArray[index].recipient = recipient;
+		messageService.sendMessage($scope.messageArray[index], function(data) {
+			$scope.messageForm[index] = false;
+			$scope.bidPressed[index] = true;
 			console.log(data);
 		})
 	}

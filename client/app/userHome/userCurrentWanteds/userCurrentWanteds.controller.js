@@ -6,6 +6,7 @@ angular.module('freeNycApp')
   	var vm = this;
 
   	$scope.obj = {};
+    $scope.post = {};
     
     //retrieves all posts associated with a user and passes them through the currentWanteds filter
   	vm.getCurrentWanteds = function(){
@@ -15,9 +16,10 @@ angular.module('freeNycApp')
   	};
 
   	//click event that initiates post deletion from database
-  	vm.deleteOption = function(id){
+  	vm.deleteOption = function(id, index){
 		postService.deletePost(id, function(){
-			vm.getCurrentWanteds();
+      $scope.currentWanteds.splice(index, 1) 
+			// vm.getCurrentWanteds();
 		});
 	};
 
@@ -49,10 +51,11 @@ angular.module('freeNycApp')
   		});
   	}
 
-  	vm.submitRating = function(id, rating) {
-  		userInfoService.rateTransaction(id, Number(rating), function(result) {
-  			console.log('CLIENT SIDE', result);
-  		});
+  	vm.submitData = function() {
+      console.log('post', $scope.post)
+  		// userInfoService.rateTransaction(id, Number(rating), function(result) {
+  		// 	console.log('CLIENT SIDE', result);
+  		// });
   	}
 
 	//if on .currentWanteds view, execute function

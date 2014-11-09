@@ -18,6 +18,8 @@ router.post('/', controller.create);
 router.put('/:id', controller.update);
 router.put('/enableRatings/:id/', controller.enableRatings);
 router.put('/populateBid/:id', controller.populateBid);
+router.put('/abortTransaction/:postId/', controller.abortTransaction);
+router.put('/getPostBids/:id/', controller.getPostBids);
 router.patch('/:id', controller.update);
 router.delete('/:id', controller.destroy);
 

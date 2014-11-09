@@ -11,7 +11,9 @@
 			<input type="text" name='keywords' ng-model='keywords' ng-enter="items.submitKeywords()"> 
 			<div class='individual-post' ng-repeat="post in allPosts">
 				<h4>{{post.postTitle}}</h4>
-				<img class='image' src = "{{post.img[0]}}">
+				<div ng-if='post.img.length > 0'>
+					<img class='image' src = "{{post.img[0]}}">
+				</div>
 					POST TYPE: {{post.postType}}
 					<br>
 
@@ -29,12 +31,16 @@
 					USER: {{post.user.email}}
 				</p>
 
-				<button class='btn btn-primary' ng-if = "post.postType === 'offered'" ng-click='items.bidOnItem(post._id, post.user._id, $index)'>Bid</button>
-				<button class='btn btn-warning' ng-if='biddedOn[$index]' ng-click='items.showMessageForm($index)'>Send a Message</button>
-				<form ng-if='messageForm[$index]'>
-					<input type="text" ng-model='newMessage.body'>
-					<button ng-click='items.sendMessage(post.user._id)'>Submit</button>
-				</form>
+				<div ng-hide='bidPressed[$index]'>
+					<button class='btn btn-primary' ng-if="post.postType === 'offered'" ng-click='items.bidOnItem(post._id, post.user._id, $index)'>Bid</button>
+					<button class='btn btn-warning' ng-if='biddedOn[$index]' ng-click='items.showMessageForm($index)'>Send a Message</button>
+					<form ng-if='messageForm[$index]'>
+						<input type="text" ng-model='messageArray[$index].body'>
+						<button ng-click='items.sendMessage(post.user._id, $parent.$index)'>Submit</button>
+					</form>
+				</div>
+
+
 			</div>
 
 		</div>

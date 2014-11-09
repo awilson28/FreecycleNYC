@@ -48,10 +48,12 @@ exports.create = function(req, res) {
 
 //enables ratings on transactions via posts field
 exports.enableRatings = function(req, res){
-  Post.findByIdAndUpdate(req.params.id, {ratingsEnabled: true}, function (err, post) {
+  console.log('body', req.body)
+  Post.findByIdAndUpdate(req.params.id, {ratingsEnabled: true, $push: {inTransactionWith: req.body.userId}},  function (err, post) {
     if(err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
     return res.json(post);
+    console.log(post)
   });
 }
 
@@ -79,6 +81,28 @@ exports.populateBid = function(req, res) {
         });
       });
 };
+
+exports.getPostBids = function(req, res){
+  Post.findById(req.params.id, {'bids':1})
+    .populate('bids', 'name')
+    .exec(function (err, post) {
+    if (err) { return handleError(res, err); }
+    if(!post) { return res.send(404); }
+    console.log('post', post)
+    return res.json(post)
+  });
+}
+
+
+
+exports.abortTransaction = function(req, res){
+  Post.findByIdAndUpdate(req.params.postId, {ratingsEnabled: false}, function(err, post){
+    post.abortTransaction(req.body.id, function(newPost){
+      return res.json(newPost)
+    })
+  })
+}
+
 
 // Updates an existing post in the DB.
 exports.update = function(req, res) {
