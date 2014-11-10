@@ -1,23 +1,29 @@
 <h1>Your Current Wanteds</h1>
 <div class='individual-post' ng-repeat="post in currentWanteds">
   <div ng-hide="obj[$index]">
-  	<h4>{{post.postTitle}}</h4>
-  	<p>
-  		POST TYPE: {{post.postType}}
-  		<br>
-  		<br>
-  		{{post.description}}
-  		<br>
-  		{{post.dimensions}}
-  		<br>
-  		{{post.crossStreets}}
-  		<br>
-  		{{post.itemType}}
-  		<br>
-  		{{post.keyWords}}
-  		<br>
-  		USER: {{post.user.name}}
-  	</p>
+  	<h3>{{$index+1}}. {{post.postTitle}}</h3>
+    <div ng-if='post.img.length > 0'>
+      <img class='image' src = "{{post.img[0]}}">
+    </div>
+    <p>
+      <h5>Post Type: </h5> {{post.postType | capitalize}}
+      <br>
+      <h5>Date: </h5> {{post.date | date: 'short'}}
+      <br>
+      <h5>Description: </h5> {{post.description | capitalizeFirst}}
+      <br>
+      <h5>Size: </h5> {{post.dimensions}}
+      <br>
+      <h5>Location: </h5> {{post.crossStreets | capitalize}}
+      <br>
+      <h5>Item type: </h5> {{post.itemType}}
+      <br>
+      <h5>Keywords: </h5> {{post.keyWords | joinKeywords | capitalize}}
+      <br>
+      <h5>Posted by: </h5> {{post.user.email}}
+      USER: {{post.user.name}}
+      ID: {{post._id}}
+    </p>
 
   	<button class="btn btn-danger" ng-click="userWanteds.deleteOption(post._id, $index)">Delete</button>
   	<button class="btn btn-warning" ng-click="userWanteds.editOption($index)">Edit</button>
@@ -71,8 +77,8 @@
 
 
 
-
-  <button type="submit" class="btn btn-default" ng-click='userWanteds.submitData(post, PostForm.$valid)'>Submit</button>
+  ID: {{post._id}}
+  <button type="submit" class="btn btn-default" ng-click='userWanteds.submitData(post._id, post, $index, PostForm.$valid)'>Submit</button>
   <!-- FIX FORM VALIDATION -->
 
 </form>

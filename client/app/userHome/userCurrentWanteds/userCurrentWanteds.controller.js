@@ -51,11 +51,15 @@ angular.module('freeNycApp')
   		});
   	}
 
-  	vm.submitData = function() {
-      console.log('post', $scope.post)
-  		// userInfoService.rateTransaction(id, Number(rating), function(result) {
-  		// 	console.log('CLIENT SIDE', result);
-  		// });
+  	vm.submitData = function(id, post, index) {
+      // console.log('id', id)
+      // console.log('post', post)
+      post.user = post.user._id
+      postService.updatePost(id, post, function(result){
+        $scope.obj[index] = false;
+        // console.log('updated want', result)
+      });
+
   	}
 
 	//if on .currentWanteds view, execute function

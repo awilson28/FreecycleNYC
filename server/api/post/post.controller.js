@@ -6,9 +6,21 @@ var User = require('../user/user.model');
 
 
 // Get list of posts
+// exports.index = function(req, res) {
+//   var user = req.user.name;
+//   // console.log('req.query', req.query)
+//   // console.log('req.query.skip', req.query.skip)
+//   Post.find({taken: false}).skip(req.query.skip * 10).limit(10)
+//       .populate('user')
+//       .exec(function (err, posts) {
+//         if(err) { return handleError(res, err); }
+//         // console.log('returned posts', posts)
+//         return res.json(200, posts);
+//       });
+// };
+
 exports.index = function(req, res) {
   var user = req.user.name;
-  //bids: {$nin: [req.user._id]}
   Post.find({taken: false})
       .populate('user')
       .exec(function (err, posts) {
@@ -111,8 +123,10 @@ exports.update = function(req, res) {
     if (err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
     var updated = _.merge(post, req.body);
+    console.log('updated', updated)
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
+
       return res.json(200, post);
     });
   });

@@ -10,7 +10,9 @@ angular.module('freeNycApp')
         $http.post('/api/posts', data).success(callback);
       }
 
-      this.getData = function(callback){
+      this.getData = function(callback, paginationData){
+        // paginationData = paginationData || {skip: 0}
+        // {params: paginationData}
         $http.get('/api/posts').success(callback);
       }
 
@@ -50,10 +52,7 @@ angular.module('freeNycApp')
       this.retrieveBidsPost = function(id, callback){
          $http.put('/api/posts/getPostBids/'+ id + "/").success(callback);
       }
-
     }
-
-
 
     return new makePost();
   })

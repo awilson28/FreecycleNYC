@@ -20,6 +20,7 @@ var UserSchema = new Schema({
   currentTransactions: [{type: Schema.Types.ObjectId, ref: 'Post'}],
   messsages: [{type: Schema.Types.ObjectId, ref: 'Thing'}],
   alerts: [{type: Schema.Types.ObjectId, ref: 'Post'}],
+  numMessages: {type: Number, default: 0},
   hashedPassword: String,
   provider: String,
   salt: String,

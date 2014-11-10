@@ -13,19 +13,3 @@
 	background-color: #fff;
 	color: #000;
 }
-
-.individual-post {
-	margin: 1em;
-	padding: 1em;
-	background-color: #a8a8a8;
-	border-radius: .5em;
-}
-
-.individual-post p{
-	font-size: 1em;
-}
-
-.image{
-	width: 75px;
-	height: 75px;
-}

@@ -14,25 +14,38 @@ angular.module('freeNycApp', [
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider.otherwise('/');
     $stateProvider
+     .state('main', {
+        url: '/',
+        templateUrl: 'app/main/main.html',
+        controller: 'MainCtrl', 
+        authenticate: false
+      })
       .state('allItems', {
         url: '/home', 
         templateUrl: 'app/allItems/allItems.html', 
-        controller: 'AllitemsCtrl as items'
+        controller: 'AllitemsCtrl as items', 
+        authenticate: true
+
       })
       .state('singlePost', {
         url: '/singlePost/:id',
         templateUrl: 'app/allItems/singlePostView.html',
-        controller: 'singlePostController as single'
+        controller: 'singlePostController as single', 
+        authenticate: true
+
       })
       .state('postItem', {
         url: '/post_an_item',
         templateUrl: 'app/postItem/postItem.html', 
-        controller: 'PostitemCtrl as postItem' 
+        controller: 'PostitemCtrl as postItem',
+        authenticate: true
       })
       .state('userHome', {
         url: '/userHome',
         templateUrl: 'app/userHome/userHome.html',
-        controller: 'UserhomeCtrl as user'
+        controller: 'UserhomeCtrl as user', 
+        authenticate: true
+
       })
       .state('userHome.currentOffers', {
         url: '/currentOffers',
@@ -111,6 +124,6 @@ angular.module('freeNycApp', [
       });
     });
   })
-  .run(function(editableOptions){
-    editableOptions.theme ='bs3';
-  });
+  // .run(function(editableOptions){
+  //   editableOptions.theme ='bs3';
+  // });

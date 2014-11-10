@@ -1,47 +1,61 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-<div class='row'>
-	<div class='col-sm-12 col-lg-3'>
-		<ul>
-		
-			<li><a ui-sref=".currentOffers" ng-click='user.getCurrentOffers()'>Current Offers</a></li>
-			<li><a ui-sref=".currentWanteds" ng-click='user.getCurrentWanteds()'>Current Wanteds</a></li>
-			<li><a ui-sref=".pastWanteds" ng-click='user.getPastWanteds'>Current Transactions</a></li>
-			<li><a ui-sref=".pastOffers" ng-click='user.getPastOffers'>Past Offers</a></li>
-			<li><a ui-sref=".wishList" ng-click='user.getWishList()'>Wishlist</a></li>
-			<li><a ui-sref=".messages" ng-click="user.getMessages()">Messsages</a></li>
-		</ul>
-	</div>
-	<div class='col-sm-12 col-lg-9'>
-		<div ui-view>
-			<h2>Hello {{userInfo.name}}</h2>
-			<h3>Your current rating is: {{userInfo.rating}}</h3>
-			<h1>Alerts:</h2>
-<!-- 			<div ng-repeat='alert in userInfo.alerts'>
- -->				<label>{{$index + 1}}: </label>
-				<a ng-click="user.goToAlert(alert)">{{alert}}</a>
-			<br>
-			<div class='individual-post' ng-repeat="post in bids">
-				<h4>{{post.postTitle}}</h4> 
-				<p> Bids: {{post.numBids}}</p>
-				<p>
-				POST TYPE: {{post.postType}}
-				<br>
-				<br>
-				{{post.description}}
-				<br>
-				{{post.dimensions}}
-				<br>
-				{{post.crossStreets}}
-				<br>
-				{{post.itemType}}
-				<br>
-				{{post.keyWords}}
-				<br>
-				{{post.taken}}
-				<br>
-				USER: {{userInfo.name}}
-				</p>
-			</div>
-<!-- 		</div>
- -->	</div>
-</div>
+  <div id="wrapper">
+    <div id="sidebar-wrapper">
+      <ul>
+        <li><a ui-sref=".currentOffers" ng-click='user.getCurrentOffers()'>Current Offers</a>
+        </li>
+        <li><a ui-sref=".currentWanteds" ng-click='user.getCurrentWanteds()'>Current Wanteds</a>
+        </li>
+        <li><a ui-sref=".pastWanteds" ng-click='user.getPastWanteds'>Current Transactions</a>
+        </li>
+        <li><a ui-sref=".pastOffers" ng-click='user.getPastOffers'>Past Offers</a>
+        </li>
+        <li><a ui-sref=".wishList" ng-click='user.getWishList()'>Wishlist</a>
+        </li>
+        <li><a ui-sref=".messages" ng-click="user.getMessages()">Messsages</a>
+        </li>
+      </ul>
+    </div>
+    <div id="page-content-wrapper">
+      <div class="page-content">
+        <div class="container">
+          <div class="row">
+            <div class='col-sm-12 col-lg-9'>
+              <div ui-view>
+                <h2>Hello {{userInfo.name}}</h2>
+                <h5>Your current rating is: {{userInfo.rating}}</h5>
+                <h4>Wishlist Matches:</h4>
+                	<div ng-repeat='alert in userInfo.alerts'>
+                		<h6>{{$index + 1}}: <a ng-click="user.goToAlert(alert)">{{alert}}</a></h6>
+                	</div>
+                <br>
+                <div class='individual-post' ng-repeat="post in bids">
+                  <h3>{{$index + 1}}. <a href="/singlePost/{{post._id}}"> {{post.postTitle}}</a></h3>
+                  <h5>Bids: </h5>{{post.numBids}}
+                  <p>
+                    <h5>Post Type: </h5> {{post.postType | capitalize}}
+                    <div ng-if='post.img.length > 0'>
+                      <img class='image' src="{{post.img[0]}}">
+                    </div>
+                    <br>
+                    <h5>Date: </h5> {{post.date | date: 'short'}}
+                    <br>
+                    <br>
+                    <h5>Description: </h5>{{post.description | capitalizeFirst}}
+                    <br>
+                    <h5>Dimensions: </h5>{{post.dimensions}}
+                    <br>
+                    <h5>Address: </h5>{{post.crossStreets | capitalize}}
+                    <br>
+                    <h5>Item Type: </h5>{{post.itemType}}
+                    <br>
+                    <h5>Keywords: </h5>{{post.keyWords | joinKeywords | capitalize}}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

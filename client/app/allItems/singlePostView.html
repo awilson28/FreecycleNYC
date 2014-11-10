@@ -2,31 +2,38 @@
 
 <div class='jumbotron col-md-4 col-md-push-4'>
   <div class='container vertical-center'>
-  	<h4>{{post.postTitle}}</h4>
-  	<p>
-		POST TYPE: {{post.postType}}
-		<br>
+		<h4>{{$index + 1}}. {{post.postTitle | capitalize}}</h4>
+      <h5>Bids: </h5>{{post.numBids}}
+      <p>
+        <h5>Post Type: </h5> {{post.postType | capitalize}}
+        <div ng-if='post.img.length > 0'>
+          <img class='image' src="{{post.img[0]}}">
+        </div>
+        <br>
+        <h5>Date: </h5> {{post.date | date: 'short'}}
+        <br>
+        <br>
+        <h5>Description: </h5>{{post.description | capitalizeFirst}}
+        <br>
+        <h5>Dimensions: </h5>{{post.dimensions}}
+        <br>
+        <h5>Address: </h5>{{post.crossStreets | capitalize}}
+        <br>
+        <h5>Item Type: </h5>{{post.itemType}}
+        <br>
+        <h5>Keywords: </h5>{{post.keyWords | joinKeywords | capitalize}}
+        <br>
+        USER: {{post.user}}
+      </p>
 
-		<br>
-		{{post.description}}
-		<br>
-		{{post.dimensions}}
-		<br>
-		{{post.crossStreets}}
-		<br>
-		{{post.itemType}}
-		<br>
-		{{post.keyWords}}
-		<br>
-		USER: {{post.user.email}}
-	</p>
-
-	<button class='btn btn-primary' ng-if = "post.postType === 'offered'" ng-click='items.bidOnItem(post._id, post.user._id, $index)'>Bid</button>
-	<button class='btn btn-warning' ng-if='biddedOn[$index]' ng-click='items.showMessageForm($index)'>Send a Message</button>
-	<form ng-if='messageForm[$index]'>
-		<input type="text" ng-model='newMessage.body'>
-		<button ng-click='items.sendMessage(post.user._id)'>Submit</button>
-	</form>
+			<div ng-hide='bidPressed[$index]'>
+				<button class='btn btn-primary' ng-if="post.postType === 'offered'" ng-click='single.bidOnItem(post._id, post.user._id, $index)'>Bid</button>
+				<button class='btn btn-warning' ng-if='biddedOn[$index]'>Send a Message</button>
+				<form ng-if='messageForm[$index]'>
+					<input type="text" ng-model='messageArray[$index].body'>
+					<button ng-click='single.sendMessage(post.user, $parent.$index)'>Submit</button>
+				</form>
+			</div>
   </div>
 
 </div>

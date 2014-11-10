@@ -1,5 +1,7 @@
 .jumbotron {
 	float: center;
+	background: none;
+	color: #dcdbcd;
 }
 
 
@@ -20,10 +22,16 @@
 	margin-top: 10px;
 }
 
+#keywordContainer {
+	clear: both;
+	margin: 1em 0;
+}
+
 .keyWordBubble {
 	padding: .5em;
 	margin: 0 .5em;
-	background-color: green;
+	border: 2px solid rgba(255, 255, 255, 0.7);
+	float: left;
 	border-radius: .4em;
 }
 

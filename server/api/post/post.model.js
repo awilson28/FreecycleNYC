@@ -61,8 +61,10 @@ PostSchema.methods = {
 PostSchema.post('save', function(users){
   this.findRelevantUsers(function(users, self){
     for (var i = 0; i < users.length; i++){
-      users[i].alerts.push(self._id)
-      users[i].save()
+      if (users[i].alerts.indexOf(self._id) === -1) {
+        users[i].alerts.push(self._id)
+        users[i].save()     
+      }
     }
   })
 })

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('AllitemsCtrl', function ($scope, offersOnlyFilter, wantedOnlyFilter, postService, messageService) {
+  .controller('AllitemsCtrl', function ($scope, joinKeywordsFilter, offersOnlyFilter, wantedOnlyFilter, postService, messageService) {
 	
 	var vm = this; 
 	$scope.keywords = ""; 
@@ -15,12 +15,25 @@ angular.module('freeNycApp')
 	$scope.biddedOn = {};
 	$scope.bidPressed = {};
 	$scope.messageForm = {};
+	$scope.temp = {start: 0, end: 10}
 
 	//activates keywords search 
 	vm.submitKeywords = function(){
 		postService.filterData($scope.keywords, function(results){
 			$scope.allPosts = results;
 		})
+	}
+
+	vm.changePage = function(item){
+		if (item === 'previous'){
+			$scope.temp.start -= 10; 
+			$scope.temp.end -= 10;
+		}
+		else {
+			$scope.temp.start += 10;
+			$scope.temp.end += 10; 
+		}
+		$scope.currentPosts = $scope.allPosts.slice($scope.temp.start, $scope.temp.end)
 	}
 
 	//retrieves all posts and passes posts through the wantedOnlyFilter
@@ -30,7 +43,9 @@ angular.module('freeNycApp')
 			$scope.allPosts = wantedOnlyFilter(results, 'postType');
 			for (var i = 0; i < results.length; i++){
 				$scope.address.push(results[i].crossStreets)
-			}		
+			}	
+			$scope.currentPosts = $scope.allPosts.slice($scope.temp.start, $scope.temp.end)
+	
 		})
 	}
 
@@ -41,7 +56,9 @@ angular.module('freeNycApp')
 			$scope.allPosts = offersOnlyFilter(results, 'postType');
 			for (var i = 0; i < results.length; i++){
 				$scope.address.push(results[i].crossStreets)
-			}		
+			}
+			$scope.currentPosts = $scope.allPosts.slice($scope.temp.start, $scope.temp.end)
+		
 		})
 	}
 
@@ -50,6 +67,8 @@ angular.module('freeNycApp')
 		postService.getData(function(results){
 			$scope.address = [];
 			$scope.allPosts = results;
+			$scope.currentPosts = $scope.allPosts.slice(0, 10)
+			console.log('results', $scope.allPosts)
 			for (var i = 0; i < results.length; i++){
 				$scope.address.push(results[i].crossStreets)
 			}
@@ -66,10 +85,6 @@ angular.module('freeNycApp')
 			console.log('bid', result);
 		})
 	}
-
-	// vm.showMessageForm = function(index) {
-		
-	// }
 
 	//click event that sends a message to the owner of the item 
 	vm.sendMessage = function(recipient, index) {
@@ -138,7 +153,7 @@ angular.module('freeNycApp')
 	var setMap = function(){
 		for (var i = 0; i < $scope.allPosts.length; i++){
 			if (typeof $scope.address[i] !== 'undefined'){
-				console.log('addresses', $scope.address[i])
+				// console.log('addresses', $scope.address[i])
 				codeAddress($scope.address[i], $scope.allPosts[i])
 			}
 		}
@@ -175,6 +190,13 @@ angular.module('freeNycApp')
   	return filtered;
   	}
   })
+  .filter('joinKeywords', function(){
+  	return function(items){
+  		if(items != null){
+  			return items.join(' ');
+  		}
+  	}
+  })
   .directive('ngEnter', function(){
   	return function(scope, element, attrs){
   		element.bind('keydown keypress', function(event){
@@ -186,4 +208,28 @@ angular.module('freeNycApp')
   			}
   		});
   	};
-  });
+  })
+  .filter('capitalize', function() {
+  	return function(input) {
+  		var filtered = []; 
+    	if (input!=null){
+				var words = input.split(" ")
+				for (var i = 0; i < words.length; i++){
+					if (words[i] === 'and'){
+						words[i] = '&'
+					}
+					var newWord = words[i].substring(0, 1).toUpperCase() + words[i].substring(1)
+					filtered.push(newWord)				
+				}
+			}
+		return filtered.join(" "); 
+	}
+})
+  .filter('capitalizeFirst', function() {
+  	return function(input) {
+    	if (input!=null) {
+	    	input = input.toLowerCase();
+	    	return input.substring(0,1).toUpperCase()+input.substring(1);	
+    	}
+ 	}
+});

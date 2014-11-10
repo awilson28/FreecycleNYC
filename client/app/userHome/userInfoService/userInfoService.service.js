@@ -25,6 +25,7 @@ angular.module('freeNycApp')
         $http.put('/api/userInfos/rateUser/'+id, obj).success(callback);
       }
 
+
     }
 
     return new getInfo();

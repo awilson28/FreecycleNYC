@@ -50,26 +50,21 @@
     <br>
 
     <label for="keywords">Key words</label>
-    <input name="keyWords" ng-model='tempKeyword' class="form-control" id="keyWords" ui-validate="'validateKeywords()'">
-    <span class="keyWordBubble" ng-repeat="word in formData.keyWords">{{word}}</span>
+    <input name="keyWords" ng-model='tempKeyword' class="form-control" id="keyWords" ui-validate="'validateKeywords()'" ng-enter="postItem.addKeyWord(tempKeyword)">
+    <div id="keywordContainer">
+      <div class="keyWordBubble" ng-repeat="word in formData.keyWords">{{word}}</div>
+    </div>
     <br>
     <button class="btn btn-primary" ng-click="postItem.addKeyWord(tempKeyword)">Add Key Words</button>
     <br>
+    <button class='btn btn-primary' ng-click="postItem.filepicker(postItem.fpConfig, postItem.onSuccess)"> Save File</button>
 
-<button ng-click="postItem.filepicker(postItem.fpConfig, postItem.onSuccess)"> Save File</button>
-<!-- <button ng-click='add()'>Add</button> -->
+    <div ng-repeat="img in formData.img">
+      <button ng-click="postItem.deleteImage($index)">Delete</button>
+      <img class="previewImg" ng-src="{{img}}">
+    </div>
+    <br>
+    <button type="submit" class="btn btn-default" ng-click='postItem.submitData(formData, PostForm.$valid)'>Submit</button>
 
-<div ng-repeat="img in formData.img">
-  <button ng-click="postItem.deleteImage($index)">Delete</button>
-  <img class="previewImg" ng-src="{{img}}">
-</div>
-
-
-
-
-  <button type="submit" class="btn btn-default" ng-click='postItem.submitData(formData, PostForm.$valid)'>Submit</button>
-  <!-- FIX FORM VALIDATION -->
-  <br>
-  <div>{{PostForm.keyWords.$valid}}</div>
 </form>
 </div>

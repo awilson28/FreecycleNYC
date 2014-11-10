@@ -1,19 +1,20 @@
-
+You have {{numMessages}} new messages
 <div ng-repeat= 'talk in communication'>
-	<h4> From: {{talk.conversants[0].name}}</h4>
-	<a ng-click="messages.showMessages($index)">Show Conversation {{$index+1}}</a>
-	<div ng-if="showMe[$index]">
+	<h4> From: {{talk.conversants.name}}</h4>
+	<a ng-click="messages.showMessages($index, talk._id)">Show Conversation</a>
+	<div ng-if="showMe[$index].show">
 		<div ng-repeat="m in talk.messages">
 			{{$parent.$index+1}}
 			<h4> Body: {{m.body}}</h4>
 			<h4> ID: {{talk._id}}</h4>
-			<h4> NAME: {{talk.name}}</h4
+			<h4> NAME: {{talk.name}}</h4>
+			<h4> New Messages: {{talk.numNewMessages}}
 			<button class='btn btn-primary' ng-click='messages.replyButton($index, $parent.$index)'>Reply</button>
 			<br>
 			<br>
 				<form ng-if='showMe[$parent.$index][$index]'>
 					<input type="text" ng-model='newMessage.body'>
-					<button ng-click='messages.reply(talk._id)'>Submit</button>
+					<button ng-click='messages.reply(talk._id, $parent.$index, $parent.$parent.$index)'>Submit</button>
 				</form>
 			<br>
 			<br>
