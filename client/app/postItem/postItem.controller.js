@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('PostitemCtrl', function ($scope, $http, $upload, Auth, $location, postService, $state) {
+  .controller('PostitemCtrl', function ($scope, $http, Auth, $location, postService, $state) {
   	var vm = this; 
 
   	$scope.formData = {
@@ -73,10 +73,15 @@ angular.module('freeNycApp')
     //delete image functionality 
     vm.deleteImage = function(index){
       filepicker.remove($scope.Blobs[index], function(){
-        console.log('index', $scope.Blobs[index])
         $scope.formData.img.splice(index, 1);
+        $scope.Blobs.splice(index, 1);
         $scope.$apply();
       })
+    }
+
+    //remove keyword functionality
+    vm.dropKeyword = function(index) {
+      $scope.formData.keyWords.splice(index, 1)
     }
 
     // VALIDATION TO BE FIXED
@@ -102,6 +107,7 @@ angular.module('freeNycApp')
       $scope.Blobs.push(Blobs[i]);
       $scope.$apply();
     }
+    console.log('success Blobs', $scope.Blobs)
   };
 
   vm.filepicker = filepicker.pickMultiple;

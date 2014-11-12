@@ -1,15 +1,37 @@
 #map-canvas {
-	margin: auto;
+	/*margin: auto;*/
 	width: 700px;
-  margin-top: 20px; }
+  margin-top: 20px;
+	height: 500px;
+}
 
+.map-column{
+	margin-top:20px;
+}
 
-.tooltip { position:absolute;
-	width: 145px;
-	padding: 5px;
-	border: 1px solid gray;
-	font-size: 9pt;
-	font-family: Verdana;
-	background-color: #fff;
-	color: #000;
+.pageButtons {
+	font-size: 1.2em;
+	font-weight: bold;
+	color: rgba(255, 255, 245, 0.8);
+	text-decoration: none;
+	cursor: pointer;
+	margin-top:20px;
+}
+
+.pageButtons:hover {
+	text-decoration:none;
+	color: rgba(200, 200, 200, 0.8);
+}
+
+.buttonHolder {
+	margin: 1em auto;
+	width:80%;
+}
+
+@media (max-width:768px) {
+
+	#map-canvas {
+		margin:auto;
+	}
+
 }

@@ -3,7 +3,9 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     User = require('../user/user.model'),
-    textSearch = require('mongoose-text-search');
+    textSearch = require('mongoose-text-search'),
+    nodemailerConfig = require('../../config/nodemailer'),
+    async = require('async');
 
 
 var PostSchema = new Schema({
@@ -40,10 +42,16 @@ PostSchema.methods = {
     }
   }, 
   findRelevantUsers: function(callback){
-    var self = this; 
-    User.find({'wishList.itemName': {$in: self.keyWords}}, function(err, users){
+    var self = this;
+    var matchArr = [].concat(self.keyWords).concat(self.postTitle.split(' '));
+    console.log('MATCH ARRAY', matchArr);
+    User.find({$or: [{'wishList.itemName': {$in: matchArr}}, {'wishList.keywords': {$in: matchArr}}]}, function(err, users){
       callback(users, self)
     })
+    // User.matchUserWishlist(matchArr, function(err, users){
+    //   console.log('MATCHEEDDDDDD', users, 'ERRORS', err);
+    //   callback(users, self);
+    // });
   }, 
   abortTransaction: function(id, callback){
     console.log('id', id)
@@ -60,12 +68,32 @@ PostSchema.methods = {
 
 PostSchema.post('save', function(users){
   this.findRelevantUsers(function(users, self){
-    for (var i = 0; i < users.length; i++){
-      if (users[i].alerts.indexOf(self._id) === -1) {
-        users[i].alerts.push(self._id)
-        users[i].save()     
+    async.each(users, function(user, done){
+      if (user.alerts.indexOf(self._id) === -1) {
+        user.alerts.push(self._id)
+        user.save(function(err, userLater, numModified) {
+          var options = {
+            from: 'freestorenyc@gmail.com',
+            to: user.email,
+            subject: 'An item matches your wishlist.',
+            text: 'Check out your alerts to bid.'
+          }
+          console.log('nodemailerConfig', options)
+          nodemailerConfig.transporter.sendMail(options, function(error, info){
+              if(error){
+                  console.log(error);
+              }else{
+                  console.log('Message sent: ' + info.response);
+              }
+          nodemailerConfig.transporter.close();
+          done(null)    
+          });
+        }); 
+      } else {
+        console.log('in else')
+        done(null) 
       }
-    }
+    })
   })
 })
 

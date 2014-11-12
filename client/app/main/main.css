@@ -12,9 +12,7 @@
 }
 
 #banner h1 {
-   font-size: 60px;
-   line-height: 1;
-   letter-spacing: -1px;
+   font-size: 5em;
 }
 
 #banner a{
@@ -26,7 +24,17 @@
    position: relative;
    padding: 30px 15px;
    color: #F5F5F5 ;
-   text-align: center;
    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-   background: #5bb984;
+   background-color: rgba(0, 0, 0, 0.6);
+}
+
+#banner p {
+  font-size:1.4em;
+}
+
+sup {
+  top:-1.5em;
+  left:-.3em;
+  font-weight:bold;
+  font-size: 40%;
 }

@@ -1,59 +1,53 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
-  <div id="wrapper">
-    <div id="sidebar-wrapper">
-      <ul>
-        <li><a ui-sref=".currentOffers" ng-click='user.getCurrentOffers()'>Current Offers</a>
-        </li>
-        <li><a ui-sref=".currentWanteds" ng-click='user.getCurrentWanteds()'>Current Wanteds</a>
-        </li>
-        <li><a ui-sref=".pastWanteds" ng-click='user.getPastWanteds'>Current Transactions</a>
-        </li>
-        <li><a ui-sref=".pastOffers" ng-click='user.getPastOffers'>Past Offers</a>
-        </li>
-        <li><a ui-sref=".wishList" ng-click='user.getWishList()'>Wishlist</a>
-        </li>
-        <li><a ui-sref=".messages" ng-click="user.getMessages()">Messsages</a>
-        </li>
-      </ul>
-    </div>
-    <div id="page-content-wrapper">
-      <div class="page-content">
-        <div class="container">
-          <div class="row">
-            <div class='col-sm-12 col-lg-9'>
-              <div ui-view>
-                <h2>Hello {{userInfo.name}}</h2>
-                <h5>Your current rating is: {{userInfo.rating}}</h5>
-                <h4>Wishlist Matches:</h4>
-                	<div ng-repeat='alert in userInfo.alerts'>
-                		<h6>{{$index + 1}}: <a ng-click="user.goToAlert(alert)">{{alert}}</a></h6>
-                	</div>
-                <br>
-                <div class='individual-post' ng-repeat="post in bids">
-                  <h3>{{$index + 1}}. <a href="/singlePost/{{post._id}}"> {{post.postTitle}}</a></h3>
-                  <h5>Bids: </h5>{{post.numBids}}
-                  <p>
-                    <h5>Post Type: </h5> {{post.postType | capitalize}}
-                    <div ng-if='post.img.length > 0'>
-                      <img class='image' src="{{post.img[0]}}">
-                    </div>
-                    <br>
-                    <h5>Date: </h5> {{post.date | date: 'short'}}
-                    <br>
-                    <br>
-                    <h5>Description: </h5>{{post.description | capitalizeFirst}}
-                    <br>
-                    <h5>Dimensions: </h5>{{post.dimensions}}
-                    <br>
-                    <h5>Address: </h5>{{post.crossStreets | capitalize}}
-                    <br>
-                    <h5>Item Type: </h5>{{post.itemType}}
-                    <br>
-                    <h5>Keywords: </h5>{{post.keyWords | joinKeywords | capitalize}}
-                  </p>
-                </div>
+  <div class="container">
+    <div class="row">
+    	<div id="userHomeNav">
+		    <ul>
+		      <li ng-click='user.getCurrentOffers()'><a ui-sref=".currentOffers">Current Offers</a>
+		      </li>
+		      <li ng-click='user.getCurrentWanteds()'><a ui-sref=".currentWanteds">Current Wanteds</a>
+		      </li>
+		      <li  ng-click='user.getPastWanteds()'><a ui-sref=".pastWanteds">Current Transactions</a>
+		      </li>
+		      <li ng-click='user.getPastOffers()'><a ui-sref=".pastOffers">Past Offers</a>
+		      </li>
+		      <li ng-click='user.getWishList()'><a ui-sref=".wishList">Wishlist</a>
+		      </li>
+		      <li ng-click="user.getMessages()"><a ui-sref=".messages">Messages</a>
+		      </li>
+		    </ul>	
+    	</div>
+    	<div class='col-sm-12 col-md-3 col-lg-3'></div>
+      <div id='ui-column' class='col-sm-12 col-md-7 col-lg-7 col-lg-offset-3 col-md-offset-3'>
+        <div ui-view>
+          <h2 class='offWhiteText'>Hello, {{userInfo.name}}</h2>
+          <h5 class='offWhiteText rating'>Your rating: {{userInfo.rating}} out of 5</h5>
+          <h4 class='offWhiteText'>See Your Wishlist Matches:</h4>
+          	<div ng-repeat='alert in userInfo.alerts'>
+          		<h6> <a ng-click="user.goToAlert(alert)">{{$index + 1}}. {{alert}}</a></h6>
+          	</div>
+          <br>
+          <div class='individual-post' ng-repeat="post in bids">
+            <h3>{{$index + 1}}. <a href="/singlePost/{{post._id}}"> {{post.postTitle | capitalize}}</a></h3>
+            <h5>Bids: </h5>{{post.numBids}}
+            <p>
+              <h5>Post Type: </h5> {{post.postType | capitalize}}
+              <div ng-if='post.img.length > 0'>
+                <img class='image' src="{{post.img[0]}}">
               </div>
-            </div>
+              <br>
+              <h5>Description: </h5>{{post.description | capitalizeFirst}}
+              <br>
+              <h5>Address: </h5>{{post.crossStreets | capitalize}}
+              <br>
+              <h5>Item Type: </h5>{{post.itemType}}
+              <br>
+              <h5>Keywords: </h5>{{post.keyWords | joinKeywords | capitalize}}
+              <br>
+              <h5>Dimensions: </h5>{{post.dimensions}}
+              <br>
+              <h5>Date: </h5> {{post.date | date: 'short'}}
+            </p>
           </div>
         </div>
       </div>

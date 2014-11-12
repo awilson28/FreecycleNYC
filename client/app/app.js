@@ -7,9 +7,7 @@ angular.module('freeNycApp', [
   'btford.socket-io',
   'ui.router',
   'ui.bootstrap',  
-  'ui.utils',
-  'angularFileUpload', 
-  'xeditable'
+  'ui.utils'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider.otherwise('/');

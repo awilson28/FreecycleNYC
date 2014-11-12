@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
 var ThingSchema = new Schema({
   messages: [{
 	  body: String,
+	  date: {type: Date, default: Date.now},
 	  sender: {type: Schema.Types.ObjectId, ref: 'User'},
 	  recipient: {type: Schema.Types.ObjectId, ref: 'User'}
   }],

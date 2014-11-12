@@ -1,16 +1,18 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
 
-<div class='jumbotron col-md-4 col-md-push-4'>
-  <div class='container vertical-center'>
+<div class='jumbotron col-sm-4 centered'>
+<div class='container vertical-center'>
 <form name="PostForm" novalidate>
-  <div class="checkbox">
-    <label class='checkbox-inline'>
-      <input type="radio" name='post-type' ng-click='postItem.myClick("offered")'> I'm offering an Item<br>
+  <div class="post-type-button">
+    <label>
+      <input type="radio" name='post-type' ng-click='postItem.myClick("offered")'>
+      <span>I'm offering an Item</span>
     </label>
   </div>
-  <div class='checkbox'>
-     <label class= 'checkbox-inline'>
-      <input type="radio" name='post-type' ng-click='postItem.myClick("wanted")'> I'm looking for an Item<br>
+  <div class='post-type-button'>
+     <label>
+      <input type="radio" name='post-type' ng-click='postItem.myClick("wanted")'>
+      <span>I'm looking for an Item</span>
     </label>
   </div>
 
@@ -24,6 +26,17 @@
       <li ng-click="postItem.OnItemClick('Electronics')">Electronics</li>
       <li ng-click="postItem.OnItemClick('Household')">Household</li>
       <li ng-click="postItem.OnItemClick('Transport')">Transport</li>
+      <li ng-click="postItem.OnItemClick('Miscellaneous')">Appliances</li>
+      <li ng-click="postItem.OnItemClick('Miscellaneous')">Antiques</li>
+      <li ng-click="postItem.OnItemClick('Miscellaneous')">Arts + Crafts</li>
+      <li ng-click="postItem.OnItemClick('Miscellaneous')">Farm + Garden</li>
+      <li ng-click="postItem.OnItemClick('Miscellaneous')">Books</li>
+      <li ng-click="postItem.OnItemClick('Miscellaneous')">Cars + Trucks</li>
+      <li ng-click="postItem.OnItemClick('Miscellaneous')">Toys + Games</li>
+      <li ng-click="postItem.OnItemClick('Miscellaneous')">Clothes</li>
+      <li ng-click="postItem.OnItemClick('Miscellaneous')">General</li>
+      <li ng-click="postItem.OnItemClick('Miscellaneous')">Auto Parts</li>
+      <li ng-click="postItem.OnItemClick('Miscellaneous')">Pets</li>
       <li ng-click="postItem.OnItemClick('Miscellaneous')">Miscellaneous</li>
     </ul>
   </div>
@@ -52,19 +65,20 @@
     <label for="keywords">Key words</label>
     <input name="keyWords" ng-model='tempKeyword' class="form-control" id="keyWords" ui-validate="'validateKeywords()'" ng-enter="postItem.addKeyWord(tempKeyword)">
     <div id="keywordContainer">
-      <div class="keyWordBubble" ng-repeat="word in formData.keyWords">{{word}}</div>
+      <div class="keyWordBubble" ng-repeat="word in formData.keyWords">
+        <span ng-click='postItem.dropKeyword($index)'>{{word}}</span>
+      </div>
+    </div>
+    <div class='imgbox'>
+      <li ng-repeat="img in formData.img">
+        <img class="previewImg" ng-src="{{img}}" ng-click="postItem.deleteImage($index)">
+      </li>
     </div>
     <br>
     <button class="btn btn-primary" ng-click="postItem.addKeyWord(tempKeyword)">Add Key Words</button>
-    <br>
-    <button class='btn btn-primary' ng-click="postItem.filepicker(postItem.fpConfig, postItem.onSuccess)"> Save File</button>
-
-    <div ng-repeat="img in formData.img">
-      <button ng-click="postItem.deleteImage($index)">Delete</button>
-      <img class="previewImg" ng-src="{{img}}">
-    </div>
-    <br>
+    <button class='btn btn-primary save' ng-click="postItem.filepicker(postItem.fpConfig, postItem.onSuccess)">Upload Image</button>
     <button type="submit" class="btn btn-default" ng-click='postItem.submitData(formData, PostForm.$valid)'>Submit</button>
+
 
 </form>
 </div>

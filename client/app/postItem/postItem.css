@@ -1,10 +1,11 @@
-.jumbotron {
-	float: center;
-	background: none;
-	color: #dcdbcd;
+.post-type-button {
+	display: block;
+	min-height: 20px;
 }
 
-
+/*.container.vertical-center {
+	width:60%;
+}*/
 
 #descriptionField {
 	height: 100px; 
@@ -13,29 +14,70 @@
 /*		margin-top: 10px;
 */}
 
-#locationField {
-	margin-bottom: 10px;
+.form-control{
+	margin-bottom: 1.3em;
 }
 
 #dropDownUL {
-	margin-bottom: 10px;
-	margin-top: 10px;
+	margin: 10px 0;
 }
 
 #keywordContainer {
 	clear: both;
-	margin: 1em 0;
+	padding-top:1px;
+	margin: -.6em 0 1em 0;
+	height: 1em;
 }
 
 .keyWordBubble {
+	display:inline-block;
 	padding: .5em;
 	margin: 0 .5em;
 	border: 2px solid rgba(255, 255, 255, 0.7);
-	float: left;
 	border-radius: .4em;
+	transition: color .5s, border .5s;
+}
+
+.keyWordBubble:hover {
+	border-color: #d62718;
+	color: #d62718;
+	cursor: pointer;
 }
 
 .previewImg {
 	width: 75px;
 	height: 75px;
+	transition: opacity 0.4s, box-shadow 0.4s;
+}
+
+.imgbox{
+	margin:3em 0 0 0;
+}
+
+.imgbox ul {
+	list-style-type:none;
+}
+
+.imgbox li {
+	display:inline;
+	margin:0;
+}
+
+.imgbox li:hover{
+	background-color:none;
+}
+
+.previewImg:hover {
+	cursor: crosshair;
+	opacity: 0.8;
+	box-shadow: 0 0 10px 2px #d40000;
+}
+
+button.save {
+	background-color: #3da241;
+	border-color: #318135;
+}
+
+button.save:hover {
+	background-color: #26662b;
 }

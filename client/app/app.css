@@ -38,17 +38,36 @@
     padding: 0.2em 0;
 }
 
+.centered {
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .individual-post {
     color: #000000;
-    margin: 1em 0;
+    margin: 1em auto;
     padding: 1em 1em 1em 2.5em;
     background-color: rgba(255, 255, 245, 0.8);
     border-radius: .5em;
-    width: 70%;
+    width: 80%;
+}
+
+.individual-post a{
+    color:#428BCA;
+}
+
+.individual-post a:hover {
+    text-decoration: none;
 }
 
 .individual-post p {
     margin: 0;
+    font-size: 1em;
+}
+
+.individual-post h5 {
+    font-weight: bold;
 }
 
 h3 {
@@ -62,10 +81,6 @@ h5 {
 
 h6 {
     display:inline;
-}
-
-.individual-post p{
-    font-size: 1em;
 }
 
 .image{
@@ -84,4 +99,41 @@ input[type=text] {
 body{
     background: url('../../assets/images/check_desktop.jpg') no-repeat center center fixed;
     background-size: cover;
+    margin-top:60px;
+    font-family:'Open Sans', sans-serif;
+}
+
+.navbar-default .navbar-brand a, .container .navbar-header > a, .navbar-default .navbar-text , .navbar-default .navbar-nav > li > a{
+    color:#404345;
+}
+
+.jumbotron {
+    float: center;
+    background: none;
+    color: #dcdbcd;
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 0.4em;
+}
+
+.jumbotron h1, .jumbotron p, .jumbotron label {
+    color: white;
+}
+
+.jumbotron p { 
+    font-size: 1.1em;
+}
+
+.jumbotron li {
+    color: #000000;
+    cursor: pointer;
+    padding: 0.2em 1em;
+}
+
+.jumbotron li:hover {
+    background-color: #86bcf1;
+}
+
+.jumbotron .post-type-button span {
+    font-weight: bold;
+    text-shadow: 1px 1px #000;
 }

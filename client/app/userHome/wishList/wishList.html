@@ -1,46 +1,41 @@
-<div class="row row-centered">
-	<div class='jumbotron col-md-6 col-centered'>
-		<div class='container vertical-center'>
-			<p>Welcome to your wishlist!</p>
+<h1 class='offWhiteText'>Welcome to your wishlist, {{userName}}!</h1>
+<div class="row">
+	<div class='wishlist-container'>
+		<div class="form-group">
+		    <label for="itemName" class='offWhiteText'>Item</label>
+		    <input ng-model='wishData.itemName' class="form-control" id="itemName" required>
 
-			<div class="form-group">
-			    <label for="itemName">Item Name </label>
-			    <input ng-model='wishData.itemName' class="form-control" id="itemName" required>
+		    <label for="keywords" class='offWhiteText'>Keywords</label>
+		    <input ng-model='wishData.keywords' class="form-control col-md-4" id="size">
+		    <br>
+		</div>
+		<br>
+		<br>
+		<button class="btn btn-primary" ng-click="wish.addWish()">Add An Item</button>
+		<div class='individual-post wishlist' ng-repeat="item in today">
+			<form ng-hide='obj[$index]'>
+				<div class='singleWish'>
+	     		<span class="title">Item: </span>
+	      	<p>{{ item.itemName | joinWishlist}}</p>
+	     		<span class="title">Keywords: </span>
+	      	<p>{{ item.keywords | joinWishlist}}</p>
+	    	</div> 
 
-			    <label for="keywords">Keywords</label>
-			    <input ng-model='wishData.keywords' class="form-control col-md-4" id="size">
-			    <br>
-			</div>
-			<br>
-			<br>
-			<button class="btn btn-primary" ng-click="wish.addWish()">Add An Item</button>
-			<div class='individual-post wishlist' ng-repeat="item in today">
-				<form ng-hide='obj[$index]'>
-					<div>
-		     		 <span class="title">Item: </span>
-		      			<p>{{ item.itemName }}</p>
-		    		</div> 
+	       
+				<button class="btn btn-warning" ng-click="wish.editOption($index)">Edit</button>
+			  <button class="btn btn-danger" ng-click="wish.deleteOption(item, $index)">Delete</button>
+		 	</form>
 
-				    <div>
-		     		 <span class="title">Keywords: </span>
-		      		<p>{{ item.keywords}}</p>
-		    		</div> 
-
-		       
-					<button class="btn btn-warning" ng-click="wish.editOption($index)">Edit</button>
-				    <button class="btn btn-danger" ng-click="wish.deleteOption(item, $index)">Delete</button>
-			 	</form>
-				{{variable}}
-
-			    <form ng-if='obj[$index]'>
-			     	<label>ITEM NAME</label> 
-			     	<input type='text' ng-model='item.itemName'> 
-			     	<label>KEYWORDS</label>
-			     	<input type='text' ng-model='item.keywords'>
-			       <button class="btn btn-primary" ng-click="wish.editWish($index)">Submit</button>
-			    </form>
-			
-			</div>
+	    <form ng-if='obj[$index]' class='singleWish'>
+	     	<label>Item</label>
+	     	<br>
+	     	<input type='text' ng-model='item.itemName'> 
+	     	<label>Keywords</label>
+	     	<br>
+	     	<input type='text' ng-model='item.keywords'>
+	      <button class="btn btn-primary" ng-click="wish.editWish($index)">Submit</button>
+	    </form>
+		
 		</div>
 	</div>
 </div>

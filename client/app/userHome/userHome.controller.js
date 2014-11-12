@@ -22,6 +22,10 @@ angular.module('freeNycApp')
   	 		$state.go('userHome.pastWanteds')
   	 	};
 
+      vm.getMessages = function(){
+        $state.go('userHome.messages')
+      }
+
       //'user' is the alias for this controller, so angular gets confused when we 
       //define user as obj on scope
 			$scope.userInfo = Auth.getCurrentUser();

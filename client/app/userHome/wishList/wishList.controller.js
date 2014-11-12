@@ -5,6 +5,7 @@ angular.module('freeNycApp')
     
     var vm = this;
     $scope.obj = {}
+    $scope.userName = Auth.getCurrentUser().name
 
 
     $scope.wishData = {
@@ -18,7 +19,10 @@ angular.module('freeNycApp')
     } 
     
     vm.addWish = function(){
-    	wishList.postWishToDb($scope.wishData, function(){
+        $scope.wishData.itemName = $scope.wishData.itemName.split(" ");
+        $scope.wishData.keywords = $scope.wishData.keywords.split(" "); 
+        console.log('wish', $scope.wishData)
+        wishList.postWishToDb($scope.wishData, function(){
             $scope.today.push($scope.wishData);
             $scope.wishData = {}; 
     	})	
@@ -46,4 +50,14 @@ angular.module('freeNycApp')
     vm.getWishes()
 
 
-  });
+  })
+    .filter('joinWishlist', function(){
+        return function(items){
+            if (Array.isArray(items)) {
+                return items.join(" ");                
+            }
+            else {
+                return items; 
+            }
+        }
+    })

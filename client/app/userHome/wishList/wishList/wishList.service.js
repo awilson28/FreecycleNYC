@@ -8,7 +8,7 @@ angular.module('freeNycApp')
         var self = this; 
 
         this.postWishToDb = function(data, callback){
-          $http.post('api/users', data).success(callback)
+          $http.post('api/users/wish/', data).success(callback)
         }
 
         this.getWishes = function(callback){

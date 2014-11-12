@@ -1,14 +1,12 @@
-You have {{numMessages}} new messages
-<div ng-repeat= 'talk in communication'>
-	<h4> From: {{talk.conversants.name}}</h4>
-	<a ng-click="messages.showMessages($index, talk._id)">Show Conversation</a>
-	<div ng-if="showMe[$index].show">
+<h1 class="offWhiteText">Your Messages</h1>
+<div class='messageView'>
+<h5 class='offWhiteText'>You have {{numMessages}} new messages</h5>
+<div class='individual-post' ng-repeat= 'talk in communication'>
+	<h4> From: {{talk.conversants.name | capitalizeFirst}}</h4>
+	<a ng-click="messages.showMessages($index, talk._id)">Show Conversation ({{talk.numNewMessages}})</a>
+	<div ng-if="showMe[$index].show"> 
 		<div ng-repeat="m in talk.messages">
-			{{$parent.$index+1}}
 			<h4> Body: {{m.body}}</h4>
-			<h4> ID: {{talk._id}}</h4>
-			<h4> NAME: {{talk.name}}</h4>
-			<h4> New Messages: {{talk.numNewMessages}}
 			<button class='btn btn-primary' ng-click='messages.replyButton($index, $parent.$index)'>Reply</button>
 			<br>
 			<br>

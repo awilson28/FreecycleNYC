@@ -4,23 +4,21 @@
 	<div class="row">
 
 		<div class='col-sm-12 col-lg-6'>
-			<button class='btn btn-warning' ng-click='items.getPosts()'>All Posts</button>
-			<button class='btn btn-warning' ng-click='items.getWanteds()'>Wanted</button>
-			<button class='btn btn-warning' ng-click='items.getOffereds()'>Offers</button>
-			<input type="text" name='keywords' ng-model='keywords' ng-enter="items.submitKeywords()" placeholder='keyword search'> 
+			<div class="buttonHolder">
+				<button class='btn btn-warning' ng-click='items.getPosts()'>All Posts</button>
+				<button class='btn btn-warning' ng-click='items.getWanteds()'>Wanted</button>
+				<button class='btn btn-warning' ng-click='items.getOffereds()'>Offers</button>
+				<input type="text" name='keywords' ng-model='keywords' ng-enter="items.submitKeywords()" placeholder='keyword search'> 	
+			</div>
 			<div class='individual-post' ng-repeat="post in currentPosts">
-				<h3>{{$index+1}}.<a href="/singlePost/{{post._id}}"> {{post.postTitle}}</a></h3>
+				<h3>{{$index+1}}.<a href="/singlePost/{{post._id}}"> {{post.postTitle | capitalize}}</a></h3>
 				<div ng-if='post.img.length > 0'>
 					<img class='image' src = "{{post.img[0]}}">
 				</div>
 				<p>
 					<h5>Post Type: </h5> {{post.postType | capitalize}}
 					<br>
-					<h5>Date: </h5> {{post.date | date: 'short'}}
-					<br>
 					<h5>Description: </h5> {{post.description | capitalizeFirst}}
-					<br>
-					<h5>Size: </h5> {{post.dimensions}}
 					<br>
 					<h5>Location: </h5> {{post.crossStreets | capitalize}}
 					<br>
@@ -28,7 +26,13 @@
 					<br>
 					<h5>Keywords: </h5> {{post.keyWords | joinKeywords | capitalize}}
 					<br>
+					<h5>Date: </h5> {{post.date | date: 'short'}}
+					<br>
+					<h5>Size: </h5> {{post.dimensions}}
+					<br>
 					<h5>Posted by: </h5> {{post.user.email}}
+					<br>
+					<h5>Posted by: </h5> {{post.user._id}}
 				</p>
 
 				<div ng-hide='bidPressed[$index]'>
@@ -36,7 +40,7 @@
 					<button class='btn btn-warning' ng-if='biddedOn[$index]' ng-click='items.showMessageForm($index)'>Send a Message</button>
 					<form ng-if='messageForm[$index]'>
 						<input type="text" ng-model='messageArray[$index].body'>
-						<button ng-click='items.sendMessage(post.user._id, $parent.$index)'>Submit</button>
+						<button ng-click='items.sendMessage($parent.post.user._id, $parent.$index)'>Submit</button>
 					</form>
 				</div>
 
@@ -45,9 +49,12 @@
 
 		</div>
 
-		<a ng-click='items.changePage("previous")'>Previous Page</a>
-		<a ng-click="items.changePage('next')">Next Page</a>
 
-		<div id='map-canvas' style='width: 600px; height:500px' class='col-sm-12 col-lg-6'></div>
+		<div class='map-column col-sm-12 col-lg-6'>
+			<a class='pageButtons' ng-click='items.changePage("previous")'>Previous Page</a> |
+			<a class='pageButtons' ng-click="items.changePage('next')">Next Page</a>
+
+			<div id='map-canvas'></div>	
+		</div>
 	</div>
 </div>

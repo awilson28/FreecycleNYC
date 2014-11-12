@@ -21,6 +21,7 @@ angular.module('freeNycApp')
 	vm.submitKeywords = function(){
 		postService.filterData($scope.keywords, function(results){
 			$scope.allPosts = results;
+			$scope.currentPosts = $scope.allPosts.slice($scope.temp.start, $scope.temp.end)
 		})
 	}
 
@@ -89,6 +90,8 @@ angular.module('freeNycApp')
 	//click event that sends a message to the owner of the item 
 	vm.sendMessage = function(recipient, index) {
 		$scope.messageArray[index].recipient = recipient;
+		console.log('recipient', recipient)
+		console.log('body', $scope.messageArray[index])
 		messageService.sendMessage($scope.messageArray[index], function(data) {
 			$scope.messageForm[index] = false;
 			$scope.bidPressed[index] = true;
@@ -101,12 +104,13 @@ angular.module('freeNycApp')
 
 	var geocoder;
 	var map;
+	var prev_infoWindow = false;
 
 	function initialize() {
 	  geocoder = new google.maps.Geocoder();
-	  var latlng = new google.maps.LatLng(-74.0059700, 40.7142700);
+	  var latlng = new google.maps.LatLng(40.7142700, -74.0059700);
 	  var mapOptions = {
-	    zoom: 8,
+	    zoom: 10,
 	    center: latlng, 
 	    componentRestrictions: {locality: 'new york city' }
 	  }
@@ -134,7 +138,11 @@ angular.module('freeNycApp')
 	      });
 
 	       google.maps.event.addListener(marker, 'click', function() {
-    				infowindow.open(map,marker);
+	       	if ( prev_infoWindow ) {
+	       		prev_infoWindow.close();
+	       	}
+       		prev_infoWindow = infowindow;
+  				infowindow.open(map,marker);
   			});
 
 	   }
@@ -153,7 +161,7 @@ angular.module('freeNycApp')
 	var setMap = function(){
 		for (var i = 0; i < $scope.allPosts.length; i++){
 			if (typeof $scope.address[i] !== 'undefined'){
-				// console.log('addresses', $scope.address[i])
+				console.log('addresses', $scope.address[i])
 				codeAddress($scope.address[i], $scope.allPosts[i])
 			}
 		}
@@ -164,7 +172,7 @@ angular.module('freeNycApp')
 	//async fix
 	setTimeout(function(){
 		setMap()
-	}, 100)	
+	}, 600)	
 
 
   })

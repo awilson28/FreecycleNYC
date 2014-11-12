@@ -13,9 +13,9 @@ router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 router.get('/me', auth.isAuthenticated(), controller.me);
 router.put('/updateWishlist/:id', auth.isAuthenticated(), controller.wishList);
 router.put('/changeWish/:index/', auth.isAuthenticated(), controller.changeWish);
-router.post('/', auth.isAuthenticated(), controller.addWish);
+router.post('/', controller.create);
+router.post('/wish/', auth.isAuthenticated(), controller.addWish);
 router.put('/:id/password', auth.isAuthenticated(), controller.changePassword);
 router.get('/:id', auth.isAuthenticated(), controller.show);
-router.post('/', controller.create);
 
 module.exports = router;

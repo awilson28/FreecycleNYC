@@ -1,14 +1,21 @@
-.col-centered {
-  display:inline-block;
-  float: none;
-  text-align:left;
-  margin-right:-4px;
-}
-
-.row-centered {
-  text-align:center;
-}
-
 .wishlist {
   width: 100%;
+}
+
+.wishlist-container {
+	background-color: none;
+	width: 40%;
+	margin: auto;
+}
+
+.wishlist-container .title {
+	font-weight:bold;
+}
+
+.singleWish, .singleWish p, .singleWish input {
+	margin-bottom: 1em;
+}
+
+.div.row.row-centered {
+	background-color: none;
 }

@@ -3,6 +3,9 @@
 var _ = require('lodash');
 var Post = require('./post.model');
 var User = require('../user/user.model');
+var nodemailer = require('nodemailer'); 
+var nodemailerConfig = require('../../config/nodemailer');
+
 
 
 // Get list of posts
@@ -22,6 +25,7 @@ var User = require('../user/user.model');
 exports.index = function(req, res) {
   var user = req.user.name;
   Post.find({taken: false})
+      .sort({date: -1})
       .populate('user')
       .exec(function (err, posts) {
         if(err) { return handleError(res, err); }
@@ -31,7 +35,9 @@ exports.index = function(req, res) {
 
 // find keyword
 exports.findKeyword = function(req, res) {
-    Post.find( { $text : { $search : req.params.keyword } } ).exec( function (err, data) {
+    Post.find( { $text : { $search : req.params.keyword } } )
+    .populate('user')
+    .exec( function (err, data) {
       res.json(200, data);
     });
 };

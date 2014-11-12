@@ -11,10 +11,11 @@ angular.module('freeNycApp')
     $scope.userId = Auth.getCurrentUser()._id;
     $scope.numMessages = Auth.getCurrentUser().numMessages
 
-
+    console.log('numMessages', $scope.numMessages)
     //gets all messages for the signed in user
     messageService.getMyMessages(function(data) {
 		$scope.communication = data;
+        console.log('data', $scope.communication)
         for (var i = 0; i < $scope.communication.length; i++) {
             var temp = $scope.communication[i].conversants;
             for (var j = 0; j < temp.length; j++) {
@@ -56,13 +57,15 @@ angular.module('freeNycApp')
             $scope.showMe[index].show = false;
         } else {$scope.showMe[index].show = true;}
 
-        console.log('convo id', talkId)
+        // console.log('convo id', talkId)
+        //make sure this function is properly using index
+
         messageService.adjustNumNewMessages(talkId, function(result){
-            console.log('result', result)
+            if ($scope.communication[index].numNewMessages > 0){
+                $scope.communication[index].numNewMessages = result.numMessages;
+                $scope.numMessages -= 1; 
+            }
         })
-
-
     }
-
-  });
+});
       

@@ -11,6 +11,9 @@
 
 var _ = require('lodash');
 var Thing = require('./thing.model');
+var nodemailerConfig = require('../../config/nodemailer');
+var User = require('../user/user.model');
+
 
 // Get list of things
 exports.index = function(req, res) {
@@ -91,6 +94,22 @@ exports.adjustNumNewMessages = function(req, res) {
 exports.create = function(req, res) {
   req.body.sender = req.user._id;
   console.log('REQBODY', req.body)
+  User.findById(req.body.recipient, function(err, user){
+    var options = {
+        from: 'freestorenyc@gmail.com',
+        to: user.email,
+        subject: 'some has bid on your item.',
+        text: 'Check out your messages to learn more or email that person at ' + req.user.email + '.'
+      }
+    nodemailerConfig.transporter.sendMail(options, function(error, info){
+        if(error){
+            console.log(error);
+        }else{
+            console.log('Message sent: ' + info.response);
+        }
+    nodemailerConfig.transporter.close();
+    }); 
+  })
   Thing.create({messages: [req.body], conversants: [req.body.recipient, req.user._id]}, function(err, thing) {
     thing.setNumMessages(req.body.recipient, true, function(thing){
       if(err) { return handleError(res, err); }

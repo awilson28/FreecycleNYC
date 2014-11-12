@@ -1,24 +1,24 @@
-<h1>Your Current Wanteds</h1>
+<h1 class='offWhiteText'>Your Current Wanteds</h1>
 <div class='individual-post' ng-repeat="post in currentWanteds">
   <div ng-hide="obj[$index]">
-  	<h3>{{$index+1}}. {{post.postTitle}}</h3>
+  	<h3>{{$index+1}}. <a href="/singlePost/{{post._id}}">{{post.postTitle | capitalize}}</a></h3>
     <div ng-if='post.img.length > 0'>
       <img class='image' src = "{{post.img[0]}}">
     </div>
     <p>
       <h5>Post Type: </h5> {{post.postType | capitalize}}
       <br>
-      <h5>Date: </h5> {{post.date | date: 'short'}}
-      <br>
       <h5>Description: </h5> {{post.description | capitalizeFirst}}
-      <br>
-      <h5>Size: </h5> {{post.dimensions}}
       <br>
       <h5>Location: </h5> {{post.crossStreets | capitalize}}
       <br>
       <h5>Item type: </h5> {{post.itemType}}
       <br>
       <h5>Keywords: </h5> {{post.keyWords | joinKeywords | capitalize}}
+      <br>
+      <h5>Date: </h5> {{post.date | date: 'short'}}
+      <br>
+      <h5>Size: </h5> {{post.dimensions}}
       <br>
       <h5>Posted by: </h5> {{post.user.email}}
       USER: {{post.user.name}}

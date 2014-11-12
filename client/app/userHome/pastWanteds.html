@@ -1,6 +1,6 @@
-<h1>Your Current Transactions</h1>
+<h1 class='offWhiteText'>Your Current Transactions</h1>
 <div class='individual-post' ng-repeat="post in myTransactions.currentTransactions">
-	<h3>{{$index+1}}. {{post.postTitle}}</h3>
+	<h3>{{$index+1}}. <a href="/singlePost/{{post._id}}">{{post.postTitle | capitalize}}</a></h3>
   <div ng-if='post.img.length > 0'>
     <img class='image' src = "{{post.img[0]}}">
   </div>
