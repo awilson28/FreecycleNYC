@@ -26,6 +26,8 @@ ThingSchema.methods = {
 		}
 		this.save()
 		User.findById(recipient, function(err, user){
+			console.log('rec', recipient)
+			console.log('user', user)
 			if (bool === true){
 				user.numMessages += 1; 
 			}

@@ -32,17 +32,19 @@ angular.module('freeNycApp')
   	vm.submitData = function(formData, $valid){
   		if ($valid && $scope.formData.keyWords.length > 0) {
 
+        var geocoder = new google.maps.Geocoder();
         formData.crossStreets = formData.crossStreets + " " + formData.zipCode
-        delete formData.zipCode
-
-        console.log('form', formData)
-
-  			postService.addToDatabase(formData, vm.displayData);
+        geocoder.geocode({'address': formData.crossStreets}, function(results, status){
+          formData.coordinates = [results[0].geometry.location.k, results[0].geometry.location.B]
+          delete formData.zipCode
+    			postService.addToDatabase(formData, vm.displayData);
+        })
   		}
       else {
         alert('form is invalid')
       }
   	}
+
 
     //
   	vm.displayData = function() {

@@ -60,9 +60,9 @@ angular.module('freeNycApp', [
         templateUrl: 'app/userHome/pastOffers.html',
         controller: 'UsercurrentoffersCtrl as userOffers'
       })
-      .state('userHome.pastWanteds', {
-        url: '/pastWanteds',
-        templateUrl: 'app/userHome/pastWanteds.html',
+      .state('userHome.currentTransactions', {
+        url: '/currentTransactions',
+        templateUrl: 'app/userHome/currentTransactions.html',
         controller: 'UsercurrentwantedsCtrl as userWanteds'
       })
       .state('userHome.wishList', {

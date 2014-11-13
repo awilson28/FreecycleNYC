@@ -28,6 +28,12 @@
 	width:80%;
 }
 
+#infoTip {
+	color: black;
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
 @media (max-width:768px) {
 
 	#map-canvas {

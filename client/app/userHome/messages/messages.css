@@ -5,3 +5,13 @@
 .messageView h5 {
 	color: white;
 }
+
+.individual-post .messageBody {
+	margin: 1em auto;
+	width:90%;
+	font-size: 1.6em;
+}
+
+.indiv {
+	margin-left:1em;
+}

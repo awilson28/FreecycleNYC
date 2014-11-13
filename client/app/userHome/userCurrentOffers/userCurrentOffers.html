@@ -1,6 +1,6 @@
 <h1 class='offWhiteText'>Your Current Offers</h1>
 <div class='individual-post' ng-repeat="post in currentOffers">
-	<h3>{{$index+1}}. <a href="/singlePost/{{post._id}}">{{post.postTitle}}</a></h3>
+	<h3>{{$index+1}}. <a href="/singlePost/{{post._id}}">{{post.postTitle | capitalize }}</a></h3>
 				<div ng-if='post.img.length > 0'>
 					<img class='image' src = "{{post.img[0]}}">
 				</div>
@@ -19,12 +19,12 @@
 					<br>
 					<h5>Size: </h5> {{post.dimensions | capitalize}}
 					<br>
-					<h5>Posted By: </h5> {{post.user.email}}
-				</p>
-		USER: {{post.user.name}}
+<!-- 					<h5>Posted By: </h5> {{post.user.email}}
+ -->				</p>
+<!-- 		USER: {{post.user.name}}
 		ID: {{post._id}}
 		ID: {{post.inTransactionWith}}
-	</p>
+	</p> -->
 	<div ng-if="post.ratingsEnabled">
 		<label for="rating">Rating</label>
 		<input type="radio" name='rating' value='1' ng-model='tempRating'>1
@@ -36,7 +36,7 @@
 	</div>
 	<br>
 	<button class="btn btn-primary" ng-click="userOffers.setTaken(post._id, $index)">Taken</button>
-	<button class="btn btn-primray" ng-click="userOffers.gifting(post._id, $index)">Gifting</button>
+	<button class="btn btn-primray" ng-if='post.bids.length > 0' ng-click="userOffers.gifting(post._id, $index)">Gifting</button>
 	<button class="btn btn-danger" ng-click="userOffers.deleteOption(post._id, $index)">Delete</button>
   	<a class='abort' ng-click='userOffers.abortTransaction(post._id, post.inTransactionWith[0], $index)'>Abort Transaction</a>
   <div ng-if='obj[$index]' class="dropdown">

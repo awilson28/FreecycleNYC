@@ -68,7 +68,7 @@ angular.module('freeNycApp')
 	}
 	
 	//if on .pastWanteds view, execute function
-	else if ($state.is('userHome.pastWanteds')){
+	else if ($state.is('userHome.currentTransactions')){
 		// vm.getPastWanteds(); 
 		vm.getMyTransactions();		
 	}

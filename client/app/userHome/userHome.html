@@ -7,7 +7,7 @@
 		      </li>
 		      <li ng-click='user.getCurrentWanteds()'><a ui-sref=".currentWanteds">Current Wanteds</a>
 		      </li>
-		      <li  ng-click='user.getPastWanteds()'><a ui-sref=".pastWanteds">Current Transactions</a>
+		      <li  ng-click='user.getCurrentTransactions()'><a ui-sref=".currentTransactions">Current Transactions</a>
 		      </li>
 		      <li ng-click='user.getPastOffers()'><a ui-sref=".pastOffers">Past Offers</a>
 		      </li>
@@ -29,12 +29,12 @@
           <br>
           <div class='individual-post' ng-repeat="post in bids">
             <h3>{{$index + 1}}. <a href="/singlePost/{{post._id}}"> {{post.postTitle | capitalize}}</a></h3>
-            <h5>Bids: </h5>{{post.numBids}}
-            <p>
-              <h5>Post Type: </h5> {{post.postType | capitalize}}
               <div ng-if='post.img.length > 0'>
                 <img class='image' src="{{post.img[0]}}">
               </div>
+            <h5>Bids: </h5>{{post.numBids}}
+            <p>
+              <h5>Post Type: </h5> {{post.postType | capitalize}}
               <br>
               <h5>Description: </h5>{{post.description | capitalizeFirst}}
               <br>

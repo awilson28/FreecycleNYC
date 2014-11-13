@@ -12,7 +12,7 @@
       <br>
       <h5>Location: </h5> {{post.crossStreets | capitalize}}
       <br>
-      <h5>Item type: </h5> {{post.itemType}}
+      <h5>Item Type: </h5> {{post.itemType}}
       <br>
       <h5>Keywords: </h5> {{post.keyWords | joinKeywords | capitalize}}
       <br>
@@ -20,9 +20,9 @@
       <br>
       <h5>Size: </h5> {{post.dimensions}}
       <br>
-      <h5>Posted by: </h5> {{post.user.email}}
+<!--       <h5>Posted by: </h5> {{post.user.email}}
       USER: {{post.user.name}}
-      ID: {{post._id}}
+      ID: {{post._id}} -->
     </p>
 
   	<button class="btn btn-danger" ng-click="userWanteds.deleteOption(post._id, $index)">Delete</button>

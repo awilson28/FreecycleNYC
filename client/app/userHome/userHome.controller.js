@@ -18,8 +18,8 @@ angular.module('freeNycApp')
   	 		$state.go('userHome.pastOffers')
   	 	};
 
-  	 	vm.getPastWanteds = function(){
-  	 		$state.go('userHome.pastWanteds')
+  	 	vm.getCurrentTransactions = function(){
+  	 		$state.go('userHome.currentTransactions')
   	 	};
 
       vm.getMessages = function(){

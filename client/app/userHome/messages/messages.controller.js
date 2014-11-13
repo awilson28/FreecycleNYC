@@ -63,7 +63,9 @@ angular.module('freeNycApp')
         messageService.adjustNumNewMessages(talkId, function(result){
             if ($scope.communication[index].numNewMessages > 0){
                 $scope.communication[index].numNewMessages = result.numMessages;
-                $scope.numMessages -= 1; 
+                if($scope.numMessages > 0){
+                    $scope.numMessages -= 1; 
+                }
             }
         })
     }

@@ -18,7 +18,7 @@ var UserSchema = new Schema({
   bookmarkedItems: Array,
   wishList: Array,
   ratingArray: Array,
-  rating: Number,
+  rating: {type: Number, default: 5},
   currentTransactions: [{type: Schema.Types.ObjectId, ref: 'Post'}],
   messsages: [{type: Schema.Types.ObjectId, ref: 'Thing'}],
   alerts: [{type: Schema.Types.ObjectId, ref: 'Post'}],

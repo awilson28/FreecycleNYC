@@ -54,7 +54,7 @@ exports.show = function(req, res) {
 // Creates a new post in the DB.
 exports.create = function(req, res) {
   req.body.user = req.user._id; 
-  // if (req.user){
+  console.log('body', req.body)
     Post.create(req.body, function(err, post) {
       if(err) { return handleError(res, err); }
 
@@ -125,16 +125,18 @@ exports.abortTransaction = function(req, res){
 // Updates an existing post in the DB.
 exports.update = function(req, res) {
   if(req.body._id) { delete req.body._id; }
-  Post.findById(req.params.id, function (err, post) {
+  Post.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
     if (err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
-    var updated = _.merge(post, req.body);
-    console.log('updated', updated)
-    updated.save(function (err) {
-      if (err) { return handleError(res, err); }
-
-      return res.json(200, post);
-    });
+    // console.log('post', post, 'modified', numModified)
+    return res.json(200, post)
+    // var updated = _.merge(post, req.body);
+    // console.log('updated', updated)
+    // updated.save(function (err, newPost, numModified) {
+    //   if (err) { return handleError(res, err); }
+    //   console.log('new post', newPost, 'modified', numModified)
+    //   return res.json(200, post);
+    // });
   });
 };
 

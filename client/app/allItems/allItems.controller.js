@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('AllitemsCtrl', function ($scope, joinKeywordsFilter, offersOnlyFilter, wantedOnlyFilter, postService, messageService) {
+  .controller('AllitemsCtrl', function ($http, $scope, joinKeywordsFilter, offersOnlyFilter, $interval, wantedOnlyFilter, postService, messageService) {
 	
 	var vm = this; 
 	$scope.keywords = ""; 
@@ -35,6 +35,7 @@ angular.module('freeNycApp')
 			$scope.temp.end += 10; 
 		}
 		$scope.currentPosts = $scope.allPosts.slice($scope.temp.start, $scope.temp.end)
+
 	}
 
 	//retrieves all posts and passes posts through the wantedOnlyFilter
@@ -42,11 +43,11 @@ angular.module('freeNycApp')
 		postService.getData(function(results){
 			$scope.address = [];
 			$scope.allPosts = wantedOnlyFilter(results, 'postType');
-			for (var i = 0; i < results.length; i++){
-				$scope.address.push(results[i].crossStreets)
+			for (var i = 0; i < $scope.allPosts.length; i++){
+				$scope.address.push($scope.allPosts[i].crossStreets)
 			}	
 			$scope.currentPosts = $scope.allPosts.slice($scope.temp.start, $scope.temp.end)
-	
+			setMap()
 		})
 	}
 
@@ -55,11 +56,11 @@ angular.module('freeNycApp')
 		postService.getData(function(results){
 			$scope.address = [];
 			$scope.allPosts = offersOnlyFilter(results, 'postType');
-			for (var i = 0; i < results.length; i++){
-				$scope.address.push(results[i].crossStreets)
+			for (var i = 0; i < $scope.allPosts.length; i++){
+				$scope.address.push($scope.allPosts[i].crossStreets)
 			}
 			$scope.currentPosts = $scope.allPosts.slice($scope.temp.start, $scope.temp.end)
-		
+			setMap()
 		})
 	}
 
@@ -68,11 +69,14 @@ angular.module('freeNycApp')
 		postService.getData(function(results){
 			$scope.address = [];
 			$scope.allPosts = results;
+			console.log('res', results)
 			$scope.currentPosts = $scope.allPosts.slice(0, 10)
 			console.log('results', $scope.allPosts)
-			for (var i = 0; i < results.length; i++){
-				$scope.address.push(results[i].crossStreets)
+			for (var i = 0; i < $scope.allPosts.length; i++){
+				$scope.address.push($scope.allPosts[i].crossStreets)
+				// console.log('addresses get posts', $scope.address, 'length', $scope.address.length)
 			}
+			setMap()
 		}); 
 	}
 
@@ -102,54 +106,50 @@ angular.module('freeNycApp')
 	
 	/////////////////////// GOOGLE MAPS FUNCTIONALITY ///////////////////////////
 
-	var geocoder;
 	var map;
 	var prev_infoWindow = false;
+	var bounds
 
 	function initialize() {
-	  geocoder = new google.maps.Geocoder();
+
 	  var latlng = new google.maps.LatLng(40.7142700, -74.0059700);
 	  var mapOptions = {
-	    zoom: 10,
+	    zoom: 16,
 	    center: latlng, 
 	    componentRestrictions: {locality: 'new york city' }
 	  }
 	  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+	  bounds = new google.maps.LatLngBounds();
 	}
 
+
+
 	function codeAddress(address, postObj) {
-	  // var address = document.getElementById('address').value;
-	  //extends bounds 
 
-	  // console.log('addresses', address)
-	  var bounds = new google.maps.LatLngBounds();
-	  geocoder.geocode( { 'address': address}, function(results, status) {
-	    if (status == google.maps.GeocoderStatus.OK) {
-	      map.setCenter(results[0].geometry.location);
-	      bounds.extend(results[0].geometry.location)
-	      var postObjInfo = '<p>' + postObj.postTitle + " at " + postObj.crossStreets + '</p>';
-	      var infowindow = new google.maps.InfoWindow({
-	      	content: postObjInfo
-	      })
-	      
-	      var marker = new google.maps.Marker({
-	          map: map,
-	          position: results[0].geometry.location	      
-	      });
+		  	var myLatLng = new google.maps.LatLng(postObj.coordinates[0], postObj.coordinates[1])
+		      map.setCenter(myLatLng);
 
-	       google.maps.event.addListener(marker, 'click', function() {
-	       	if ( prev_infoWindow ) {
-	       		prev_infoWindow.close();
-	       	}
-       		prev_infoWindow = infowindow;
-  				infowindow.open(map,marker);
-  			});
+				if (postObj.coordinates.length > 0){
+		      bounds.extend(myLatLng);
+		      var postObjInfo = '<p id="infoTip">' + postObj.postTitle + " at " + postObj.crossStreets + '</p>';
+		      var infowindow = new google.maps.InfoWindow({
+		      	content: postObjInfo
+		      })
+		      
+		      var marker = new google.maps.Marker({
+		          map: map,
+		          position: myLatLng      
+		      });
 
-	   }
-	    // } else {
-	    //   alert('Geocode was not successful for the following reason: ' + status);
-	    // }
-	  });
+		       google.maps.event.addListener(marker, 'click', function() {
+		       	if ( prev_infoWindow ) {
+		       		prev_infoWindow.close();
+		       	}
+	       		prev_infoWindow = infowindow;
+	  				infowindow.open(map,marker);
+	  			});
+				}
+
 	  //doesn't relocate to the ocean's middle if array.length === 0 
 	  if(!bounds.isEmpty()) {map.fitBounds(bounds);}
 	}
@@ -157,23 +157,21 @@ angular.module('freeNycApp')
 	google.maps.event.addDomListener(window, 'load', initialize);
 
 
-	//sends item locations to codeAddress to be plotted on map
+//sends item locations to codeAddress to be plotted on map
 	var setMap = function(){
 		for (var i = 0; i < $scope.allPosts.length; i++){
 			if (typeof $scope.address[i] !== 'undefined'){
-				console.log('addresses', $scope.address[i])
+			// console.log('addresses', $scope.address[i])
 				codeAddress($scope.address[i], $scope.allPosts[i])
 			}
 		}
 	}
 
-	vm.getPosts();
-
-	//async fix
 	setTimeout(function(){
 		setMap()
-	}, 600)	
+	}, 200)	
 
+	vm.getPosts();
 
   })
   .filter('offersOnly', function(){
@@ -236,7 +234,6 @@ angular.module('freeNycApp')
   .filter('capitalizeFirst', function() {
   	return function(input) {
     	if (input!=null) {
-	    	input = input.toLowerCase();
 	    	return input.substring(0,1).toUpperCase()+input.substring(1);	
     	}
  	}
