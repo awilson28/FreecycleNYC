@@ -10,7 +10,8 @@ var ThingSchema = new Schema({
 	  body: String,
 	  date: {type: Date, default: Date.now},
 	  sender: {type: Schema.Types.ObjectId, ref: 'User'},
-	  recipient: {type: Schema.Types.ObjectId, ref: 'User'}
+	  recipient: {type: Schema.Types.ObjectId, ref: 'User'},
+	  roomId: String,
   }],
   conversants: [{type: Schema.Types.ObjectId, ref: 'User'}], 
   numNewMessages: {type: Number, default: 0} 

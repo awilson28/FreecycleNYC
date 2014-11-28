@@ -18,12 +18,15 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
-  require('../api/userInfo/userInfo.socket').register(socket);
-  require('../api/post/post.socket').register(socket);
-  require('../api/thing/thing.socket').register(socket);
+  // require('../api/userInfo/userInfo.socket').register(socket);
+  // require('../api/post/post.socket').register(socket);
+  // require('../api/thing/thing.socket').register(socket);
 }
 
 module.exports = function (socketio) {
+
+  require('../api/thing/thing.socket').register(socketio);
+
   // socket.io (v1.x.x) is powered by debug.
   // In order to see all the debug output, set DEBUG (in server/config/local.env.js) to including the desired scope.
   //

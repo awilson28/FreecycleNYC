@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('AllitemsCtrl', function ($http, $scope, joinKeywordsFilter, offersOnlyFilter, $interval, wantedOnlyFilter, postService, messageService) {
+  .controller('AllitemsCtrl', function ($http, $scope, Auth, socket, joinKeywordsFilter, offersOnlyFilter, $interval, wantedOnlyFilter, postService, messageService) {
 	
 	var vm = this; 
 	$scope.keywords = ""; 
 	$scope.keywordsArray = [];
+	$scope.user = Auth.getCurrentUser()._id; 
+	$scope.userEmail = Auth.getCurrentUser().email; 
 
 	initialize()
 
@@ -94,12 +96,22 @@ angular.module('freeNycApp')
 	//click event that sends a message to the owner of the item 
 	vm.sendMessage = function(recipient, index) {
 		$scope.messageArray[index].recipient = recipient;
+		//added this line because with sockets, we cannot access the current user id with req.user._id
+		$scope.messageArray[index].sender = $scope.user; 
+		$scope.messageArray[index].email = $scope.userEmail; 
 		console.log('recipient', recipient)
 		console.log('body', $scope.messageArray[index])
-		messageService.sendMessage($scope.messageArray[index], function(data) {
-			$scope.messageForm[index] = false;
-			$scope.bidPressed[index] = true;
-			console.log(data);
+		// messageService.sendMessage($scope.messageArray[index], function(data) {
+		// 	$scope.messageForm[index] = false;
+		// 	$scope.bidPressed[index] = true;
+		// 	console.log(data);
+		// })
+		$scope.messageArray[index].roomId = $scope.messageArray[index].recipient + $scope.user;
+		socket.socket.emit('sendMessage', $scope.messageArray[index])
+		socket.socket.on('MessageSent', function(data){
+			$scope.messageForm[index] = false; 
+			$scope.bidPressed[index] = true; 
+			console.log('data: ', data)
 		})
 	}
 
