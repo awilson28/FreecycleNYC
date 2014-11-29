@@ -2,7 +2,7 @@
 <div class='messageView'>
 <h5 class='offWhiteText'>You have {{numMessages}} new messages</h5>
 <div class='individual-post' ng-repeat= 'talk in communication'>
-	<h4> Conversation with {{talk.conversants.name | capitalizeFirst}}</h4>
+	<h4> Conversation with {{talk.talkingTo | capitalizeFirst}}</h4>
 	<a href='' ng-click="messages.showMessages($index, talk._id)">Show Conversation ({{talk.numNewMessages}})</a>
 	<div ng-if="showMe[$index].show"> 
 		<div class='indiv' ng-repeat="m in talk.messages">

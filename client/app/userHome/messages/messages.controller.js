@@ -3,6 +3,7 @@
 angular.module('freeNycApp')
   .controller('MessagesCtrl', function ($scope, Auth, socket, messageService, $state) {
     
+
     var vm = this;
     $scope.newMessage = {
     	body: "", 
@@ -11,36 +12,38 @@ angular.module('freeNycApp')
     }; 
     $scope.showMe = {};
     $scope.userId = Auth.getCurrentUser()._id;
+    $scope.userName = Auth.getCurrentUser().name; 
     $scope.numMessages = Auth.getCurrentUser().numMessages
     var data = {
         userId: $scope.userId, 
         roomId: messageService.convoId.convoId
     }
 
-    console.log('numMessages', $scope.numMessages)
-    //gets all messages for the signed in user
-  //   messageService.getMyMessages(function(data) {
-		// $scope.communication = data;
-  //       for (var i = 0; i < $scope.communication.length; i++) {
-  //           var temp = $scope.communication[i].conversants;
-  //           for (var j = 0; j < temp.length; j++) {
-  //               if(temp[j]._id !== $scope.userId) {
-  //                  $scope.communication[i].conversants = temp[j];
-  //               }
-  //           };
-  //       };
-  //   });
+    $scope.conversants = []; 
+    $scope.displayConversants = ''; 
 
-    socket.socket.emit('getMessages', data)
+    // console.log('numMessages', $scope.numMessages)
+
+    vm.getMessages = function(){
+        socket.socket.emit('getMessages', data)
+    }
+    
+    vm.getMessages()
+
     socket.socket.on('allMessages', function(data){
-        $scope.communication = data; 
+        $scope.communication = data;
         for (var i = 0; i < $scope.communication.length; i++) {
-            var temp = $scope.communication[i].conversants;
-            for (var j = 0; j < temp.length; j++) {
-                if(temp[j]._id !== $scope.userId) {
-                   $scope.communication[i].conversants = temp[j];
-                }
-            };
+            if($scope.userName !== $scope.communication[i].messages[0].recipient.name){
+                messageService.conversantNames.talkingTo = $scope.communication[i].messages[0].recipient.name  
+                $scope.communication[i].talkingTo = messageService.conversantNames.talkingTo
+                // console.log('talking with: ', $scope.communication[i].messages[$scope.communication[i].messages.length-1])
+                // console.log('talkingto: ', $scope.communication[i].talkingTo)              
+            } else {
+                messageService.conversantNames.talkingTo = $scope.communication[i].messages[0].sender.name 
+                // console.log('sender: ', $scope.communication[i].messages[0])
+                $scope.communication[i].talkingTo = messageService.conversantNames.talkingTo
+                // console.log('talkingto: ', $scope.communication[i].talkingTo)                             
+            }
         };
     })
 
@@ -51,6 +54,11 @@ angular.module('freeNycApp')
 
     //click event that adds user's response to the messages array in the communication
     vm.reply = function(convoId, index, parentIndex){
+
+        // $scope.conversants.push($scope.communication[0].messages[0].recipient._id, 
+        //     $scope.communication[0].messages[0].sender._id)
+        // messageService.conversants = $scope.conversants
+
         console.log('indexparams', index, parentIndex)
         console.log('index', $scope.communication[parentIndex].messages[index])
         if ($scope.userId === $scope.communication[parentIndex].messages[index].recipient._id) {
@@ -70,12 +78,6 @@ angular.module('freeNycApp')
         $scope.newMessage.convoId = convoId;
         //convoId is the id of the room 
         $scope.newMessage.roomId = messageService.convoId.convoId; 
-
-        console.log('response: ', $scope.newMessage)
-        // console.log('new message', $scope.newMessage)
-    	// messageService.replyToMessage(convoId, $scope.newMessage, function(result){
-     //        $scope.showMe[parentIndex][index] = false;
-    	// })
 
         socket.socket.emit('reply', $scope.newMessage)
         console.log('reply: ', $scope.newMessage)
@@ -112,15 +114,7 @@ angular.module('freeNycApp')
                 }
             }
         })
-
-        // messageService.adjustNumNewMessages(talkId, function(result){
-        //     if ($scope.communication[index].numNewMessages > 0){
-        //         $scope.communication[index].numNewMessages = result.numMessages;
-        //         if($scope.numMessages > 0){
-        //             $scope.numMessages -= 1; 
-        //         }
-        //     }
-        // })
     }
+
 });
       

@@ -38,7 +38,8 @@ exports.register = function(socketio) {
 		    nodemailerConfig.transporter.close();
 		    }); 
 	  	})
-		  Thing.create({messages: [data], conversants: [data.recipient, data.sender]}, function(err, thing) {
+	  	// Thing.create({messages: [data], conversants: [data.recipient, data.sender]}, function(err, thing) {
+		  Thing.create({messages: [data]}, function(err, thing) {
 		    thing.setNumMessages(data.recipient, true, function(thing){
 		      if(err) { return handleError(res, err); }
 		      socketio.to(data.roomId).emit('MessageSent', thing)
@@ -47,11 +48,20 @@ exports.register = function(socketio) {
 		})
 
 		socket.on('getMessages', function(data){
-			Thing.find({conversants : {$in: [data.userId]}})
-      	.populate('conversants messages.sender messages.recipient', 'name')
+			console.log('in here!')
+			if (socket.rooms.length){
+				socket.rooms.forEach(function(room){
+					socket.leave(room)
+				})
+			}
+			socket.join(data.roomId)
+			Thing.find({$or: [{'messages.sender': data.userId}, {'messages.recipient': data.userId}]})
+			// Thing.find({conversants : {$in: [data.userId]}})
+      	.populate('messages.sender messages.recipient', 'name')
       	.exec(function (err, things) {
-      		if(err) { return handleError(res, err); }
-          if(!things) { return res.send(404); }
+      			console.log("we're good!!")
+      		// if(err) { return handleError(res, err); }
+          // if(!things) { return res.send(404); }
           console.log('things: ', things)
          socketio.to(data.roomId).emit('allMessages', things)
       });
@@ -75,7 +85,7 @@ exports.register = function(socketio) {
 
 		socket.on('displayMessages', function(data){
 			Thing.findById(data.talkId)
-		    .populate('conversants messages.sender messages.recipient', 'name')
+		    .populate('messages.sender messages.recipient', 'name')
 		    .exec(function (err, thing) {
 		    thing.setNumMessages(data.userId, false, function(thing){
 		      if(err) { return handleError(res, err); }

@@ -15,6 +15,12 @@ angular.module('freeNycApp')
 
       this.convoId = {
         convoId: ''
+      };
+
+      this.conversants = [], 
+
+      this.conversantNames = {
+        talkingTo: ''
       }
 
       this.sendMessage = function(message, callback) {

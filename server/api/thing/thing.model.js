@@ -13,7 +13,6 @@ var ThingSchema = new Schema({
 	  recipient: {type: Schema.Types.ObjectId, ref: 'User'},
 	  roomId: String,
   }],
-  conversants: [{type: Schema.Types.ObjectId, ref: 'User'}], 
   numNewMessages: {type: Number, default: 0} 
 });
 

@@ -9,37 +9,24 @@ var nodemailerConfig = require('../../config/nodemailer');
 
 
 // Get list of posts
-// exports.index = function(req, res) {
-//   var user = req.user.name;
-//   // console.log('req.query', req.query)
-//   // console.log('req.query.skip', req.query.skip)
-//   Post.find({taken: false}).skip(req.query.skip * 10).limit(10)
-//       .populate('user')
-//       .exec(function (err, posts) {
-//         if(err) { return handleError(res, err); }
-//         // console.log('returned posts', posts)
-//         return res.json(200, posts);
-//       });
-// };
-
 exports.index = function(req, res) {
   var user = req.user.name;
   Post.find({taken: false})
-      .sort({date: -1})
-      .populate('user')
-      .exec(function (err, posts) {
-        if(err) { return handleError(res, err); }
-        return res.json(200, posts);
-      });
+    .sort({date: -1})
+    .populate('user')
+    .exec(function (err, posts) {
+      if(err) { return handleError(res, err); }
+      return res.json(200, posts);
+  });
 };
 
 // find keyword
 exports.findKeyword = function(req, res) {
-    Post.find( { $text : { $search : req.params.keyword } } )
+  Post.find( { $text : { $search : req.params.keyword } } )
     .populate('user')
     .exec( function (err, data) {
       res.json(200, data);
-    });
+  });
 };
 
 // Get a single post
