@@ -5,17 +5,35 @@ angular.module('freeNycApp')
     
     var vm = this;
     $scope.newMessage = {
-    	body: ""
+    	body: "", 
+        sender: {},
+        recipient: {}
     }; 
     $scope.showMe = {};
     $scope.userId = Auth.getCurrentUser()._id;
     $scope.numMessages = Auth.getCurrentUser().numMessages
+    var data = {
+        userId: $scope.userId, 
+        roomId: messageService.convoId.convoId
+    }
 
     console.log('numMessages', $scope.numMessages)
     //gets all messages for the signed in user
-    messageService.getMyMessages(function(data) {
-		$scope.communication = data;
-        console.log('data', $scope.communication)
+  //   messageService.getMyMessages(function(data) {
+		// $scope.communication = data;
+  //       for (var i = 0; i < $scope.communication.length; i++) {
+  //           var temp = $scope.communication[i].conversants;
+  //           for (var j = 0; j < temp.length; j++) {
+  //               if(temp[j]._id !== $scope.userId) {
+  //                  $scope.communication[i].conversants = temp[j];
+  //               }
+  //           };
+  //       };
+  //   });
+
+    socket.socket.emit('getMessages', data)
+    socket.socket.on('allMessages', function(data){
+        $scope.communication = data; 
         for (var i = 0; i < $scope.communication.length; i++) {
             var temp = $scope.communication[i].conversants;
             for (var j = 0; j < temp.length; j++) {
@@ -24,11 +42,6 @@ angular.module('freeNycApp')
                 }
             };
         };
-    });
-
-    socket.socket.on('getMessages', function(data){
-        $scope.communication = data; 
-
     })
 
     //click event that displays the message field so the user can respond
@@ -40,19 +53,23 @@ angular.module('freeNycApp')
     vm.reply = function(convoId, index, parentIndex){
         console.log('indexparams', index, parentIndex)
         console.log('index', $scope.communication[parentIndex].messages[index])
-        if ($scope.userId === $scope.communication[parentIndex].messages[index].recipient) {
-            $scope.newMessage.sender = $scope.userId; 
-            $scope.newMessage.recipient = $scope.communication[parentIndex].messages[index].sender
-            console.log('userId', $scope.userId, 'convo', $scope.communication[parentIndex].message[index])
+        if ($scope.userId === $scope.communication[parentIndex].messages[index].recipient._id) {
+            $scope.newMessage.sender._id = $scope.userId; 
+            $scope.newMessage.recipient._id = $scope.communication[parentIndex].messages[index].sender._id;
+            $scope.newMessage.recipient.name = $scope.communication[parentIndex].messages[index].sender.name;
+            // console.log('userId', $scope.userId, 'convo', $scope.communication[parentIndex].message[index])
         }
-        else if ($scope.userId === $scope.communication[parentIndex].messages[index].sender) {
-            $scope.newMessage.recipient = $scope.userId; 
-            $scope.newMessage.sender = $scope.communication[parentIndex].messages[index].recipient
-            console.log('userId', $scope.userId, 'convo', $scope.communication[parentIndex].message[index])
+        else if ($scope.userId === $scope.communication[parentIndex].messages[index].sender._id) {
+            $scope.newMessage.recipient._id = $scope.userId; 
+            $scope.newMessage.sender._id = $scope.communication[parentIndex].messages[index].recipient._id
+            $scope.newMessage.sender.name = $scope.communication[parentIndex].messages[index].recipient.name
+
+            // console.log('userId', $scope.userId, 'convo', $scope.communication[parentIndex].message[index])
 
         }
         $scope.newMessage.convoId = convoId;
-        $scope.newMessage.roomId = convoId; 
+        //convoId is the id of the room 
+        $scope.newMessage.roomId = messageService.convoId.convoId; 
 
         console.log('response: ', $scope.newMessage)
         // console.log('new message', $scope.newMessage)
@@ -80,8 +97,14 @@ angular.module('freeNycApp')
 
         // console.log('convo id', talkId)
         //make sure this function is properly using index
+        var obj = {
+            talkId: talkId,
+            userId: $scope.userId, 
+            roomId: messageService.convoId.convoId
+        }
 
-        messageService.adjustNumNewMessages(talkId, function(result){
+        socket.socket.emit('displayMessages', obj)
+        socket.socket.on('convoUpdated', function(result){
             if ($scope.communication[index].numNewMessages > 0){
                 $scope.communication[index].numNewMessages = result.numMessages;
                 if($scope.numMessages > 0){
@@ -89,6 +112,15 @@ angular.module('freeNycApp')
                 }
             }
         })
+
+        // messageService.adjustNumNewMessages(talkId, function(result){
+        //     if ($scope.communication[index].numNewMessages > 0){
+        //         $scope.communication[index].numNewMessages = result.numMessages;
+        //         if($scope.numMessages > 0){
+        //             $scope.numMessages -= 1; 
+        //         }
+        //     }
+        // })
     }
 });
       

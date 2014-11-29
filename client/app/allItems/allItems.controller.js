@@ -106,7 +106,9 @@ angular.module('freeNycApp')
 		// 	$scope.bidPressed[index] = true;
 		// 	console.log(data);
 		// })
-		$scope.messageArray[index].roomId = $scope.messageArray[index].recipient + $scope.user;
+		messageService.convoId.convoId = $scope.messageArray[index].recipient + $scope.user;
+		$scope.messageArray[index].roomId = messageService.convoId.convoId;
+		console.log('convo id: ', messageService.convoId.convoId)
 		socket.socket.emit('sendMessage', $scope.messageArray[index])
 		socket.socket.on('MessageSent', function(data){
 			$scope.messageForm[index] = false; 

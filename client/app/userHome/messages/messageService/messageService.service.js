@@ -13,6 +13,10 @@ angular.module('freeNycApp')
         $http.put('api/things/reply/' + id, messageBody).success(callback);
       };
 
+      this.convoId = {
+        convoId: ''
+      }
+
       this.sendMessage = function(message, callback) {
         $http.post('api/things/', message).success(callback);
       };

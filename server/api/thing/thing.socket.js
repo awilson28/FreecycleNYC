@@ -47,34 +47,42 @@ exports.register = function(socketio) {
 		})
 
 		socket.on('getMessages', function(data){
-			Thing.find({conversants : {$in: [req.user._id]}})
-      	.populate('conversants messages.sender', 'name')
+			Thing.find({conversants : {$in: [data.userId]}})
+      	.populate('conversants messages.sender messages.recipient', 'name')
       	.exec(function (err, things) {
       		if(err) { return handleError(res, err); }
           if(!things) { return res.send(404); }
-         socketio.to(data.roomId).emit('allMessages', data)
+          console.log('things: ', things)
+         socketio.to(data.roomId).emit('allMessages', things)
       });
 		})
 
 		socket.on('reply', function(data){
 			console.log('data: ', data)
-			var id = data.convoId
-			delete data.convoId
+			data.sender = data.sender._id; 
+			data.recipient = data.recipient._id; 
+			console.log('data after: ', data)
 			socket.join(data.roomId)
-			Thing.findByIdAndUpdate(id, {$push: {messages: data}}, function (err, thing) {
-		    // if(err) { return handleError(res, err); }
-		    // if(!thing) { return res.send(404); }
-		    if (data.recipient && data.recipient._id){
-		    	data.recipient = data.recipient._id
-		    }
-		    else {
-		    	data.recipient = data.recipient
-		    }
+			Thing.findByIdAndUpdate(data.convoId, {$push: {messages: data}}, function (err, thing) {
+		    if(err) { return handleError(res, err); }
+		    if(!thing) { return res.send(404); }
 		    thing.setNumMessages(data.recipient, true, function(thing){
 		      // return res.json(thing); 
 		      socketio.to(data.roomId).emit('replySent', thing)  
 		  	})
   		});
+		})
+
+		socket.on('displayMessages', function(data){
+			Thing.findById(data.talkId)
+		    .populate('conversants messages.sender messages.recipient', 'name')
+		    .exec(function (err, thing) {
+		    thing.setNumMessages(data.userId, false, function(thing){
+		      if(err) { return handleError(res, err); }
+		      if(!thing) { return res.send(404); }
+		      socketio.to(data.roomId).emit('convoUpdated', thing)  
+		    })
+		  });
 		})
 
 
