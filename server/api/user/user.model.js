@@ -15,6 +15,7 @@ var UserSchema = new Schema({
     default: 'user'
   },
   location: String,
+  //rethink bookmarked items functionality 
   bookmarkedItems: Array,
   wishList: Array,
   ratingArray: Array,
@@ -173,7 +174,7 @@ UserSchema.methods = {
     }
     this.rating = sum/this.ratingArray.length;
     this.save();
-    console.log('RATING', this.rating);
+    // console.log('RATING', this.rating);
     callback(this);
   }
 

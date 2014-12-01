@@ -11,7 +11,7 @@ var ThingSchema = new Schema({
 	  date: {type: Date, default: Date.now},
 	  sender: {type: Schema.Types.ObjectId, ref: 'User'},
 	  recipient: {type: Schema.Types.ObjectId, ref: 'User'},
-	  roomId: String,
+	  roomId: String
   }],
   numNewMessages: {type: Number, default: 0} 
 });

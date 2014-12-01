@@ -35,7 +35,7 @@ var PostSchema = new Schema({
 PostSchema.methods = {
   setBids: function(id, callback){
     if (this.bids.indexOf(id) === -1){
-      console.log('populating bids array')
+      // console.log('populating bids array')
       this.bids.push(id)
       this.numBids = this.bids.length; 
       this.save()
@@ -55,12 +55,12 @@ PostSchema.methods = {
     // });
   }, 
   abortTransaction: function(id, callback){
-    console.log('id', id)
-    console.log('bids before', this.bids)
+    // console.log('id', id)
+    // console.log('bids before', this.bids)
     var index = this.bids.indexOf(id)
-    console.log('index', index)
+    // console.log('index', index)
     this.bids.splice(index, 1)
-    console.log('bids', this.bids)
+    // console.log('bids', this.bids)
     this.inTransactionWith = []; 
     this.save()
     callback(this);
