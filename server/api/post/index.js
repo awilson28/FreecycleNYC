@@ -15,7 +15,6 @@ router.get('/:keyword', controller.findKeyword);
 router.get('/individualPost/:id', controller.individualPost);
 router.post('/', controller.create);
 router.put('/populateBid/:id', controller.populateBid);
-router.patch('/:id', controller.update);
-router.delete('/:id', controller.destroy);
+router.delete('/:id/', controller.destroy);
 
 module.exports = router;

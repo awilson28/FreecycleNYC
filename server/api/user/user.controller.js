@@ -68,7 +68,7 @@ exports.changeWish = function (req, res, next) {
 /**
  * retrieves a user's wish list
  */
-exports.getWishes = function (req, res, next) {
+exports.allUserWishes = function (req, res, next) {
   User.findByIdAndUpdate(req.user._id, {$push: {wishList: req.body}}, function(err, user){
     if (err) { return handleError(res, err); }
     if(!user) { return res.send(404); }
@@ -104,7 +104,7 @@ exports.destroy = function(req, res) {
 /**
  * Deletes an item from the user's wishList array
  */
-exports.wishList = function(req, res) {
+exports.removeWish = function(req, res) {
   User.findByIdAndUpdate(req.params.id, {$pull: {wishList: req.body}}, function(err, user) {
     console.log('new user wishlist', user)
     if(err) return res.send(500, err);

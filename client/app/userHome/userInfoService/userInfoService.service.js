@@ -45,7 +45,7 @@ angular.module('freeNycApp')
 
       namesOfBiddersOnPost: function(id, callback){
          $http.put('/api/userInfos/userOffers/populateBidArray/'+ id + "/").success(callback);
-      }, 
+      } 
     }
 
     return userHomeInfo;

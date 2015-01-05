@@ -8,7 +8,7 @@ var nodemailerConfig = require('../../config/nodemailer');
 
 
 
-// Get list of posts
+// Gets all posts in the database where taken is set to false
 exports.index = function(req, res) {
   var user = req.user.name;
   Post.find({taken: false})
@@ -20,7 +20,7 @@ exports.index = function(req, res) {
   });
 };
 
-// find keyword
+// finds posts that match submitted keywords
 exports.findKeyword = function(req, res) {
   Post.find( { $text : { $search : req.params.keyword } } )
     .populate('user')
@@ -29,7 +29,7 @@ exports.findKeyword = function(req, res) {
   });
 };
 
-// Get a single post
+// Get a single post by post id 
 exports.individualPost = function(req, res) {
   Post.findById(req.params.id, function (err, post) {
     if(err) { return handleError(res, err); }
@@ -41,17 +41,14 @@ exports.individualPost = function(req, res) {
 // Creates a new post in the DB.
 exports.create = function(req, res) {
   req.body.user = req.user._id; 
-  console.log('body', req.body)
-    Post.create(req.body, function(err, post) {
-      if(err) { return handleError(res, err); }
-
-      return res.json(201, post);
-
-    });
-  // }
+  // console.log('body', req.body)
+  Post.create(req.body, function(err, post) {
+    if(err) { return handleError(res, err); }
+    return res.json(201, post);
+  });
 };
 
-// populates bid field in the post model
+// populates bid field in the post model upon clicking 'bid' from allItems
 exports.populateBid = function(req, res) {
   // console.log('id', req.user._id)
   if(req.body._id) { delete req.body._id; }
@@ -75,16 +72,6 @@ exports.populateBid = function(req, res) {
 //   })
 // }
 
-
-// // Updates an existing post in the DB.
-// exports.update = function(req, res) {
-//   if(req.body._id) { delete req.body._id; }
-//   Post.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
-//     if (err) { return handleError(res, err); }
-//     if(!post) { return res.send(404); }
-//     return res.json(200, post)
-//   });
-// };
 
 // Deletes a post from the DB.
 exports.destroy = function(req, res) {

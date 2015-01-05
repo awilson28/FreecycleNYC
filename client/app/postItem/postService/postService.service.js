@@ -35,7 +35,7 @@ angular.module('freeNycApp')
       },
 
       deletePost: function(id, callback){
-        $http.delete('/api/posts/' + id).success(callback);
+        $http.delete('/api/posts/' + id + '/').success(callback);
       }
     }
 
