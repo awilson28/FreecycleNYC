@@ -1,17 +1,19 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('UsercurrentoffersCtrl', function ($scope, $state, unTakenOffersFilter, Auth, pastOffersFilter, userInfoService, postService, offersOnlyFilter) {
+  .controller('UsercurrentoffersCtrl', function ($scope, $state, unTakenOffersFilter, pastOffersFilter, userInfoService, postService, offersOnlyFilter) {
     var vm = this;
 
-      $scope.obj = {}; 
+    $scope.obj = {}; 
     //retrives the user's current offers for the current offers view
     //pings userInfo api for all posts associated with that user and then passes data through 
     //the offers only filter, and then through the untaken filter 
     vm.getCurrentOffers = function(){
       userInfoService.getUserPosts(function(data) {
-        var resultBeforeTakenFilter = offersOnlyFilter(data, 'postType');
-        $scope.currentOffers = unTakenOffersFilter(resultBeforeTakenFilter, 'taken')
+        var unTakenOffersOnly = offersOnlyFilter(data, 'postType');
+        //filtered for takens on the backend instead of on the front
+        // $scope.currentOffers = unTakenOffersFilter(resultBeforeTakenFilter, 'taken')
+        $scope.currentOffers = unTakenOffersOnly
       });
     };
 
@@ -99,27 +101,37 @@ angular.module('freeNycApp')
   })
   .filter('unTakenOffers', function(){
   	return function(items){
-  		var filtered = [];
-  		for (var i = 0; i < items.length; i++){
-  			//if items[i].taken != true
-  			if (!items[i].taken) {
-  				filtered.push(items[i])
-  			}
-  		}
-  	return filtered;
-  	}
+  		var filtered = items.map(function currentOffers(item){
+        if (!item.taken) {
+          return item;
+        }
+      })
+    }
+  	// 	for (var i = 0; i < items.length; i++){
+  	// 		//if items[i].taken != true
+  	// 		if (!items[i].taken) {
+  	// 			filtered.push(items[i])
+  	// 		}
+  	// 	}
+  	// return filtered;
+  	// }
   })
   .filter('pastOffers', function(){
   	return function(items){
-  		var filtered = [];
-  		for (var i = 0; i < items.length; i++){
-  			//if items[i].taken === true
-        //if (!items[i].taken)
-  			if (items[i].taken) {
-  				filtered.push(items[i])
-  			}
-  		}
-  		console.log('fil', filtered)
-  	return filtered;
-  	}
+  		var filtered = items.map(function pastOffers(item){
+        if (item.taken){
+          return item;
+        }
+      })
+    }
+  	// 	for (var i = 0; i < items.length; i++){
+  	// 		//if items[i].taken === true
+   //      //if (!items[i].taken)
+  	// 		if (items[i].taken) {
+  	// 			filtered.push(items[i])
+  	// 		}
+  	// 	}
+  	// 	console.log('fil', filtered)
+  	// return filtered;
+  	// }
   })
