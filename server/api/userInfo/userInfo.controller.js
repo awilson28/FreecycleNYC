@@ -83,6 +83,21 @@ exports.abortTransaction = function(req, res){
   })
 }
 
+/**
+ * Get the user's bids to display on user home page 
+ */
+
+exports.bidsPerUser = function(req, res){
+  // console.log('userId', req.user._id)
+  // if(req.body._id) { delete req.body._id; }
+  Post.find({'bids': { $in : [req.user._id]}}, function (err, posts) {
+    if (err) { return handleError(res, err); }
+    if(!posts) { return res.send(404); }
+    res.json(200, posts);
+  });
+}
+
+
 function handleError(res, err) {
   return res.send(500, err);
 }

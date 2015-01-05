@@ -11,8 +11,9 @@ router.use(auth.isAuthenticated(), function(req, res, next) {
 });
 
 router.get('/', controller.index);
-router.get('/userProfileInfo/', controller.show);
-router.get('/listCurrentTransactions/', controller.listCurrentTransactions);
+router.get('/userHome/userProfileInfo/', controller.show);
+router.get('/userHome/listCurrentTransactions/', controller.listCurrentTransactions);
+router.get('/userHome/bidsPerUser/', controller.bidsPerUser);
 router.put('/rateUser/:id', controller.rateUser);
 router.put('/initiateTransaction/:id', controller.initiateTransaction)
 router.put('/abortTransaction/:postId/', controller.abortTransaction);

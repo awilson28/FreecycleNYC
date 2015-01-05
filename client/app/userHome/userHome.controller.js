@@ -37,7 +37,7 @@ angular.module('freeNycApp')
   		};
 
     	vm.getUserBids = function(){
-    		postService.getUserBids(function(results){
+    		userInfoService.retrieveBidsPerUser(function(results){
     			$scope.bids = results
     		})
     	};

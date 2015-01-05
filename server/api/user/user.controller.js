@@ -1,6 +1,7 @@
 'use strict';
 
 var User = require('./user.model');
+var Post = require('../post/post.model'); 
 var passport = require('passport');
 var config = require('../../config/environment');
 var jwt = require('jsonwebtoken');
@@ -131,6 +132,7 @@ exports.changePassword = function(req, res, next) {
     }
   });
 };
+
 
 /**
  * Get my info

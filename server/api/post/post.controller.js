@@ -62,15 +62,6 @@ exports.enableRatings = function(req, res){
   });
 }
 
-exports.getUserBids = function(req, res){
-  // console.log('userId', req.user._id)
-  // if(req.body._id) { delete req.body._id; }
-  Post.find({'bids': { $in : [req.user._id]}}, function (err, posts) {
-    if (err) { return handleError(res, err); }
-    if(!posts) { return res.send(404); }
-    res.json(200, posts);
-  });
-}
 
 // populates bid field in the post model
 exports.populateBid = function(req, res) {
@@ -100,13 +91,13 @@ exports.getPostBids = function(req, res){
 
 
 
-exports.abortTransaction = function(req, res){
-  Post.findByIdAndUpdate(req.params.postId, {ratingsEnabled: false}, function(err, post){
-    post.abortTransaction(req.body.id, function(newPost){
-      return res.json(newPost)
-    })
-  })
-}
+// exports.abortTransaction = function(req, res){
+//   Post.findByIdAndUpdate(req.params.postId, {ratingsEnabled: false}, function(err, post){
+//     post.abortTransaction(req.body.id, function(newPost){
+//       return res.json(newPost)
+//     })
+//   })
+// }
 
 
 // Updates an existing post in the DB.

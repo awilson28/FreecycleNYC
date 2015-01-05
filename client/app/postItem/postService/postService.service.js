@@ -34,9 +34,6 @@ angular.module('freeNycApp')
         $http.put('/api/posts/populateBid/'+ id).success(callback);
       },
 
-      getUserBids:  function(callback){
-        $http.get('/api/posts/getBids/').success(callback);
-      },
 
       getSinglePost: function(id, callback) {
         console.log(id);
