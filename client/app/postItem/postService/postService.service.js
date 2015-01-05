@@ -31,9 +31,7 @@ angular.module('freeNycApp')
         $http.get('/api/posts/individualPost/'+id).success(callback);
       },
 
-      enableRatings:  function(id, obj, callback){
-        $http.put('/api/posts/enableRatings/' + id + "/", obj).success(callback)
-      },
+     
 
       // abortTransaction: function(postId, obj, callback){
       //   $http.put('/api/posts/abortTransaction/' + postId + '/', obj).success(callback)

@@ -14,7 +14,6 @@ router.get('/', controller.index);
 router.get('/:keyword', controller.findKeyword);
 router.get('/individualPost/:id', controller.individualPost);
 router.post('/', controller.create);
-router.put('/enableRatings/:id/', controller.enableRatings);
 router.put('/populateBid/:id', controller.populateBid);
 router.put('/getPostBids/:id/', controller.getPostBids);
 router.patch('/:id', controller.update);

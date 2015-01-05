@@ -65,7 +65,7 @@ angular.module('freeNycApp')
     vm.notifyRecipient = function(postId, bidId, index){
       var id = bidId; 
       var obj = {userId: id}
-      postService.enableRatings(postId, obj, function(rating){
+      userInfoService.enableRatings(postId, obj, function(rating){
         $scope.rating = rating.ratingsEnabled;
         $scope.currentOffers[index].ratingsEnabled = true; 
         var temp = {id: postId, bool: true}

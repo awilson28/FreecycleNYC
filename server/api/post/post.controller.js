@@ -51,18 +51,6 @@ exports.create = function(req, res) {
   // }
 };
 
-//enables ratings on transactions via posts field
-exports.enableRatings = function(req, res){
-  console.log('body', req.body)
-  Post.findByIdAndUpdate(req.params.id, {ratingsEnabled: true, $push: {inTransactionWith: req.body.userId}},  function (err, post) {
-    if(err) { return handleError(res, err); }
-    if(!post) { return res.send(404); }
-    return res.json(post);
-    console.log(post)
-  });
-}
-
-
 // populates bid field in the post model
 exports.populateBid = function(req, res) {
   // console.log('id', req.user._id)

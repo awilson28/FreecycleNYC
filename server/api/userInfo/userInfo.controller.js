@@ -27,37 +27,15 @@ exports.show = function(req, res) {
   });
 };
 
-
-exports.initiateTransaction = function(req, res){
-  console.log('req', req.body)
-  console.log('id', req.params.id)
-  // if (req.body.bool) {
-    User.findByIdAndUpdate(req.params.id, {$push: {currentTransactions: req.body.id}})
-        .populate('currentTransactions')
-        .exec(function(err, user){
-          if (err) { return handleError(res, err); }
-          if(!user) { return res.send(404); }
-          console.log('updated user', user)
-          return res.json(200, user)
-        }); 
-  // }
-  // else if (!req.body.bool){
-  //   User.findByIdAndUpdate(req.params.id, {$pull: {currentTransactions: req.body.id}}, function(err, user){
-  //         console.log('updated user', user)
-  //         return res.json(200, user)
-  //       });   
-  //   }
-}
-
 exports.listCurrentTransactions = function(req, res) {
   console.log(req.user._id);
   // User.findById(req.user._id, {currentTransactions: 1})
   User.findById(req.user._id, {currentTransactions: 1})
-      .populate('currentTransactions')
-      .exec(function(err, results) {
-        console.log('transactionsResults', results);
-        return res.json(200, results);
-      });
+    .populate('currentTransactions')
+    .exec(function(err, results) {
+      console.log('transactionsResults', results);
+      return res.json(200, results);
+    });
 }
 
 exports.rateUser = function(req, res) {
@@ -81,6 +59,38 @@ exports.abortTransaction = function(req, res){
       })
     })
   })
+}
+
+//enables ratings on transactions via posts field
+exports.enableRatings = function(req, res){
+  console.log('body', req.body)
+  Post.findByIdAndUpdate(req.params.id, {ratingsEnabled: true, $push: {inTransactionWith: req.body.userId}},  function (err, post) {
+    if(err) { return handleError(res, err); }
+    if(!post) { return res.send(404); }
+    return res.json(post);
+    console.log(post)
+  });
+}
+
+exports.initiateTransaction = function(req, res){
+  console.log('req', req.body)
+  console.log('id', req.params.id)
+  // if (req.body.bool) {
+    User.findByIdAndUpdate(req.params.id, {$push: {currentTransactions: req.body.id}})
+        .populate('currentTransactions')
+        .exec(function(err, user){
+          if (err) { return handleError(res, err); }
+          if(!user) { return res.send(404); }
+          console.log('updated user', user)
+          return res.json(200, user)
+        }); 
+  // }
+  // else if (!req.body.bool){
+  //   User.findByIdAndUpdate(req.params.id, {$pull: {currentTransactions: req.body.id}}, function(err, user){
+  //         console.log('updated user', user)
+  //         return res.json(200, user)
+  //       });   
+  //   }
 }
 
 // Updates an existing post in the DB; this route accessble through home page
