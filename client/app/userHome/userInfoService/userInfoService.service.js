@@ -10,7 +10,7 @@ angular.module('freeNycApp')
       },
 
       retrieveUser: function(callback){
-        $http.get('/api/userInfos/getUser/').success(callback);
+        $http.get('/api/userInfos/userProfileInfo/').success(callback);
       },
 
       initiateTransaction: function(id, temp, callback){
@@ -18,7 +18,7 @@ angular.module('freeNycApp')
       },
 
       getMyTransactions: function(callback){
-        $http.get('/api/userInfos/getTransactions').success(callback);
+        $http.get('/api/userInfos/listCurrentTransactions/').success(callback);
       },
 
       rateTransaction: function(id, obj, callback) {

@@ -11,14 +11,9 @@ router.use(auth.isAuthenticated(), function(req, res, next) {
 });
 
 router.get('/', controller.index);
-// router.get('/:id', controller.show);
-router.get('/getUser/', controller.show);
-router.get('/getTransactions', controller.getTransactions);
-router.post('/', controller.create);
-router.put('/:id', controller.update);
+router.get('/userProfileInfo/', controller.show);
+router.get('/listCurrentTransactions/', controller.listCurrentTransactions);
 router.put('/rateUser/:id', controller.rateUser);
 router.put('/initiateTransaction/:id', controller.initiateTransaction)
-router.patch('/:id', controller.update);
-router.delete('/:id', controller.destroy);
 
 module.exports = router;

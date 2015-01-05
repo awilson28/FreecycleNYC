@@ -1,24 +1,29 @@
 'use strict';
 
 var _ = require('lodash');
-var Userinfo = require('./userInfo.model');
-var Postinfo = require('../post/post.model');
+var Post = require('../post/post.model');
 var User = require('../user/user.model');
 
 
-// Get list of userInfos
+// retrieves all the user's current posts (untaken posts)
 exports.index = function(req, res) {
   console.log('FLAG', req.user._id);
-  Postinfo.find({user: req.user._id})
-          .populate('user')
-          .exec(function (err, PostInfos) {
-            // MAKE SURE TO MAKE THE QUERY CHECK FOR TAKEN VALUE
-            if(err) { return handleError(res, err); }
-            return res.json(200, PostInfos);
-          });
+  Post.find({user: req.user._id})
+  .populate('user')
+  .exec(function (err, posts) {
+    var untakenPosts = posts.map(function untaken (post){
+      if (post.taken === false){
+        return post;
+      }
+    })
+    // MAKE SURE TO MAKE THE QUERY CHECK FOR TAKEN VALUE
+    if(err) { return handleError(res, err); }
+    return res.json(200, untakenPosts);
+  });
 };
 
-// Get a single userInfo
+
+// retrieves all user information pertaining to current user 
 exports.show = function(req, res) {
   User.findById(req.user._id, function (err, userInfo) {
     if(err) { return handleError(res, err); }
@@ -26,29 +31,6 @@ exports.show = function(req, res) {
     return res.json(userInfo);
   });
 };
-
-// Creates a new userInfo in the DB.
-exports.create = function(req, res) {
-  Userinfo.create(req.body, function(err, userInfo) {
-    if(err) { return handleError(res, err); }
-    return res.json(201, userInfo);
-  });
-};
-
-// Updates an existing userInfo in the DB.
-exports.update = function(req, res) {
-  if(req.body._id) { delete req.body._id; }
-  Userinfo.findById(req.params.id, function (err, userInfo) {
-    if (err) { return handleError(res, err); }
-    if(!userInfo) { return res.send(404); }
-    var updated = _.merge(userInfo, req.body);
-    updated.save(function (err) {
-      if (err) { return handleError(res, err); }
-      return res.json(200, userInfo);
-    });
-  });
-};
-
 
 exports.initiateTransaction = function(req, res){
   console.log('req', req.body)
@@ -71,7 +53,7 @@ exports.initiateTransaction = function(req, res){
     }
 }
 
-exports.getTransactions = function(req, res) {
+exports.listCurrentTransactions = function(req, res) {
   console.log(req.user._id);
   // User.findById(req.user._id, {currentTransactions: 1})
   User.findById(req.user._id, {currentTransactions: 1})
@@ -93,18 +75,6 @@ exports.rateUser = function(req, res) {
     console.log('post with ratings disabled', post)
   });
 }
-
-// Deletes a userInfo from the DB.
-exports.destroy = function(req, res) {
-  User.findById(req.params.id, function (err, user) {
-    if(err) { return handleError(res, err); }
-    if(!user) { return res.send(404); }
-    user.remove(function(err) {
-      if(err) { return handleError(res, err); }
-      return res.send(204);
-    });
-  });
-};
 
 function handleError(res, err) {
   return res.send(500, err);
