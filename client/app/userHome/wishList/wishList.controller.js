@@ -1,11 +1,31 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('WishlistCtrl', function ($scope, $http, wishList, Auth) {
+  .controller('WishlistCtrl', function ($scope, $http, wishList, Auth, $rootscope, ) {
     
     var vm = this;
-    $scope.obj = {}
-    $scope.userName = Auth.getCurrentUser().name
+    $scope.obj = {};
+
+
+    ///////////// ABSTRACT INTO FACTORY/SERVICE ///////////////////
+     //this hopefully solves an async issue that we'll have once we deploy to heroku
+    //though we do not currently experience this issue 
+    var foo = function(){
+        if (Auth.getCurrentUser().name){
+            console.log('hitting foo: ', Auth.getCurrentUser().name)
+            $scope.userId = Auth.getCurrentUser()._id; 
+            $scope.userName = Auth.getCurrentUser().name; 
+            $scope.numMessages = Auth.getCurrentUser().numMessages
+            $scope.user = Auth.getCurrentUser()
+        }
+    }
+
+    foo(); 
+
+    $rootScope.$on('user:loggedIn', function(){
+        console.log('-------------------------')
+        foo(); 
+    })
 
 
     $scope.wishData = {
@@ -14,7 +34,7 @@ angular.module('freeNycApp')
     }
 
     vm.getWishes = function(){
-    	$scope.user = Auth.getCurrentUser()
+    	// $scope.user = Auth.getCurrentUser()
     	$scope.today = $scope.user.wishList;
     } 
     

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('MessagesCtrl', function ($scope, Auth, socket, messageService, $state) {
+  .controller('MessagesCtrl', function ($scope, Auth, $rootScope, $cookieStore, socket, messageService, $state) {
     
 
     var vm = this;
@@ -11,9 +11,28 @@ angular.module('freeNycApp')
         recipient: {}
     }; 
     $scope.showMe = {};
-    $scope.userId = Auth.getCurrentUser()._id;
-    $scope.userName = Auth.getCurrentUser().name; 
-    $scope.numMessages = Auth.getCurrentUser().numMessages
+
+
+    //this hopefully solves an async issue that we'll have once we deploy to heroku
+    //though we do not currently experience this issue 
+    var foo = function(){
+        if (Auth.getCurrentUser().name){
+            console.log('hitting foo: ', Auth.getCurrentUser().name)
+            $scope.userId = Auth.getCurrentUser()._id; 
+            $scope.userName = Auth.getCurrentUser().name; 
+            $scope.numMessages = Auth.getCurrentUser().numMessages
+        }
+    }
+
+    foo(); 
+
+    $rootScope.$on('user:loggedIn', function(){
+        console.log('-------------------------')
+        foo(); 
+    })
+
+    // $scope.userId = Auth.getCurrentUser()._id;
+    // $scope.userName = Auth.getCurrentUser().name; 
     var data = {
         userId: $scope.userId, 
         roomId: messageService.convoId.convoId
@@ -31,6 +50,7 @@ angular.module('freeNycApp')
     vm.getMessages()
 
     socket.socket.on('allMessages', function(data){
+        console.log('in here!!')
         $scope.communication = data;
         for (var i = 0; i < $scope.communication.length; i++) {
             if($scope.userName !== $scope.communication[i].messages[0].recipient.name){
@@ -40,7 +60,7 @@ angular.module('freeNycApp')
                 // console.log('talkingto: ', $scope.communication[i].talkingTo)              
             } else {
                 messageService.conversantNames.talkingTo = $scope.communication[i].messages[0].sender.name 
-                // console.log('sender: ', $scope.communication[i].messages[0])
+                console.log('sender: ', $scope.communication[i].messages[0])
                 $scope.communication[i].talkingTo = messageService.conversantNames.talkingTo
                 // console.log('talkingto: ', $scope.communication[i].talkingTo)                             
             }

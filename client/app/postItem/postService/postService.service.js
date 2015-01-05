@@ -3,56 +3,58 @@
 angular.module('freeNycApp')
   .factory('postService', function ($http) {
     
-    function makePost(){
+    var makePost = {
 
 
-      this.addToDatabase = function(data, callback){
+      addToDatabase:  function(data, callback){
         $http.post('/api/posts', data).success(callback);
-      }
+      },
 
-      this.getData = function(callback, paginationData){
+      getData: function(callback, paginationData){
         // paginationData = paginationData || {skip: 0}
         // {params: paginationData}
         $http.get('/api/posts').success(callback);
-      }
+      },
 
-      this.filterData = function(keyword, callback){
-        $http.get('/api/posts/' + keyword).success(callback);
-      }
+      filterData:  function(keyword){
+        return $http.get('/api/posts/' + keyword).then(function received(results){
+          return results.data;
+        })
+      },
 
-      this.deletePost = function(id, callback){
+      deletePost: function(id, callback){
         $http.delete('/api/posts/' + id).success(callback);
-      }
+      },
 
-      this.updatePost = function(id, data, callback) {
+      updatePost:  function(id, data, callback) {
         $http.put('/api/posts/'+id, data).success(callback);
-      }
+      },
 
-      this.populatePost = function(id, callback){
+      populatePost: function(id, callback){
         $http.put('/api/posts/populateBid/'+ id).success(callback);
-      }
+      },
 
-      this.getUserBids = function(callback){
+      getUserBids:  function(callback){
         $http.get('/api/posts/getBids/').success(callback);
-      }
+      },
 
-      this.getSinglePost = function(id, callback) {
+      getSinglePost: function(id, callback) {
         console.log(id);
         $http.get('/api/posts/single/'+id).success(callback);
-      }
+      },
 
-      this.enableRatings = function(id, obj, callback){
+      enableRatings:  function(id, obj, callback){
         $http.put('/api/posts/enableRatings/' + id + "/", obj).success(callback)
-      }
+      },
 
-      this.abortTransaction = function(postId, obj, callback){
+      abortTransaction: function(postId, obj, callback){
         $http.put('/api/posts/abortTransaction/' + postId + '/', obj).success(callback)
-      }
+      },
 
-      this.retrieveBidsPost = function(id, callback){
+      retrieveBidsPost: function(id, callback){
          $http.put('/api/posts/getPostBids/'+ id + "/").success(callback);
       }
     }
 
-    return new makePost();
-  })
+    return makePost;
+  });

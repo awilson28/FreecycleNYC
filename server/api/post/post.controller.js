@@ -77,14 +77,14 @@ exports.populateBid = function(req, res) {
   // console.log('id', req.user._id)
   if(req.body._id) { delete req.body._id; }
   Post.findById(req.params.id)
-      .populate('bids')
-      .exec(function (err, post) {
-        if (err) { return handleError(res, err); }
-        if(!post) { return res.send(404); }
-        post.setBids(req.user._id, function(newPost){
-          return res.json(newPost)
-        });
-      });
+    .populate('bids')
+    .exec(function (err, post) {
+      if (err) { return handleError(res, err); }
+      if(!post) { return res.send(404); }
+      post.setBids(req.user._id, function(newPost){
+        return res.json(newPost)
+    });
+  });
 };
 
 exports.getPostBids = function(req, res){

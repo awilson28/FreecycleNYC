@@ -1,14 +1,29 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('AllitemsCtrl', function ($http, $scope, Auth, socket, joinKeywordsFilter, offersOnlyFilter, $interval, wantedOnlyFilter, postService, messageService) {
+  .controller('AllitemsCtrl', function ($http, $scope, $rootScope, Auth, socket, joinKeywordsFilter, offersOnlyFilter, $interval, wantedOnlyFilter, postService, messageService) {
 	
 	var vm = this; 
 	$scope.keywords = ""; 
 	$scope.keywordsArray = [];
-	$scope.user = Auth.getCurrentUser()._id; 
-	$scope.userEmail = Auth.getCurrentUser().email; 
 
+	//we can either retrieve the current user info once and save it in the database
+	//or we can retrieve it each time in every control to avoid refresh loss 
+	var foo = function(){
+		if (Auth.getCurrentUser().name){
+			$scope.user = Auth.getCurrentUser()._id; 
+			$scope.userEmail = Auth.getCurrentUser().email; 
+		}
+	}
+
+  foo(); 
+
+  $rootScope.$on('user:loggedIn', function(){
+    console.log('-------------------------')
+    foo(); 
+  })
+
+  // GMAPS INITIALIZATION
 	initialize()
 
 
@@ -21,7 +36,7 @@ angular.module('freeNycApp')
 
 	//activates keywords search 
 	vm.submitKeywords = function(){
-		postService.filterData($scope.keywords, function(results){
+		postService.filterData($scope.keywords).then(function(results){
 			$scope.allPosts = results;
 			$scope.currentPosts = $scope.allPosts.slice($scope.temp.start, $scope.temp.end)
 		})
@@ -37,7 +52,6 @@ angular.module('freeNycApp')
 			$scope.temp.end += 10; 
 		}
 		$scope.currentPosts = $scope.allPosts.slice($scope.temp.start, $scope.temp.end)
-
 	}
 
 	//retrieves all posts and passes posts through the wantedOnlyFilter
@@ -190,24 +204,22 @@ angular.module('freeNycApp')
   })
   .filter('offersOnly', function(){
   	return function(items){
-  		var filtered = [];
-  		for (var i = 0; i < items.length; i++){
-  			if (items[i].postType === 'offered') {
-  				filtered.push(items[i])
+  		var filtered = items.map(function offers (item){
+  			if (item.postType === 'offered'){
+  				filtered.push(item)
   			}
-  		}
-  	return filtered;
+  		})
+  		return filtered; 
   	}
   })
   .filter('wantedOnly', function(){
   	return function(items){
-  		var filtered = [];
-  		for (var i = 0; i < items.length; i++){
-  			if (items[i].postType === 'wanted') {
-  				filtered.push(items[i])
+  		var filtered = items.map(function wanteds (item){
+  			if (item.postType === 'wanted'){
+  				filtered.push(item)
   			}
-  		}
-  	return filtered;
+  		})
+  		return filtered;
   	}
   })
   .filter('joinKeywords', function(){
@@ -251,4 +263,4 @@ angular.module('freeNycApp')
 	    	return input.substring(0,1).toUpperCase()+input.substring(1);	
     	}
  	}
-});
+})

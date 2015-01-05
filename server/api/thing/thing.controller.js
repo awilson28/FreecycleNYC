@@ -110,7 +110,8 @@ exports.create = function(req, res) {
     nodemailerConfig.transporter.close();
     }); 
   })
-  Thing.create({messages: [req.body], conversants: [req.body.recipient, req.user._id]}, function(err, thing) {
+  // Thing.create({messages: [req.body], conversants: [req.body.recipient, req.user._id]}, function(err, thing) {
+  Thing.create({messages: [req.body]}, function(err, thing) {
     thing.setNumMessages(req.body.recipient, true, function(thing){
       if(err) { return handleError(res, err); }
       return res.json(201, thing);
