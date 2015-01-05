@@ -62,8 +62,7 @@ PostSchema.methods = {
     this.bids.splice(index, 1)
     // console.log('bids', this.bids)
     this.inTransactionWith = []; 
-    this.save()
-    callback(this);
+    this.save(callback)
   }
 }
 

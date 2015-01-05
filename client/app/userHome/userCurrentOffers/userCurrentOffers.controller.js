@@ -12,8 +12,7 @@ angular.module('freeNycApp')
       userInfoService.getUserPosts(function(data) {
         var unTakenOffersOnly = offersOnlyFilter(data, 'postType');
         //filtered for takens on the backend instead of on the front
-        // $scope.currentOffers = unTakenOffersFilter(resultBeforeTakenFilter, 'taken')
-        $scope.currentOffers = unTakenOffersOnly
+        $scope.currentOffers = unTakenOffersFilter(resultBeforeTakenFilter, 'taken')
       });
     };
 
@@ -53,15 +52,14 @@ angular.module('freeNycApp')
     vm.abortTransaction = function(postId, userId, index){
       console.log('id', userId)
       var obj = {id: userId}
-      postService.abortTransaction(postId, obj, function(result) {
+      userInfoService.abortTransaction(postId, obj, function(newPost) {
         $scope.currentOffers[index].ratingsEnabled = false; 
-        console.log(result)
+        console.log('new post: ', newPost)
       })
-      var temp = {id: postId, bool: false}
-        userInfoService.initiateTransaction(userId, temp, function(result){
-          console.log('user after aborted transaction', result)
-        })
-
+      // var temp = {id: postId, bool: false}
+      // userInfoService.initiateTransaction(userId, temp, function(result){
+      //   console.log('user after aborted transaction', result)
+      // })
     }
 
     vm.notifyRecipient = function(postId, bidId, index){
@@ -106,6 +104,7 @@ angular.module('freeNycApp')
           return item;
         }
       })
+      return filtered; 
     }
   	// 	for (var i = 0; i < items.length; i++){
   	// 		//if items[i].taken != true
@@ -123,6 +122,7 @@ angular.module('freeNycApp')
           return item;
         }
       })
+      return filtered; 
     }
   	// 	for (var i = 0; i < items.length; i++){
   	// 		//if items[i].taken === true

@@ -5,20 +5,15 @@ var Post = require('../post/post.model');
 var User = require('../user/user.model');
 
 
-// retrieves all the user's current posts (untaken posts)
+// retrieves all the user's posts, regardless of past or present, 
+//for filtering on front end
 exports.index = function(req, res) {
   console.log('FLAG', req.user._id);
   Post.find({user: req.user._id})
   .populate('user')
   .exec(function (err, posts) {
-    var untakenPosts = posts.map(function untaken (post){
-      if (post.taken === false){
-        return post;
-      }
-    })
-    // MAKE SURE TO MAKE THE QUERY CHECK FOR TAKEN VALUE
     if(err) { return handleError(res, err); }
-    return res.json(200, untakenPosts);
+    return res.json(200, posts);
   });
 };
 
@@ -32,10 +27,11 @@ exports.show = function(req, res) {
   });
 };
 
+
 exports.initiateTransaction = function(req, res){
   console.log('req', req.body)
   console.log('id', req.params.id)
-  if (req.body.bool) {
+  // if (req.body.bool) {
     User.findByIdAndUpdate(req.params.id, {$push: {currentTransactions: req.body.id}})
         .populate('currentTransactions')
         .exec(function(err, user){
@@ -44,13 +40,13 @@ exports.initiateTransaction = function(req, res){
           console.log('updated user', user)
           return res.json(200, user)
         }); 
-  }
-  else if (!req.body.bool){
-    User.findByIdAndUpdate(req.params.id, {$pull: {currentTransactions: req.body.id}}, function(err, user){
-          console.log('updated user', user)
-          return res.json(200, user)
-        });   
-    }
+  // }
+  // else if (!req.body.bool){
+  //   User.findByIdAndUpdate(req.params.id, {$pull: {currentTransactions: req.body.id}}, function(err, user){
+  //         console.log('updated user', user)
+  //         return res.json(200, user)
+  //       });   
+  //   }
 }
 
 exports.listCurrentTransactions = function(req, res) {
@@ -71,9 +67,20 @@ exports.rateUser = function(req, res) {
       res.json(200, rating);
     })
   });
-  Postinfo.findByIdAndUpdate(req.body.postId, {ratingsEnabled: false}, function(err, post){
+  Post.findByIdAndUpdate(req.body.postId, {ratingsEnabled: false}, function(err, post){
     console.log('post with ratings disabled', post)
   });
+}
+
+exports.abortTransaction = function(req, res){
+  Post.findByIdAndUpdate(req.params.postId, {ratingsEnabled: false}, function(err, post){
+    post.abortTransaction(req.body.id, function(newPost){
+      User.findByIdAndUpdate(req.body.id, {$pull: {currentTransactions: req.body.id}}, function(err, user){
+        console.log('updated post: ', newPost, 'updated user: ', user)
+        return res.json(newPost)  
+      })
+    })
+  })
 }
 
 function handleError(res, err) {

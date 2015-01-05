@@ -15,5 +15,6 @@ router.get('/userProfileInfo/', controller.show);
 router.get('/listCurrentTransactions/', controller.listCurrentTransactions);
 router.put('/rateUser/:id', controller.rateUser);
 router.put('/initiateTransaction/:id', controller.initiateTransaction)
+router.put('/abortTransaction/:postId/', controller.abortTransaction);
 
 module.exports = router;

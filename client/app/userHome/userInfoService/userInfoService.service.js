@@ -23,6 +23,10 @@ angular.module('freeNycApp')
 
       rateTransaction: function(id, obj, callback) {
         $http.put('/api/userInfos/rateUser/'+id, obj).success(callback);
+      }, 
+
+       abortTransaction: function(postId, obj, callback){
+        $http.put('/api/userInfos/abortTransaction/' + postId + '/', obj).success(callback)
       }
     }
 
