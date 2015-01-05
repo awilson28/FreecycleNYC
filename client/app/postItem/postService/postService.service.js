@@ -7,13 +7,13 @@ angular.module('freeNycApp')
 
 
       addToDatabase:  function(data, callback){
-        $http.post('/api/posts', data).success(callback);
+        $http.post('/api/posts/', data).success(callback);
       },
 
       getData: function(callback, paginationData){
         // paginationData = paginationData || {skip: 0}
         // {params: paginationData}
-        $http.get('/api/posts').success(callback);
+        $http.get('/api/posts/').success(callback);
       },
 
       filterData:  function(keyword){
@@ -37,7 +37,7 @@ angular.module('freeNycApp')
 
       getSinglePost: function(id, callback) {
         console.log(id);
-        $http.get('/api/posts/single/'+id).success(callback);
+        $http.get('/api/posts/individualPost/'+id).success(callback);
       },
 
       enableRatings:  function(id, obj, callback){

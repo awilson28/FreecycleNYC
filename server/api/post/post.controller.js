@@ -30,7 +30,7 @@ exports.findKeyword = function(req, res) {
 };
 
 // Get a single post
-exports.show = function(req, res) {
+exports.individualPost = function(req, res) {
   Post.findById(req.params.id, function (err, post) {
     if(err) { return handleError(res, err); }
     if(!post) { return res.send(404); }
