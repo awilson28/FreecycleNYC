@@ -1,8 +1,22 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('singlePostController', function ($scope, Auth, postService, messageService, $stateParams) {
+  .controller('singlePostController', function ($scope, Auth, $rootScope, socket, postService, messageService, $stateParams) {
   	var vm = this;
+
+	  var foo = function(){
+			if (Auth.getCurrentUser().name){
+				$scope.user = Auth.getCurrentUser()._id; 
+				$scope.userEmail = Auth.getCurrentUser().email; 
+			}
+		}
+
+	  foo(); 
+
+	  $rootScope.$on('user:loggedIn', function(){
+	    console.log('-------------------------')
+	    foo(); 
+	  })
 
 	  $scope.biddedOn = {};
 		$scope.bidPressed = {};
@@ -30,12 +44,24 @@ angular.module('freeNycApp')
 
 		//click event that sends a message to the owner of the item 
 		vm.sendMessage = function(recipient, index) {
-			console.log(recipient);
+			console.log('recipient: ', recipient);
 			$scope.messageArray[index].recipient = recipient;
-			messageService.sendMessage($scope.messageArray[index], function(data) {
-				$scope.messageForm[index] = false;
-				$scope.bidPressed[index] = true;
+			//added this line because with sockets, we cannot access the current user id with req.user._id
+			$scope.messageArray[index].sender = $scope.user; 
+			$scope.messageArray[index].email = $scope.userEmail; 
+
+			//create the socket room id 
+			messageService.convoId.convoId = $scope.messageArray[index].recipient + $scope.user;
+			$scope.messageArray[index].roomId = messageService.convoId.convoId;
+
+			console.log('convo id: ', messageService.convoId.convoId)
+			
+			//message sent via sockets 
+			socket.socket.emit('sendMessage', $scope.messageArray[index])
+			socket.socket.on('MessageSent', function(data){
+				$scope.messageForm[index] = false; 
+				$scope.bidPressed[index] = true; 
+				console.log('data: ', data)
 			})
 		}
-
   });

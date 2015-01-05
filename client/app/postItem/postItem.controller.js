@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('PostitemCtrl', function ($scope, $http, Auth, $location, postService, $state) {
+  .controller('PostitemCtrl', function ($scope, $http, $location, postService, $state) {
   	var vm = this; 
 
   	$scope.formData = {

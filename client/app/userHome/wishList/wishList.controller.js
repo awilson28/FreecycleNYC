@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('WishlistCtrl', function ($scope, $http, wishList, Auth, $rootscope, ) {
+  .controller('WishlistCtrl', function ($scope, $http, wishList, Auth, $rootscope) {
     
     var vm = this;
     $scope.obj = {};
@@ -49,7 +49,7 @@ angular.module('freeNycApp')
     }
 
     vm.deleteOption = function(item, index){
-    	var id = $scope.user._id
+    	var id = $scope.userId
     	wishList.deleteWish(id, item, function(result){
             $scope.today.splice(index, 1)
     	})

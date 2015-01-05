@@ -2,17 +2,17 @@
 
 angular.module('freeNycApp')
   .factory('messageService', function ($http) {
-    function messageService() {
+    var messageService = {
 
-      this.convoId = {
+      convoId: {
         convoId: ''
-      };
+      },
 
-      this.conversants = [];
+      conversants: [],
 
-      this.conversantNames = {
+      conversantNames: {
         talkingTo: ''
-      };
+      }
 
       // this.getMyMessages = function(callback) {
       //     $http.get('api/things/getMessages/').success(callback);
@@ -39,6 +39,6 @@ angular.module('freeNycApp')
       // }
     }
 
-    return new messageService();
+    return messageService;
   
   });
