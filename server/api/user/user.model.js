@@ -15,8 +15,6 @@ var UserSchema = new Schema({
     default: 'user'
   },
   location: String,
-  //rethink bookmarked items functionality 
-  bookmarkedItems: Array,
   wishList: Array,
   ratingArray: Array,
   rating: {type: Number, default: 5},
@@ -173,78 +171,10 @@ UserSchema.methods = {
       sum+=this.ratingArray[i];
     }
     this.rating = sum/this.ratingArray.length;
-    this.save();
-    // console.log('RATING', this.rating);
-    callback(this);
+    this.save(function(err, newlyUpdated){
+      callback(newlyUpdated)
+    });
   }
-
-
 };
-
-// UserSchema.statics = {
-//   matchUserWishlist: function(array, callback) {
-//     this.find({}, function(err, users){
-//       async.each(users, function(err, user){
-//         // console.log('Allusers', users)
-//         async.each(user.wishList, function(err, wish){
-//           console.log('wishlist', user.wishList, 'wish', wish)
-//           for (var key in wish){
-
-//             if (Array.isArray(wish[key])){
-//               var arr = wish[key]
-//               async.each(arr, function(item){
-//                 if (array.indexOf(item) !== -1){
-//                   //execute match
-//                   callback(user)
-//                 }
-//               }, function(err){
-//                 console.log('errors inner', err);
-//               })
-//             }
-//             else if (array.indexOf(wish[key]) !== -1){
-//               callback(user)
-//             }
-            
-//           }
-        
-//         }, function(err){
-//           console.log('errors', err);
-//         })
-//       }, function(err){
-//         console.log('errors2', err);
-//       })
-
-//     })
-//   }
-// }
-
-// UserSchema.statics = {
-//   matchUserWishlist: function(array, callback) {
-//     this.find({}, function(err, users){
-//       console.log('USER TOTAL', users.length);
-//       users.forEach(function(user){
-//         user.wishList.forEach(function(wish){
-//           console.log('wishlist', user.wishList, 'wish', wish)
-//           for (var key in wish){
-//             if (Array.isArray(wish[key])){
-//               var arr = wish[key]
-//               console.log('arr in wishlist', arr)
-//               arr.forEach(function(item){
-//                 if (array.indexOf(item) !== -1){
-//                   console.log('matched item', item)
-//                   callback(err, user)
-//                 }
-//               })
-//             }
-//             else if (array.indexOf(wish[key]) !== -1){
-//               console.log('matched item', wish[key])
-//               callback(err, user)
-//             }
-//           }
-//         })
-//       })
-//     })
-//   }
-// }
 
 module.exports = mongoose.model('User', UserSchema);

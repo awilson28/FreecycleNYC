@@ -38,8 +38,9 @@ PostSchema.methods = {
       // console.log('populating bids array')
       this.bids.push(id)
       this.numBids = this.bids.length; 
-      this.save()
-      callback(this); 
+      this.save(function(err, newPost){
+        callback(newPost); 
+      })
     }
   }, 
   findRelevantUsers: function(callback){
@@ -62,7 +63,9 @@ PostSchema.methods = {
     this.bids.splice(index, 1)
     // console.log('bids', this.bids)
     this.inTransactionWith = []; 
-    this.save(callback)
+    this.save(function(err, newPost){
+      callback(newPost)
+    })
   }
 }
 
