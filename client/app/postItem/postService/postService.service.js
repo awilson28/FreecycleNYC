@@ -22,21 +22,12 @@ angular.module('freeNycApp')
         })
       },
 
-      deletePost: function(id, callback){
-        $http.delete('/api/posts/' + id).success(callback);
-      },
-
-      updatePost:  function(id, data, callback) {
-        $http.put('/api/posts/'+id, data).success(callback);
-      },
-
       populatePost: function(id, callback){
         $http.put('/api/posts/populateBid/'+ id).success(callback);
       },
 
 
       getSinglePost: function(id, callback) {
-        console.log(id);
         $http.get('/api/posts/individualPost/'+id).success(callback);
       },
 
@@ -50,6 +41,10 @@ angular.module('freeNycApp')
 
       retrieveBidsPost: function(id, callback){
          $http.put('/api/posts/getPostBids/'+ id + "/").success(callback);
+      }, 
+
+      deletePost: function(id, callback){
+        $http.delete('/api/posts/' + id).success(callback);
       }
     }
 

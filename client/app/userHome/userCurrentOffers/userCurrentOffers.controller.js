@@ -25,7 +25,7 @@ angular.module('freeNycApp')
 
     //click event that sets the taken flag to true 
     vm.setTaken = function(id, index) {
-      postService.updatePost(id, {taken: true}, function(data) {
+      userInfoService.updatePost(id, {taken: true}, function(data) {
         $scope.currentOffers[index].taken = true; 
       });
     };

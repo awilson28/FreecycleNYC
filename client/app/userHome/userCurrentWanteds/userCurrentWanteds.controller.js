@@ -55,7 +55,7 @@ angular.module('freeNycApp')
       // console.log('id', id)
       // console.log('post', post)
       post.user = post.user._id
-      postService.updatePost(id, post, function(result){
+      userInfoService.updatePost(id, post, function(result){
         $scope.obj[index] = false;
         // console.log('updated want', result)
       });

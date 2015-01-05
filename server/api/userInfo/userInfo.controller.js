@@ -83,6 +83,16 @@ exports.abortTransaction = function(req, res){
   })
 }
 
+// Updates an existing post in the DB; this route accessble through home page
+exports.updateUserPost = function(req, res) {
+  if(req.body._id) { delete req.body._id; }
+  Post.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+    if (err) { return handleError(res, err); }
+    if(!post) { return res.send(404); }
+    return res.json(200, post)
+  });
+};
+
 /**
  * Get the user's bids to display on user home page 
  */

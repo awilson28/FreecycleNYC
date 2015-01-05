@@ -100,23 +100,15 @@ exports.getPostBids = function(req, res){
 // }
 
 
-// Updates an existing post in the DB.
-exports.update = function(req, res) {
-  if(req.body._id) { delete req.body._id; }
-  Post.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
-    if (err) { return handleError(res, err); }
-    if(!post) { return res.send(404); }
-    // console.log('post', post, 'modified', numModified)
-    return res.json(200, post)
-    // var updated = _.merge(post, req.body);
-    // console.log('updated', updated)
-    // updated.save(function (err, newPost, numModified) {
-    //   if (err) { return handleError(res, err); }
-    //   console.log('new post', newPost, 'modified', numModified)
-    //   return res.json(200, post);
-    // });
-  });
-};
+// // Updates an existing post in the DB.
+// exports.update = function(req, res) {
+//   if(req.body._id) { delete req.body._id; }
+//   Post.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+//     if (err) { return handleError(res, err); }
+//     if(!post) { return res.send(404); }
+//     return res.json(200, post)
+//   });
+// };
 
 // Deletes a post from the DB.
 exports.destroy = function(req, res) {

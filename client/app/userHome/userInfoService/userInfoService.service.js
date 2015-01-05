@@ -3,6 +3,8 @@
 angular.module('freeNycApp')
   .factory('userInfoService', function ($http) {
 
+    //These are api calls that are made from the User Home Page
+
     var getInfo = {
 
       getUserPosts: function(callback) {
@@ -19,6 +21,10 @@ angular.module('freeNycApp')
 
       getMyTransactions: function(callback){
         $http.get('/api/userInfos/userHome/listCurrentTransactions/').success(callback);
+      },
+
+      updatePost:  function(id, data, callback) {
+        $http.put('/api/userInfos/userHome/modifyPost/'+id, data).success(callback);
       },
 
       rateTransaction: function(id, obj, callback) {
