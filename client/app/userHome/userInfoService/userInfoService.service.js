@@ -5,7 +5,7 @@ angular.module('freeNycApp')
 
     //These are api calls that are made from the User Home Page
 
-    var getInfo = {
+    var userHomeInfo = {
 
       getUserPosts: function(callback) {
         $http.get('/api/userInfos/').success(callback);
@@ -23,6 +23,10 @@ angular.module('freeNycApp')
         $http.get('/api/userInfos/userHome/listCurrentTransactions/').success(callback);
       },
 
+      enableRatings:  function(id, obj, callback){
+        $http.put('/api/userInfos/userOffers/enableRatings/' + id + "/", obj).success(callback)
+      },
+
       updatePost:  function(id, data, callback) {
         $http.put('/api/userInfos/userHome/modifyPost/'+id, data).success(callback);
       },
@@ -37,8 +41,12 @@ angular.module('freeNycApp')
 
       retrieveBidsPerUser:  function(callback){
         $http.get('/api/userInfos/userHome/bidsPerUser/').success(callback);
-      }
+      }, 
+
+      namesOfBiddersOnPost: function(id, callback){
+         $http.put('/api/userInfos/userOffers/populateBidArray/'+ id + "/").success(callback);
+      }, 
     }
 
-    return getInfo;
+    return userHomeInfo;
   });

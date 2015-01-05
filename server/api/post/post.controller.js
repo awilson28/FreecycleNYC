@@ -66,18 +66,6 @@ exports.populateBid = function(req, res) {
   });
 };
 
-exports.getPostBids = function(req, res){
-  Post.findById(req.params.id, {'bids':1})
-    .populate('bids', 'name')
-    .exec(function (err, post) {
-    if (err) { return handleError(res, err); }
-    if(!post) { return res.send(404); }
-    console.log('post', post)
-    return res.json(post)
-  });
-}
-
-
 
 // exports.abortTransaction = function(req, res){
 //   Post.findByIdAndUpdate(req.params.postId, {ratingsEnabled: false}, function(err, post){

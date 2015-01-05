@@ -16,6 +16,7 @@ router.get('/userHome/listCurrentTransactions/', controller.listCurrentTransacti
 router.get('/userHome/bidsPerUser/', controller.bidsPerUser);
 router.put('/userHome/modifyPost/:id', controller.updateUserPost)
 router.put('/userOffers/enableRatings/:id/', controller.enableRatings);
+router.put('/userOffers/populateBidArray/:id/', controller.namesOfBiddersOnPost);
 router.put('/rateUser/:id', controller.rateUser);
 router.put('/initiateTransaction/:id', controller.initiateTransaction)
 router.put('/abortTransaction/:postId/', controller.abortTransaction);

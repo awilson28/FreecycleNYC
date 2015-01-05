@@ -93,6 +93,19 @@ exports.initiateTransaction = function(req, res){
   //   }
 }
 
+//populates bids array so that the names of bidders can be
+// displayed in dropdown menu
+exports.namesOfBiddersOnPost = function(req, res){
+  Post.findById(req.params.id, {'bids':1})
+    .populate('bids', 'name')
+    .exec(function (err, post) {
+    if (err) { return handleError(res, err); }
+    if(!post) { return res.send(404); }
+    return res.json(post)
+  });
+}
+
+
 // Updates an existing post in the DB; this route accessble through home page
 exports.updateUserPost = function(req, res) {
   if(req.body._id) { delete req.body._id; }

@@ -41,11 +41,11 @@ angular.module('freeNycApp')
 
     vm.gifting = function(id, index){
       $scope.obj[index] = true;  
-      postService.retrieveBidsPost(id, function(result){
+      userInfoService.namesOfBiddersOnPost(id, function(result){
         console.log('retrieved bids', result)
         $scope.bids = result.bids;
-        $scope.userId = result.bids[0]._id 
-        console.log('bids', $scope.userId)
+        // $scope.userId = result.bids[0]._id 
+        // console.log('bids', $scope.userId)
       });
     }
 
