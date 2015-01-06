@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('WishlistCtrl', function ($scope, $http, wishList, Auth, $rootscope) {
+  .controller('WishlistCtrl', function ($scope, $http, wishList, Auth, $rootScope) {
     
     var vm = this;
     $scope.obj = {};

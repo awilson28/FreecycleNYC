@@ -10,7 +10,7 @@ angular.module('freeNycApp')
     //the offers only filter, and then through the untaken filter 
     vm.getCurrentOffers = function(){
       userInfoService.getUserPosts(function(data) {
-        var unTakenOffersOnly = offersOnlyFilter(data, 'postType');
+        var resultBeforeTakenFilter = offersOnlyFilter(data, 'postType');
         //filtered for takens on the backend instead of on the front
         $scope.currentOffers = unTakenOffersFilter(resultBeforeTakenFilter, 'taken')
       });
@@ -36,6 +36,8 @@ angular.module('freeNycApp')
       userInfoService.getUserPosts(function(data) {
         var resultBeforeTakenFilter = offersOnlyFilter(data, 'postType');
         $scope.pastOffers = pastOffersFilter(resultBeforeTakenFilter, 'taken')
+        console.log('results before taken filter: ', resultBeforeTakenFilter)
+        console.log('past offers: ', $scope.pastOffers)
       });
     };
 
@@ -99,39 +101,49 @@ angular.module('freeNycApp')
   })
   .filter('unTakenOffers', function(){
   	return function(items){
-  		var filtered = items.map(function currentOffers(item){
-        if (!item.taken) {
-          return item;
+
+      var filtered = []; 
+      for (var i = 0; i < items.length; i++){
+        if (items[i]){
+          if (!items[i].taken){
+            filtered.push(items[i])
+          }
         }
-      })
+      }
       return filtered; 
     }
-  	// 	for (var i = 0; i < items.length; i++){
-  	// 		//if items[i].taken != true
-  	// 		if (!items[i].taken) {
-  	// 			filtered.push(items[i])
-  	// 		}
-  	// 	}
-  	// return filtered;
-  	// }
+  		// var filtered = items.map(function currentOffers(item){
+    //     if (item){
+    //         if (!item.taken) {
+    //           return item;
+    //         }
+    //       }
+    //     })
+    //   return filtered; 
+    // }
   })
   .filter('pastOffers', function(){
   	return function(items){
-  		var filtered = items.map(function pastOffers(item){
-        if (item.taken){
-          return item;
+      var filtered = []; 
+      for (var i = 0; i < items.length; i++){
+        if (items[i]){
+          if (items[i].taken === true){
+            filtered.push(items[i])
+          }
         }
-      })
+      }
       return filtered; 
     }
-  	// 	for (var i = 0; i < items.length; i++){
-  	// 		//if items[i].taken === true
-   //      //if (!items[i].taken)
-  	// 		if (items[i].taken) {
-  	// 			filtered.push(items[i])
-  	// 		}
-  	// 	}
-  	// 	console.log('fil', filtered)
-  	// return filtered;
-  	// }
   })
+  // 		var filtered = items.map(function pastOffers(item){
+  //       if (typeof item != 'undefined'){
+  //        if (item.taken === true){
+  //           return item;    
+  //         }
+
+  //       }
+  //     })
+  //     console.log('filtered: ', filtered)
+  //     return filtered; 
+  //   }
+  // })

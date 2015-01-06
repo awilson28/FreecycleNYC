@@ -31,6 +31,7 @@ exports.findKeyword = function(req, res) {
 
 // Get a single post by post id 
 exports.individualPost = function(req, res) {
+  console.log('in here')
   Post.findById(req.params.id, function (err, post) {
     if(err) { return handleError(res, err); }
     if(!post) { return res.send(404); }

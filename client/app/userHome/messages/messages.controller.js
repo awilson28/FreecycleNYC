@@ -59,8 +59,8 @@ angular.module('freeNycApp')
                 // console.log('talking with: ', $scope.communication[i].messages[$scope.communication[i].messages.length-1])
                 // console.log('talkingto: ', $scope.communication[i].talkingTo)              
             } else {
-                messageService.conversantNames.talkingTo = $scope.communication[i].messages[0].sender.name 
                 console.log('sender: ', $scope.communication[i].messages[0])
+                messageService.conversantNames.talkingTo = $scope.communication[i].messages[0].sender.name 
                 $scope.communication[i].talkingTo = messageService.conversantNames.talkingTo
                 // console.log('talkingto: ', $scope.communication[i].talkingTo)                             
             }

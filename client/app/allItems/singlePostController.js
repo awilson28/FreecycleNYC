@@ -23,6 +23,8 @@ angular.module('freeNycApp')
 		$scope.messageArray = [];
 		$scope.messageForm = {};
 
+		console.log('state id: ', $stateParams.id)
+
     postService.getSinglePost($stateParams.id, function(data) {
       $scope.post = data;
     })
@@ -44,6 +46,7 @@ angular.module('freeNycApp')
 
 		//click event that sends a message to the owner of the item 
 		vm.sendMessage = function(recipient, index) {
+			$scope.messageForm[index] = false; 
 			console.log('recipient: ', recipient);
 			$scope.messageArray[index].recipient = recipient;
 			//added this line because with sockets, we cannot access the current user id with req.user._id
@@ -59,7 +62,6 @@ angular.module('freeNycApp')
 			//message sent via sockets 
 			socket.socket.emit('sendMessage', $scope.messageArray[index])
 			socket.socket.on('MessageSent', function(data){
-				$scope.messageForm[index] = false; 
 				$scope.bidPressed[index] = true; 
 				console.log('data: ', data)
 			})

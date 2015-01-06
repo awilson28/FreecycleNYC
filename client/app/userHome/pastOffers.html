@@ -1,5 +1,5 @@
 <h1 class='offWhiteText'>Your Past Offers</h1>
-<div class='individual-post' ng-repeat="post in pastOffers">
+<div class='individual-post' ng-repeat="post in pastOffers track by $index">
 	<h3>{{$index+1}}. <a href="/singlePost/{{post._id}}">{{post.postTitle | capitalize}}</a></h3>
   <div ng-if='post.img.length > 0'>
     <img class='image' src = "{{post.img[0]}}">

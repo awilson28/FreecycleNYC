@@ -206,7 +206,7 @@ angular.module('freeNycApp')
   	return function(items){
   		var filtered = items.map(function offers (item){
   			if (item.postType === 'offered'){
-  				filtered.push(item)
+  				return item;
   			}
   		})
   		return filtered; 
@@ -216,7 +216,7 @@ angular.module('freeNycApp')
   	return function(items){
   		var filtered = items.map(function wanteds (item){
   			if (item.postType === 'wanted'){
-  				filtered.push(item)
+  				return item;
   			}
   		})
   		return filtered;

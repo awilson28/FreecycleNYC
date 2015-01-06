@@ -26,10 +26,9 @@
 
 			<div ng-hide='bidPressed[$index]'>
 				<button class='btn btn-primary' ng-if="post.postType === 'offered'" ng-click='single.bidOnItem(post._id, post.user._id, $index)'>Bid</button>
-				<button class='btn btn-warning' ng-if='biddedOn[$index]'>Send a Message</button>
 				<form ng-if='messageForm[$index]'>
 					<input type="text" ng-model='messageArray[$index].body'>
-					<button ng-click='single.sendMessage(post.user, $parent.$index)'>Submit</button>
+					<button ng-if='biddedOn[$index]' class='btn btn-warning' ng-click='single.sendMessage(post.user, $parent.$index)'>Send a Message</button>
 				</form>
 			</div>
   </div>
