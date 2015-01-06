@@ -23,8 +23,8 @@
           <h2 class='offWhiteText'>Hello, {{userInfo.name}}</h2>
           <h5 class='offWhiteText rating'>Your rating: {{userInfo.rating}} out of 5</h5>
           <h4 class='offWhiteText'>See Your Wishlist Matches:</h4>
-          	<div ng-repeat='alert in userInfo.alerts'>
-          		<h6> <a ng-click="user.goToAlert(alert)">{{$index + 1}}. {{alert}}</a></h6>
+          	<div ng-repeat='alert in wishNamesArr'>
+          		<h6> <a ng-click="user.goToAlert(alert, $index)">{{$index + 1}}. {{alert}}</a></h6>
           	</div>
           <br>
           <div class='individual-post' ng-repeat="post in bids">

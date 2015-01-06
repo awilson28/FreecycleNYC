@@ -14,6 +14,7 @@ router.get('/', controller.index);
 router.get('/userHome/userProfileInfo/', controller.show);
 router.get('/userHome/listCurrentTransactions/', controller.listCurrentTransactions);
 router.get('/userHome/bidsPerUser/', controller.bidsPerUser);
+router.get('/userHome/wishList/items', controller.wishListNames);
 router.put('/userHome/modifyPost/:id', controller.updateUserPost)
 router.put('/userOffers/enableRatings/:id/', controller.enableRatings);
 router.put('/userOffers/populateBidArray/:id/', controller.namesOfBiddersOnPost);

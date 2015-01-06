@@ -45,7 +45,13 @@ angular.module('freeNycApp')
 
       namesOfBiddersOnPost: function(id, callback){
          $http.put('/api/userInfos/userOffers/populateBidArray/'+ id + "/").success(callback);
-      } 
+      }, 
+
+      sendArrayIdsForWishNames: function(obj){
+        return $http.get('/api/userInfos/userHome/wishList/items', {params: obj}).then(function receivedArray (response){
+          return response.data;
+        });
+      }
     }
 
     return userHomeInfo;

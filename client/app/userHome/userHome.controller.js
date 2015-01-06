@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('UserhomeCtrl', function ($scope, $state, userInfoService, postService, Auth) {
-  		var vm = this;
+  .controller('UserhomeCtrl', function ($scope, $state, $rootScope, userInfoService, postService, Auth) {
+  		var vm = this; 
+
 
 
         //state.go's are rendundant, see userHome.html
@@ -26,11 +27,36 @@ angular.module('freeNycApp')
         $state.go('userHome.messages')
       }
 
-      //'user' is the alias for this controller, so angular gets confused when we 
-      //define user as obj on scope
-			$scope.userInfo = Auth.getCurrentUser();
-      console.log($scope.userInfo);
+      var foo = function(){
+        var alertsObj = {}, 
+            wishIds = [];
+        $scope.wishNamesArr = []; 
+        if (Auth.getCurrentUser().alerts){
+          $scope.userInfo = Auth.getCurrentUser().alerts; 
+          if ($scope.userInfo.length > 0){
+            alertsObj.idArray = $scope.userInfo; 
+            userInfoService.sendArrayIdsForWishNames(alertsObj)
+            .then(function listNames(wishArr){
+              // console.log('returned wish arr: ', wishArr)
+              $scope.wishArr = wishArr; 
+              // console.log('wishArr: ', wishArr)
+              wishArr.forEach(function(arrOfWish){
+                arrOfWish.forEach(function(wish){
+                  $scope.wishNamesArr.push(wish.postTitle)
+                  wishIds.push(wish._id)
+                })
+              })
+            })
+          }
+        }
+      }
 
+      foo(); 
+
+      $rootScope.$on('user:loggedIn', function(){
+        console.log('-------------------------')
+        foo(); 
+      })
 
   		vm.getWishList = function(){
   			$state.go('userHome.wishList')
@@ -42,9 +68,9 @@ angular.module('freeNycApp')
     		})
     	};
 
-      vm.goToAlert = function(id) {
-
-        $state.go('singlePost', {'id': id});
+      vm.goToAlert = function(alert, index) {
+        var wishId = wishIds[index]
+        $state.go('singlePost', {'id': wishId});
       }
 
 

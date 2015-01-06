@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Post = require('../post/post.model');
 var User = require('../user/user.model');
+var Q = require('q'); 
 
 
 // retrieves all the user's posts, regardless of past or present, 
@@ -28,8 +29,7 @@ exports.show = function(req, res) {
 };
 
 exports.listCurrentTransactions = function(req, res) {
-  console.log(req.user._id);
-  // User.findById(req.user._id, {currentTransactions: 1})
+  // console.log(req.user._id);
   User.findById(req.user._id, {currentTransactions: 1})
     .populate('currentTransactions')
     .exec(function(err, results) {
@@ -37,6 +37,28 @@ exports.listCurrentTransactions = function(req, res) {
       return res.json(200, results);
     });
 }
+
+exports.wishListNames = function(req, res){
+  var promiseForWishesArr = [], 
+      backUpArr = [], 
+      wishIds, 
+      promiseForWishes;  
+  //check if req.query is an array. if not an array, push req.query into an array
+  if (!Array.isArray(req.query.idArray)){
+    backUpArr.push(req.query.idArray)
+    req.query.idArray = backUpArr; 
+  }
+
+  wishIds = req.query.idArray;
+  wishIds.forEach(function(wishId){
+    promiseForWishes = Post.find({_id: wishId}).exec(); 
+    promiseForWishesArr.push(promiseForWishes)
+  })
+
+  Q.all(promiseForWishesArr).then(function(wishNames){
+    res.json(wishNames); 
+  }) 
+};
 
 exports.rateUser = function(req, res) {
   User.findByIdAndUpdate(req.params.id, {$push : {ratingArray: req.body.rating}}, function(err, user) {
