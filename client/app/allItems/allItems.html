@@ -5,9 +5,12 @@
 
 		<div class='col-sm-12 col-lg-6'>
 			<div class="buttonHolder">
-				<button class='btn btn-warning' ng-click='items.getPosts()'>All Posts</button>
+				<!-- <button class='btn btn-warning' ng-click='items.getPosts()'>All Posts</button>
 				<button class='btn btn-warning' ng-click='items.getWanteds()'>Wanted</button>
-				<button class='btn btn-warning' ng-click='items.getOffereds()'>Offers</button>
+				<button class='btn btn-warning' ng-click='items.getOffereds()'>Offers</button> -->
+				<button class='btn btn-warning' ng-click='items.getPosts("none")'>All Posts</button>
+				<button class='btn btn-warning' ng-click='items.getPosts("wanted")'>Wanted</button>
+				<button class='btn btn-warning' ng-click='items.getPosts("offered")'>Offers</button>
 				<input type="text" name='keywords' ng-model='keywords' ng-enter="items.submitKeywords()" placeholder='keyword search'> 	
 			</div>
 			<div class='individual-post' ng-repeat="post in currentPosts track by $index">

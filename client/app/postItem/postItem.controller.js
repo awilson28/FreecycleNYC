@@ -3,25 +3,23 @@
 angular.module('freeNycApp')
   .controller('PostitemCtrl', function ($scope, $http, $location, postService, $state) {
   	var vm = this; 
+  	$scope.posts;
+    $scope.Blobs = []; 
+  	$scope.tempKeyword = "";
 
-  	$scope.formData = {
-  		postTitle: "",
-  		crossStreets: "", 
-  		description: "",
-  		postType: "", 
-  		itemType: "Pick Item Type", 
-  		keyWords: [], 
-  		dimensions: "",
+    $scope.formData = {
+      postTitle: "",
+      crossStreets: "", 
+      description: "",
+      postType: "", 
+      itemType: "Pick Item Type", 
+      keyWords: [], 
+      dimensions: "",
       img: [], 
       taken: false,
       fulfilled: true
-  	}
+    }
 
-  	$scope.posts;
-    $scope.Blobs = []; 
-
-
-  	$scope.tempKeyword = "";
 
     //click event that sets the item type listed in the drop down menu as the main menu item
   	vm.OnItemClick = function(event) {
@@ -30,14 +28,16 @@ angular.module('freeNycApp')
 
     //sends the form data to the database for creation and save 
   	vm.submitData = function(formData, $valid){
+      var geocoder; 
   		if ($valid && $scope.formData.keyWords.length > 0) {
 
-        var geocoder = new google.maps.Geocoder();
+        geocoder = new google.maps.Geocoder();
         formData.crossStreets = formData.crossStreets + " " + formData.zipCode
         geocoder.geocode({'address': formData.crossStreets}, function(results, status){
           formData.coordinates = [results[0].geometry.location.k, results[0].geometry.location.B]
           delete formData.zipCode
-    			postService.addToDatabase(formData, vm.displayData);
+          //postService.addToDatabase(formData, vm.displayData)
+    			postService.addToDatabase(formData, $state.go('allItems'));
         })
   		}
       else {
@@ -47,9 +47,9 @@ angular.module('freeNycApp')
 
 
     //
-  	vm.displayData = function() {
-  			$state.go('allItems');
-  	}
+  	// vm.displayData = function() {
+  	// 		$state.go('allItems');
+  	// }
 
     //click event that adds keywords to the display and to the keywords array 
   	vm.addKeyWord = function(word){
