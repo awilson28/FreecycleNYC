@@ -1,5 +1,8 @@
 <h1 class='offWhiteText'>Your Current Transactions</h1>
-<div class='individual-post' ng-repeat="post in myTransactions.currentTransactions">
+<div ng-if='myTransactions.currentTransactions.length === 0'>
+    <h4 class='offWhiteText empty'> You have no transactions at this time </h4>
+</div>
+<div class='individual-post' ng-repeat="post in myTransactions.currentTransactions track by $index">
 	<h3>{{$index+1}}. <a href="/singlePost/{{post._id}}">{{post.postTitle | capitalize}}</a></h3>
   <div ng-if='post.img.length > 0'>
     <img class='image' src = "{{post.img[0]}}">

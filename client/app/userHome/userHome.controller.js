@@ -1,39 +1,22 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('UserhomeCtrl', function ($scope, $state, $rootScope, userInfoService, postService, Auth) {
-  		var vm = this; 
+  .controller('UserhomeCtrl', function ($scope, $state, $stateParams, $rootScope, userInfoService, messageService, postService, Auth, socket) {
+      var vm = this; 
 
-
-
-        //state.go's are rendundant, see userHome.html
-  	 	vm.getCurrentOffers = function(){
-  	 		$state.go('userHome.currentOffers')
-  	 	};
-
-  	 	vm.getCurrentWanteds = function(){
-  	 		$state.go('userHome.currentWanteds')
-  	 	};
-
-  	 	vm.getPastOffers= function(){
-  	 		$state.go('userHome.pastOffers')
-  	 	};
-
-  	 	vm.getCurrentTransactions = function(){
-  	 		$state.go('userHome.currentTransactions')
-  	 	};
-
-      vm.getMessages = function(){
-        $state.go('userHome.messages')
-      }
-
-      var foo = function(){
-        var alertsObj = {}, 
-            wishIds = [];
-        $scope.wishNamesArr = []; 
-        if (Auth.getCurrentUser().alerts){
-          $scope.userInfo = Auth.getCurrentUser().alerts; 
-          if ($scope.userInfo.length > 0){
+      var bar = function(callback){
+        var user, 
+            alertsObj = {}, 
+            wishIds = []; 
+        $scope.wishNamesArr = [];  
+        //assignment inside if condition; this is not supposed to return a boolean 
+        if (user = Auth.getCurrentUser()){
+            console.log('hitting bar: ', user)
+            $scope.userInfo = user.alerts; 
+            $scope.userId = user._id; 
+            $scope.userName = user.name; 
+            $scope.userRating = user.rating; 
+            if ($scope.userInfo && $scope.userInfo.length > 0){
             alertsObj.idArray = $scope.userInfo; 
             userInfoService.sendArrayIdsForWishNames(alertsObj)
             .then(function listNames(wishArr){
@@ -47,20 +30,33 @@ angular.module('freeNycApp')
                 })
               })
             })
-          }
+          }    
         }
+        callback()
       }
 
-      foo(); 
+      vm.getAllMessages = function(){
+          var data = {
+              userId: $scope.userId, 
+              roomId: messageService.room.convoId
+          }
+          socket.socket.emit('getMessages', data)
+      }
+
+      bar(vm.getAllMessages); 
 
       $rootScope.$on('user:loggedIn', function(){
         console.log('-------------------------')
-        foo(); 
+        bar(vm.getAllMessages); 
       })
 
-  		vm.getWishList = function(){
-  			$state.go('userHome.wishList')
-  		};
+
+      socket.socket.on('allMessages', function(data){
+        console.log('in here!!')
+        $scope.communication = data;
+        messageService.messages.render = data; 
+        console.log('messages before click: ', $scope.communication)
+      })
 
     	vm.getUserBids = function(){
     		userInfoService.retrieveBidsPerUser(function(results){

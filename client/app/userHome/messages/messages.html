@@ -1,11 +1,11 @@
 <h1 class="offWhiteText">Your Messages</h1>
 <div class='messageView'>
 <h5 class='offWhiteText'>You have {{numMessages}} new messages</h5>
-<div class='individual-post' ng-repeat= 'talk in communication'>
+<div class='individual-post' ng-repeat= 'talk in communication track by $index'>
 	<h4> Conversation with {{talk.talkingTo | capitalizeFirst}}</h4>
 	<a href='' ng-click="messages.showMessages($index, talk._id)">Show Conversation ({{talk.numNewMessages}})</a>
 	<div ng-if="showMe[$index].show"> 
-		<div class='indiv' ng-repeat="m in talk.messages">
+		<div class='indiv' ng-repeat="m in talk.messages track by $index">
 			<h4>From: {{m.sender.name | capitalizeFirst}}</h4>
 			<p class='messageBody'> {{m.body}}</p>
 			<button class='btn btn-primary' ng-click='messages.replyButton($index, $parent.$index)'>Reply</button>

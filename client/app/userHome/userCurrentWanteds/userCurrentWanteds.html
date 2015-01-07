@@ -1,4 +1,7 @@
 <h1 class='offWhiteText'>Your Current Wanteds</h1>
+<div ng-if='currenWanteds.length === 0'>
+  <h4 class='offWhiteText empty'> You have no wants at this time </h4>
+</div>
 <div class='individual-post' ng-repeat="post in currentWanteds">
   <div ng-hide="obj[$index]">
   	<h3>{{$index+1}}. <a href="/singlePost/{{post._id}}">{{post.postTitle | capitalize}}</a></h3>

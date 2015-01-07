@@ -54,10 +54,10 @@ angular.module('freeNycApp')
 			$scope.messageArray[index].email = $scope.userEmail; 
 
 			//create the socket room id 
-			messageService.convoId.convoId = $scope.messageArray[index].recipient + $scope.user;
-			$scope.messageArray[index].roomId = messageService.convoId.convoId;
+			messageService.room.convoId = $scope.messageArray[index].recipient + $scope.user;
+			$scope.messageArray[index].roomId = messageService.room.convoId;
 
-			console.log('convo id: ', messageService.convoId.convoId)
+			console.log('convo id: ', messageService.room.convoId)
 			
 			//message sent via sockets 
 			socket.socket.emit('sendMessage', $scope.messageArray[index])

@@ -9,7 +9,7 @@ angular.module('freeNycApp')
 	$scope.biddedOn = {};
 	$scope.bidPressed = {};
 	$scope.messageForm = {};
-	$scope.temp = {start: 0, end: 10}
+
   // GMAPS INITIALIZATION
 	initialize()
 
@@ -68,7 +68,6 @@ angular.module('freeNycApp')
   }
 
 	//click event that triggers a put request to add the user to the bids array
-	//click event that displays the message form for items on the home page - message sent with bid request
 	vm.bidOnItem = function(id, userId, index){
 		$scope.biddedOn[index] = true;
 		$scope.messageForm[index] = true;
@@ -85,9 +84,9 @@ angular.module('freeNycApp')
 		$scope.messageArray[index].email = $scope.userEmail; 
 		// console.log('recipient', recipient)
 		// console.log('body', $scope.messageArray[index])
-		messageService.convoId.convoId = $scope.messageArray[index].recipient + $scope.user;
-		$scope.messageArray[index].roomId = messageService.convoId.convoId;
-		// console.log('convo id: ', messageService.convoId.convoId)
+		messageService.room.convoId = $scope.messageArray[index].recipient + $scope.user;
+		$scope.messageArray[index].roomId = messageService.room.convoId;
+		// console.log('convo id: ', messageService.room.convoId)
 		socket.socket.emit('sendMessage', $scope.messageArray[index])
 		socket.socket.on('MessageSent', function(data){
 			$scope.messageForm[index] = false; 

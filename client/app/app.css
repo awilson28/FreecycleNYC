@@ -38,6 +38,13 @@
     padding: 0.2em 0;
 }
 
+.empty h5 {
+    font-weight: bold;
+    color: #428BCA;
+    float: center;
+    margin-left: 30px;
+}
+
 .centered {
     float: none;
     margin-left: auto;

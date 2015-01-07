@@ -112,15 +112,6 @@ angular.module('freeNycApp')
       }
       return filtered; 
     }
-  		// var filtered = items.map(function currentOffers(item){
-    //     if (item){
-    //         if (!item.taken) {
-    //           return item;
-    //         }
-    //       }
-    //     })
-    //   return filtered; 
-    // }
   })
   .filter('pastOffers', function(){
   	return function(items){
@@ -135,15 +126,3 @@ angular.module('freeNycApp')
       return filtered; 
     }
   })
-  // 		var filtered = items.map(function pastOffers(item){
-  //       if (typeof item != 'undefined'){
-  //        if (item.taken === true){
-  //           return item;    
-  //         }
-
-  //       }
-  //     })
-  //     console.log('filtered: ', filtered)
-  //     return filtered; 
-  //   }
-  // })

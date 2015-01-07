@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('freeNycApp')
-  .controller('MessagesCtrl', function ($scope, Auth, $rootScope, $cookieStore, socket, messageService, $state) {
+  .controller('MessagesCtrl', function ($scope, Auth, $rootScope, $stateParams, $cookieStore, socket, messageService, $state) {
     
+    $scope.communication = messageService.messages.render; 
+    console.log('messages: ', $stateParams.messages)
 
     var vm = this;
     $scope.newMessage = {
@@ -15,57 +17,82 @@ angular.module('freeNycApp')
 
     //this hopefully solves an async issue that we'll have once we deploy to heroku
     //though we do not currently experience this issue 
-    var foo = function(){
-        if (Auth.getCurrentUser().name){
-            console.log('hitting foo: ', Auth.getCurrentUser().name)
-            $scope.userId = Auth.getCurrentUser()._id; 
-            $scope.userName = Auth.getCurrentUser().name; 
-            $scope.numMessages = Auth.getCurrentUser().numMessages
+    var foo = function(callback){
+        var user; 
+        //assignment inside if condition; this is not supposed to return a boolean 
+        if (user = Auth.getCurrentUser()){
+            console.log('hitting foo: ', user)
+            $scope.userId = user._id; 
+            $scope.userName = user.name; 
+            $scope.numMessages = user.numMessages; 
         }
+        callback()
     }
 
-    foo(); 
+    vm.renderMessages = function(){
+        //do this in other controller 
+      for (var i = 0, len = $scope.communication.length; i < len; i++) {
+        if ($scope.userName !== $scope.communication[i].messages[0].recipient.name){
+          messageService.conversantNames.talkingTo = $scope.communication[i].messages[0].recipient.name  
+          $scope.communication[i].talkingTo = messageService.conversantNames.talkingTo
+          // console.log('talking with: ', $scope.communication[i].messages[$scope.communication[i].messages.length-1])
+          // console.log('talkingto: ', $scope.communication[i].talkingTo)              
+        } 
+        else {
+          console.log('sender: ', $scope.communication[i].messages[0])
+          messageService.conversantNames.talkingTo = $scope.communication[i].messages[0].sender.name 
+          $scope.communication[i].talkingTo = messageService.conversantNames.talkingTo
+          // console.log('talkingto: ', $scope.communication[i].talkingTo)                             
+        }
+      };
+    }
+
+    foo(vm.renderMessages)
+
+    // vm.getMessages = function(user){
+    //     var data = {
+    //         userId: $scope.userId, 
+    //         roomId: messageService.room.convoId,
+    //         user: user
+    //     }
+    //     socket.socket.emit('getMessages', data)
+    // }
+
+    // vm.getMessages()
+    //foo takes a callback that retrieves the user's messages 
+    // setTimeout(function(){
+        // foo(vm.getMessages); 
+    // }, 0)
 
     $rootScope.$on('user:loggedIn', function(){
         console.log('-------------------------')
-        foo(); 
+        foo(vm.renderMessages); 
     })
-
-    // $scope.userId = Auth.getCurrentUser()._id;
-    // $scope.userName = Auth.getCurrentUser().name; 
-    var data = {
-        userId: $scope.userId, 
-        roomId: messageService.convoId.convoId
-    }
-
-    $scope.conversants = []; 
-    $scope.displayConversants = ''; 
 
     // console.log('numMessages', $scope.numMessages)
 
-    vm.getMessages = function(){
-        socket.socket.emit('getMessages', data)
-    }
     
-    vm.getMessages()
 
-    socket.socket.on('allMessages', function(data){
-        console.log('in here!!')
-        $scope.communication = data;
-        for (var i = 0; i < $scope.communication.length; i++) {
-            if($scope.userName !== $scope.communication[i].messages[0].recipient.name){
-                messageService.conversantNames.talkingTo = $scope.communication[i].messages[0].recipient.name  
-                $scope.communication[i].talkingTo = messageService.conversantNames.talkingTo
-                // console.log('talking with: ', $scope.communication[i].messages[$scope.communication[i].messages.length-1])
-                // console.log('talkingto: ', $scope.communication[i].talkingTo)              
-            } else {
-                console.log('sender: ', $scope.communication[i].messages[0])
-                messageService.conversantNames.talkingTo = $scope.communication[i].messages[0].sender.name 
-                $scope.communication[i].talkingTo = messageService.conversantNames.talkingTo
-                // console.log('talkingto: ', $scope.communication[i].talkingTo)                             
-            }
-        };
-    })
+
+
+    // socket.socket.on('allMessages', function(data){
+    //     console.log('in here!!')
+    //     $scope.communication = data;
+    //     for (var i = 0, len = $scope.communication.length; i < len; i++) {
+    //         if($scope.userName !== $scope.communication[i].messages[0].recipient.name){
+    //             messageService.conversantNames.talkingTo = $scope.communication[i].messages[0].recipient.name  
+    //             $scope.communication[i].talkingTo = messageService.conversantNames.talkingTo
+    //             // console.log('talking with: ', $scope.communication[i].messages[$scope.communication[i].messages.length-1])
+    //             // console.log('talkingto: ', $scope.communication[i].talkingTo)              
+    //         } else {
+    //             console.log('sender: ', $scope.communication[i].messages[0])
+    //             messageService.conversantNames.talkingTo = $scope.communication[i].messages[0].sender.name 
+    //             $scope.communication[i].talkingTo = messageService.conversantNames.talkingTo
+    //             // console.log('talkingto: ', $scope.communication[i].talkingTo)                             
+    //         }
+    //     };
+    //     $scope.numMessages = returnObj.user.numMessages; 
+    // })
 
     //click event that displays the message field so the user can respond
     vm.replyButton = function(index, parentIndex){
@@ -73,7 +100,7 @@ angular.module('freeNycApp')
     }
 
     //click event that adds user's response to the messages array in the communication
-    vm.reply = function(convoId, index, parentIndex){
+    vm.reply = function(talkId, index, parentIndex){
 
         // $scope.conversants.push($scope.communication[0].messages[0].recipient._id, 
         //     $scope.communication[0].messages[0].sender._id)
@@ -95,9 +122,9 @@ angular.module('freeNycApp')
             // console.log('userId', $scope.userId, 'convo', $scope.communication[parentIndex].message[index])
 
         }
-        $scope.newMessage.convoId = convoId;
+        $scope.newMessage.convoId = talkId;
         //convoId is the id of the room 
-        $scope.newMessage.roomId = messageService.convoId.convoId; 
+        $scope.newMessage.roomId = messageService.room.convoId; 
 
         socket.socket.emit('reply', $scope.newMessage)
         console.log('reply: ', $scope.newMessage)
@@ -122,7 +149,7 @@ angular.module('freeNycApp')
         var obj = {
             talkId: talkId,
             userId: $scope.userId, 
-            roomId: messageService.convoId.convoId
+            roomId: messageService.room.convoId
         }
 
         socket.socket.emit('displayMessages', obj)
