@@ -34,6 +34,11 @@
 	font-weight: bold;
 }
 
+.paginationBox {
+   margin: 50px auto;
+   float: none;
+}
+
 @media (max-width:768px) {
 
 	#map-canvas {

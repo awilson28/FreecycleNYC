@@ -13,8 +13,9 @@
 				<button class='btn btn-warning' ng-click='items.getPosts("offered")'>Offers</button>
 				<input type="text" name='keywords' ng-model='keywords' ng-enter="items.submitKeywords()" placeholder='keyword search'> 	
 			</div>
+		<!-- 	<div class='individual-post' ng-repeat="post in currentPosts track by $index"> -->
 			<div class='individual-post' ng-repeat="post in currentPosts track by $index">
-				<h3>{{$index+temp.start+1}}.<a href="/singlePost/{{post._id}}"> {{post.postTitle | capitalize}}</a></h3>
+				<h3>{{$index+start+1}}.<a href="/singlePost/{{post._id}}"> {{post.postTitle | capitalize}}</a></h3>
 				<div ng-if='post.img.length > 0'>
 					<img class='image' src = "{{post.img[0]}}">
 				</div>
@@ -50,8 +51,9 @@
 
 
 		<div class='map-column col-sm-12 col-lg-6'>
-			<a class='pageButtons' ng-click='items.changePage("previous")'>Previous Page</a> |
-			<a class='pageButtons' ng-click="items.changePage('next')">Next Page</a>
+			<div class="text`-center col-lg-12 col-md-12 clearfix paginationBox">
+				<pagination total-items='allPosts.length' ng-model='currentPage' class="center" ng-change='changePage()' ></pagination>
+			</div>
 
 			<div id='map-canvas'></div>	
 		</div>

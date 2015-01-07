@@ -44,7 +44,7 @@ angular.module('freeNycApp')
 			for (var i = 0, len = $scope.allPosts.length; i < len; i++){
 				codeAddress($scope.allPosts[i])
 			}
-			$scope.currentPosts = $scope.allPosts.slice($scope.temp.start, $scope.temp.end)
+			$scope.currentPosts = $scope.allPosts.slice(0, 10)
 		}); 
 	}
 
@@ -56,19 +56,16 @@ angular.module('freeNycApp')
 		})
 	}
 
-	//pagination function  --- NEEDS FIXING
-	vm.changePage = function(item){
-		if (item === 'previous'){
-			$scope.temp.start -= 10; 
-			$scope.temp.end -= 10;
-		}
-		else {
-			$scope.temp.start += 10;
-			$scope.temp.end += 10; 
-		}
-		$scope.currentPosts = $scope.allPosts.slice($scope.temp.start, $scope.temp.end)
-	}
 
+	//PAGINATION (UI BOOTSTRAP SUPPORTED)
+ 	$scope.currentPage = 0;
+  $scope.changePage = function(){
+    var currentIndex = $scope.currentPage - 1;
+    $scope.start = currentIndex*10;
+    $scope.end = $scope.start + 10
+    $scope.currentPosts = $scope.allPosts.slice($scope.start, $scope.end)
+    window.scrollTo(0, 0)
+  }
 
 	//click event that triggers a put request to add the user to the bids array
 	//click event that displays the message form for items on the home page - message sent with bid request
