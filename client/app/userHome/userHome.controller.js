@@ -46,16 +46,16 @@ angular.module('freeNycApp')
       bar(vm.getAllMessages); 
 
       $rootScope.$on('user:loggedIn', function(){
-        console.log('-------------------------')
+        // console.log('-------------------------')
         bar(vm.getAllMessages); 
       })
 
 
       socket.socket.on('allMessages', function(data){
-        console.log('in here!!')
+        // console.log('in here!!')
         $scope.communication = data;
         messageService.messages.render = data; 
-        console.log('messages before click: ', $scope.communication)
+        // console.log('messages before click: ', $scope.communication)
       })
 
     	vm.getUserBids = function(){
